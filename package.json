@@ -20,5 +20,9 @@
     "next": "^8.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1",
+    "webpack": "^4.34.0"
   }
 }
