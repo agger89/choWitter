@@ -1,9 +1,8 @@
 import React from 'react';
-import Link from 'next/link'; // 라우팅
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 
-const Home = () => {
+const Signup = () => {
     return (
         <>
             <Head>
@@ -11,10 +10,10 @@ const Home = () => {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.19.0/antd.css" />
             </Head>
             <AppLayout>
-                <div>hello next</div>
+                <div>signup</div>
             </AppLayout>
         </>
     );
 };
 
-export default Home;
+export default Signup;
