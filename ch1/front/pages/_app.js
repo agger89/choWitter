@@ -2,7 +2,9 @@
 // _app.js 안에다가 공통적인 부분을 모은다.
 import React from 'react';
 import Head from 'next/head';
+import Proptypes from 'prop-types';
 import AppLayout from '../components/AppLayout';
+
 
 const ChoWitter = ({ Component }) => {
     return (
@@ -16,6 +18,13 @@ const ChoWitter = ({ Component }) => {
             </AppLayout>
         </>
     );
+};
+
+// 부모로부터 내려온 props를 검증
+// 프로그래밍이 안정적이고 견고해짐
+// 자체 props를 잘못 전달하는 에러를 표시해줌
+ChoWitter.proptypes = {
+    Component: Proptypes.elementType, // elementType: 컴포넌트식의 props
 };
 
 export default ChoWitter;

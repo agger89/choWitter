@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link'; // 라우팅
+import PropTypes from 'prop-types';
 import { Menu, Input, Button } from 'antd';
 
 const AppLayout = ({ children }) => {
@@ -19,6 +20,13 @@ const AppLayout = ({ children }) => {
             {children} 
         </div>
     );
+};
+
+// 부모로부터 내려온 props를 검증
+// 프로그래밍이 안정적이고 견고해짐
+// 자체 props를 잘못 전달하는 에러를 표시해줌
+AppLayout.propTypes = {
+    children: PropTypes.node // node: jsx에 들어갈수있는 모든 것들 (문자, 태그, 숫자, 컴포넌트, 불리언, 함수, 객체 등등)
 };
 
 export default AppLayout;
