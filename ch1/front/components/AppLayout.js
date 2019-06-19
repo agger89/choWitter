@@ -1,7 +1,16 @@
 import React from 'react';
 import Link from 'next/link'; // 라우팅
 import PropTypes from 'prop-types';
-import { Menu, Input, Button } from 'antd';
+import { Menu, Input, Button, Row, Col, Card, Avatar } from 'antd';
+
+// 백엔드에 데이터가 아직 없기때문에 
+// 가짜 데이터를 만들어준다
+const dummy = {
+    nickname: '조니',
+    Post: [],
+    Followings: [],
+    Followers: [],
+};
 
 const AppLayout = ({ children }) => {
     return (
@@ -13,11 +22,33 @@ const AppLayout = ({ children }) => {
                     <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
                 </Menu.Item>
             </Menu>
-            <Link href="/signup">
-                <a><Button>회원가입</Button></a>
-            </Link>
-            {/* {children}: Home 컴포넌트에 AppLayout에 자식들을 가져온다 */}
-            {children} 
+
+            <Row>
+                {/* 가로 전체 24 */}
+                <Col xs={24} md={6}>
+                    <Card
+                        actions={[
+                            <div key="twit">짹짹<br />{dummy.Post.length}</div>,
+                            <div key="following">팔로잉<br />{dummy.Followings.length}</div>,
+                            <div key="follower">팔로워<br />{dummy.Followers.length}</div>
+                        ]}
+                    >
+                        <Card.Meta
+                            avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
+                            title={dummy.nickname}
+                        />
+                    </Card>
+                </Col>
+                <Link href="/signup">
+                    <a><Button>회원가입</Button></a>
+                </Link>
+                <Col xs={24} md={12}>
+                    {/* {children}: Home 컴포넌트에 AppLayout에 자식들을 가져온다 */}
+                    {children} 
+                </Col>
+                <Col xs={24} md={6}>세번째</Col>
+            </Row>
+            
         </div>
     );
 };
