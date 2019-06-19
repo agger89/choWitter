@@ -5,7 +5,6 @@ import Head from 'next/head';
 import Proptypes from 'prop-types';
 import AppLayout from '../components/AppLayout';
 
-
 const ChoWitter = ({ Component }) => {
     return (
         <>
