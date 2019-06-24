@@ -43,6 +43,12 @@ const reducer = (state = initialState, action) => {
                 mainPosts: [action.data, ...state.mainPosts],
             };
         }
+        // 액션이 아무것도 해당되지 않을때 기본값
+        default: {
+            return {
+                ...state,
+            }
+        }
     }
 };
 

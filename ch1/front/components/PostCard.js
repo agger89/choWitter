@@ -24,7 +24,7 @@ const PostCard = ({ post }) => {
     );
 };
 
-PostCard.prototypes = {
+PostCard.propTypes = {
     // shape: 객체들을 정의 post.User, post.content ...
     post: PropTypes.shape({
         User: PropTypes.object,

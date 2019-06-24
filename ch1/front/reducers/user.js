@@ -24,6 +24,7 @@ export const logoutAction = {
 };
 
 // setState라고 생각하면됨, action의 결과로 state를 바꿈
+// 상단에 선언한 initialState가 리듀서안에 들어감
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOG_IN: {
@@ -42,8 +43,12 @@ const reducer = (state = initialState, action) => {
                 user: null,
             }
         }
-        default:
-            return state;
+        // 액션이 아무것도 해당되지 않을때 기본값
+        default: {
+            return {
+                ...state,
+            }
+        }
     }
 };
 
