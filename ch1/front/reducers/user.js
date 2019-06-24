@@ -1,5 +1,6 @@
 // 초기 state값, store안에 들어감
-const initialState = {
+// 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
+export const initialState = {
     isLoggedIn: false,
     user: {},
 };
@@ -9,14 +10,16 @@ const LOG_IN = 'LOG_IN';
 const LOG_OUT = 'LOG_OUT';
 
 // 실제 액션
-const loginAction = {
+// 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
+export const loginAction = {
     type: LOG_IN,
     data: {
         nickname: '조니',
     }
 };
 
-const logoutAction = {
+// 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
+export const logoutAction = {
     type: LOG_OUT,
 };
 
@@ -25,7 +28,9 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOG_IN: {
             return {
-                ...state,
+                // 스프레드 문법: 새로운 배열,객체를 생성한다
+                // 불변성, 예전 state와 지금 state가 달라졌는지
+                ...state, 
                 isLoggedIn: true,
                 user: action.data,
             }
@@ -41,3 +46,5 @@ const reducer = (state = initialState, action) => {
             return state;
     }
 };
+
+export default reducer;
