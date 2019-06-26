@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 // 리액트를 리덕스와 연결
 import withRedux from 'next-redux-wrapper';
 import AppLayout from '../components/AppLayout';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 // Provider: 리덕스 state를 컴포넌트들에게 제공해준다.
 import { Provider } from 'react-redux';
 import reducer from '../reducers';
@@ -37,7 +37,19 @@ ChoWitter.propTypes = {
 };
 
 // react를 redux에 연결
+// 아래 코드의 틀은 거의 항상 들어가니까 외우는 느낌으로
 export default withRedux((initialState, options) => {
-    const store = createStore(reducer, initialState);
+    // middleware는 액션과 스토어 사이에서 동작한다.
+    const middlewares = [];
+    // enhancer의 뜻: 향상시키다
+    // compose: middleware들끼리 합성 시켜줌
+    // 아래 compose안에 들어있는 모든것을 합성해서 store에 넣어줌
+    const enhancer = compose(
+        // applyMiddleware: 위에 배열안에 들어간 미들웨어들을 적용
+        applyMiddleware(...middlewares),
+        // redux devtools 확장프로그램을 크롬에 설치하면 윈도우 객체에 window.__REDUX_DEVTOOLS_EXTENSION__() 함수가 생김
+        !options.isServer && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f,
+    );
+    const store = createStore(reducer, initialState, enhancer);
     return store;
 })(ChoWitter);
