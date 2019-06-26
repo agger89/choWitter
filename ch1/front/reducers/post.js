@@ -37,6 +37,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
             };
         }
+        // ADD_DUMMY 액션이 발생하면
+        // 불변성의 법칙으로 ...state 기존 state를 일단 불러오고
+        // 그다음 제일 상단에 선언한 초기 state의 mainPosts 배열안에
+        // const addDummy안에 data 객체를 배열안에 넣어준다
+        // 그러면 이제 state 안에 mainPosts에 값들이 생긴다
         case ADD_DUMMY: {
             return {
                 ...state,
