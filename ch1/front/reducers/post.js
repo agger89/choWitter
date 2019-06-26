@@ -5,8 +5,8 @@ export const initialState = {
 };
 
 // 액션의 이름
-const ADD_POST = 'ADD_POST';
-const ADD_DUMMY = 'ADD_DUMMY';
+export const ADD_POST = 'ADD_POST';
+export const ADD_DUMMY = 'ADD_DUMMY';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬

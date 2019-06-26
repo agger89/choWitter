@@ -6,8 +6,8 @@ export const initialState = {
 };
 
 // 액션의 이름
-const LOG_IN = 'LOG_IN'; 
-const LOG_OUT = 'LOG_OUT';
+export const LOG_IN = 'LOG_IN'; 
+export const LOG_OUT = 'LOG_OUT';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
