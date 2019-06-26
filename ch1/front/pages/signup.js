@@ -11,6 +11,7 @@ const Signup = () => {
     const [termError, setTermError] = useState(false); // 약관동의 안하면 에러
 
     // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
+    // 해당 이벤트만 리렌더링 되게 하기 위해
     // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
     const onSubmit = useCallback((e) => {
         e.preventDefault();

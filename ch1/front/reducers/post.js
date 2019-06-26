@@ -1,7 +1,15 @@
 // 초기 state값, store안에 들어감
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const initialState = {
-    mainPosts: [],
+    mainPosts: [{
+        User: {
+            id: 1,
+            nickname: '조니',
+        },
+        content: '첫번째 게시글',
+        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q'
+    }],
+    imagePath: []
 };
 
 // 액션의 이름

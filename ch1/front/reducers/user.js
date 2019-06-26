@@ -1,8 +1,15 @@
+const dummyUser = {
+    nickname: '조니',
+    Post: [],
+    Followings: [],
+    Followers: [],
+};
+
 // 초기 state값, store안에 들어감
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const initialState = {
     isLoggedIn: false,
-    user: {},
+    user: null
 };
 
 // 액션의 이름
@@ -13,9 +20,6 @@ export const LOG_OUT = 'LOG_OUT';
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const loginAction = {
     type: LOG_IN,
-    data: {
-        nickname: '조니',
-    }
 };
 
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
@@ -33,7 +37,7 @@ const reducer = (state = initialState, action) => {
                 // 불변성, 예전 state와 지금 state가 달라졌는지
                 ...state, 
                 isLoggedIn: true,
-                user: action.data,
+                user: dummyUser,
             }
         }
         case LOG_OUT: {

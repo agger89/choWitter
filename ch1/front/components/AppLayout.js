@@ -4,18 +4,23 @@ import PropTypes from 'prop-types';
 import { Menu, Input, Row, Col } from 'antd';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+// useSelector: 리듀서에 있는 state를 불러오기 위함
+import { useSelector } from 'react-redux';
 
 // 백엔드에 데이터가 아직 없기때문에 
 // 가짜 데이터를 만들어준다
-const dummy = {
-    nickname: '조니',
-    Post: [],
-    Followings: [],
-    Followers: [],
-    isLoggedIn: false
-};
+// 리덕스로 state 옮겨서 사용안함
+// const dummy = {
+//     nickname: '조니',
+//     Post: [],
+//     Followings: [],
+//     Followers: [],
+//     isLoggedIn: false
+// };
+
 
 const AppLayout = ({ children }) => {
+    const { isLoggedIn } = useSelector(state => state.user);
     return (
         <div>
             <Menu mode="horizontal">
@@ -28,7 +33,7 @@ const AppLayout = ({ children }) => {
             <Row gutter={10}>
                 {/* 가로 전체 24 */}
                 <Col xs={24} md={6}>
-                    {dummy.isLoggedIn ?
+                    {isLoggedIn ?
                         <UserProfile />
                         :
                         <LoginForm />

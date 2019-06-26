@@ -7,18 +7,21 @@ import { useDispatch, useSelector } from 'react-redux';
 // action 함수를 불러옴
 import { loginAction, logoutAction } from '../reducers/user';
 
-const dummy = {
-    isLoggedIn: true,
-    imagePath: [],
-    mainPosts: [{
-        User: {
-            id: 1,
-            nickname: '조니',
-        },
-        content: '첫번째 게시글',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q'
-    }]
-};
+// 백엔드에 데이터가 아직 없기때문에 
+// 가짜 데이터를 만들어준다
+// 리덕스로 옮겨서 사용안함
+// const dummy = {
+//     isLoggedIn: true,
+//     imagePath: [],
+//     mainPosts: [{
+//         User: {
+//             id: 1,
+//             nickname: '조니',
+//         },
+//         content: '첫번째 게시글',
+//         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q'
+//     }]
+// };
 
 const Home = () => {
     // 이 컴포넌트가 첫번쨰 렌더링 될때 
@@ -26,17 +29,18 @@ const Home = () => {
     // useDispatch: setState라고 생각하면 된다
     const dispatch = useDispatch();
     // state안에 들어있는 isLoggedIn, user 를 구조분해로 정의해서 사용
-    // useSelector: useState라고 생각하면된다
-    const { isLoggedIn, user } = useSelector(state => state.user);
+    // useSelector: useState라고 생각하면 됨
+    const { user, isLoggedIn } = useSelector(state => state.user);
+    const { mainPosts } = useSelector(state => state.post);
     useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
         dispatch(loginAction);
-        // dispatch(logoutAction);
+        dispatch(logoutAction);
     }, []);
     return (
         <div>
             {user ? <div>로그인 했습니다: { user.nickname }</div> : <div>로그아웃 했습니다.</div>}
-            {dummy.isLoggedIn && <PostForm />}
-            {dummy.mainPosts.map((c) => {
+            {isLoggedIn && <PostForm />}
+            {mainPosts.map((c) => {
                 return (
                     <PostCard key={c} post={c} />
                 )

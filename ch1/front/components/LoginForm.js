@@ -1,17 +1,23 @@
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Input, Button, Form } from 'antd';
+// useDispatch: dispatch를 사용하기 위함
+import { useDispatch } from 'react-redux';
+// action 함수를 불러옴
+import { loginAction } from '../reducers/user';
 
 const LoginForm = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
 
+    // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
+    // 해당 이벤트만 리렌더링 되게 하기 위해
+    // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
     const onSubmitForm = useCallback((e) => {
         e.preventDefault();
-        console.log({
-            id,
-            password
-        })
+        // 이벤트가 실행되면 reducer에 있는 loginAction 액션이 실행됨
+        dispatch(loginAction);
     }, [id, password]);
 
     const onChangeId = useCallback((e) => {
