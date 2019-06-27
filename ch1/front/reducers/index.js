@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import user from './user';
 import post from './post';
 
-// 자식 리듀서를 루트 리듀서 안에다가 넣어줌
+// 루트 리듀서 안에 user, post 리듀서를 합쳐준다.
 const rootReducer = combineReducers({
     user,
     post
