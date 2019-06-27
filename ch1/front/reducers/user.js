@@ -9,20 +9,28 @@ const dummyUser = {
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const initialState = {
     isLoggedIn: false,
-    user: null
+    user: null,
+    signUpData: {}
 };
 
 // 액션의 이름
+export const SIGN_UP = 'SIGN_UP';
 export const LOG_IN = 'LOG_IN'; 
 export const LOG_OUT = 'LOG_OUT';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
+// 아래 reducer에 action에 넣을 데이터가 동적인 경우에는
+// action을 함수로 만들어서 인자로 데이터를 받는다.
+export const signUpAction = (data) => {
+    return {
+        type: SIGN_UP,
+        data: data
+    }
+};
 export const loginAction = {
     type: LOG_IN,
 };
-
-// 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const logoutAction = {
     type: LOG_OUT,
 };
@@ -45,6 +53,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: false,
                 user: null,
+            }
+        }
+        case SIGN_UP: {
+            return {
+                ...state,
+                signUpData: action.data,
             }
         }
         // 액션이 아무것도 해당되지 않을때 기본값

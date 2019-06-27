@@ -20,6 +20,10 @@ const LoginForm = () => {
         dispatch(loginAction);
     }, [id, password]);
 
+    // 보통 form 이벤트들은 redux state로 처리하지 않고
+    // 그냥 react state로 처리한다
+    // 이유는 일일히 액션을 다생성해줘야되고
+    // onChange 될떄마다 액션이 발생해서 그렇다
     const onChangeId = useCallback((e) => {
         setId(e.target.value)
     }, [])
