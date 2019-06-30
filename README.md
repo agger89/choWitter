@@ -13,6 +13,7 @@
 
 # eslint setting
     {
+        "parser": "babel-eslint", // eslint에서 babel 최신 문법 사용하기 위함
         "parserOptions": { // 파싱 옵션 설정
             "ecmaVersion": 2018, // 스크립트 2018기준
             "sourceType": "module", // import, export 사용하기 위함
@@ -31,10 +32,20 @@
         "plugins": [
             "import", // import 문법 가능하게
             "react-hooks" // hooks 문법 가능하게
-        ]
+        ],
+        "rules": {
+            "no-underscore-dangle": 0, // 엄격한 airbnb룰을 안따르게
+            "react/forbid-prop-types": 0,
+            "react/jsx-filename-extension": 0, // file확장자 .js 가능하게
+            "linebreak-style": 0 // 줄바꿈
+        }
     }
 
 # redux
     - Action: state를 바꾸는 행동 ex) 로그인 액션
     - Dispatch: Action을 실행 ex) 로그인 액션 dispatch
     - Reducer: Action의 결과로 state를 어떻게 바꿀지 정의
+
+# redux-saga
+    - redux는 비동기 동작이 가능하지 않기때문에 서버와 요청 응답을 비동기로 처리해야 할때 필요하다
+    - ex) redux-saga에서 LOG_IN 액션이 실행되는지 대기 -> redux에서 LOG_IN 액션실행 -> redux-saga에서 비동기 동작 실행 서버에서 로그인이 성공인지 실패인지
