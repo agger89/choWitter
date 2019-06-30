@@ -8,23 +8,70 @@ export const initialState = {
     },
     content: '첫번째 게시글',
     img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q',
-  }],
-  imagePath: [],
+  }], // 화면에 보일 포스트들
+  imagePath: [], // 미리보기 이미지 경로
+  addPostErrorReason: false, // 포스트 업로드 실패 사유
+  isAddingPost: false, // 포스트 업로드 중
 };
 
 // 액션의 이름
-export const ADD_POST = 'ADD_POST';
-export const ADD_DUMMY = 'ADD_DUMMY';
+// 메인 포스트 로딩 액션
+export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
+export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
+export const LOAD_MAIN_POSTS_FAILURE = 'LOAD_MAIN_POSTS_FAILURE';
+// 해시태그 결과 로딩 액션
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
+// 사용자 게시글 로딩 액션
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+// 이미지 업로드 액션
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+// 이미지 업로드 취소 액션
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+// 좋아요 액션
+export const LIKE_POSTS_REQUEST = 'LIKE_POSTS_REQUEST';
+export const LIKE_POSTS_SUCCESS = 'LIKE_POSTS_SUCCESS';
+export const LIKE_POSTS_FAILURE = 'LIKE_POSTS_FAILURE';
+// 좋아요 취소 액션
+export const UNLIKE_POSTS_REQUEST = 'UNLIKE_POSTS_REQUEST';
+export const UNLIKE_POSTS_SUCCESS = 'UNLIKE_POSTS_SUCCESS';
+export const UNLIKE_POSTS_FAILURE = 'UNLIKE_POSTS_FAILURE';
+// 댓글 등록 액션
+export const ADD_COMMENTS_REQUEST = 'ADD_COMMENTS_REQUEST';
+export const ADD_COMMENTS_SUCCESS = 'ADD_COMMENTS_SUCCESS';
+export const ADD_COMMENTS_FAILURE = 'ADD_COMMENTS_FAILURE';
+// 댓글 불러오는 액션
+export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST';
+export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
+export const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE';
+// 리트윗 액션
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+// 포스트 제거 액션
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const addPost = {
-  type: ADD_POST,
+  type: ADD_POST_REQUEST,
 };
 
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const addDummy = {
-  type: ADD_DUMMY,
+  type: ADD_POST_SUCCESS,
   data: {
     content: 'hello',
     UserId: 1,
