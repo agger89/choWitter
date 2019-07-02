@@ -56,7 +56,9 @@ function* signUp() {
     // yield: 중단점 역할
     // call: 함수를 동기적으로 호출
     // 서버에 요청해서 서버에서 로그인이 성공하면 다음줄 실행 (call로 하는 이유 동기적 실행)
-    yield call(signUpAPI);
+    // yield call(signUpAPI);
+    yield delay(2000);
+    throw new Error('에러에러에러');
     // put: dispatch와 동일
     yield put({
       type: SIGN_UP_SUCCESS,
@@ -65,6 +67,7 @@ function* signUp() {
     console.error(e);
     yield put({ // put: dispatch와 동일
       type: SIGN_UP_FAILURE,
+      error: e,
     });
   }
 }

@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   // useSelector: useState라고 생각하면 됨
-  const { isLoggingIn  } = useSelector(state => state.user);
+  const { isLoggingIn } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import {
   Form, Input, Checkbox, Button,
 } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signUpRequestAction } from '../reducers/user';
 
 const Signup = () => {
@@ -14,6 +14,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState(false); // 비번 다름 에러
   const [termError, setTermError] = useState(false); // 약관동의 안하면 에러
   const dispatch = useDispatch();
+  const { isSigningUp } = useSelector(state => state.user);
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
@@ -100,7 +101,7 @@ const Signup = () => {
         </div>
         <div style={{ marginTop: 10 }}>
           {/* button type="submit" 대체 */}
-          <Button htmlType="submit">가입하기</Button>
+          <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
         </div>
       </Form>
     </>
