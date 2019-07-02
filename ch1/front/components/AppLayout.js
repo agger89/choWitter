@@ -42,13 +42,13 @@ const AppLayout = ({ children }) => {
           }
         </Col>
         <Col xs={24} md={12}>
-          {/* {children}: Home 컴포넌트에 AppLayout에 자식들을 가져온다 */}
+          {/* children: _app.js에 <AppLayout>안에 <Component />를 불러온다 */}
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <Link href="http://www.zerocho.com">
-              <a target="_blank">Made By Jonny</a>
-            </Link>
+          <Link href="https://portfolio-ed26a.firebaseapp.com/">
+            <a target="_blank">Made By Jonny</a>
+          </Link>
         </Col>
       </Row>
     </div>

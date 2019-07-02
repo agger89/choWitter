@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addPostRequestAction } from '../reducers/post';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -20,17 +21,37 @@ import { useSelector } from 'react-redux';
 // };
 
 const PostForm = () => {
-  const { imagePath } = useSelector(state => state.post);
+  const dispatch = useDispatch();
+  const [text, setText] = useState('');
+  const { imagePath, isAddingPost, postAdded } = useSelector(state => state.post);
+
+  // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
+  useEffect(() => {
+    setText('');
+  }, [postAdded === true]);
+
+  const onSubmitForm = useCallback((e) => {
+    // SPA에서 form은 무조건 e.preventDefault 붙여줘야 한다. 새 페이지로 넘어감
+    e.preventDefault();
+    dispatch(addPostRequestAction({
+      text,
+    }));
+  }, []);
+
+  const onChangeText = useCallback((e) => {
+    setText(e.target.value);
+  }, []);
+
   return (
   // 파일을 업로드 할때는 encType="multipart/form-data" 써야한다.
   // 안그러면 파일의 경로만 전송되고 내용이 전송되지 않는다.
-    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data">
-      <Input.TextArea maxLength={148} placeholder="어떤 신기한 일이 있었나요?" />
+    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onSubmit={onSubmitForm}>
+      <Input.TextArea maxLength={148} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText}/>
       <div>
         {/* 다중 파일 업로드 할때 multiple, 업로드 데이터를 숨길떄 hidden */}
         <input type="file" multiple hidden />
         <Button>이미지 업로드</Button>
-        <Button type="primary" style={{ float: 'right' }} htmlType="submit">짹짹</Button>
+        <Button type="primary" style={{ float: 'right' }} htmlType="submit" loading={isAddingPost}>짹짹</Button>
       </div>
       <div>
         {imagePath.map(v => (

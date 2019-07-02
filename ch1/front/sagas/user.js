@@ -34,16 +34,11 @@ function* login() {
 }
 
 function* watchLogin() {
-  // takeLatest: 액션을 여러번 동시에 실행하게 되는 경우 마지막 액션만 실행되게 해준다.
-  // ex) 유저가 로그인을 하려고 로그인 버튼을 여러번 눌렀을때 마지막 액션만 실행된다. 기존 클릭은 무시
-  // LOG_IN 액션이 dispatch 되길 기다려서
-  // dispatch될 떄 위에 만든 login 제너레이터함수를 호출합니다.
-//   yield takeLatest(LOG_IN_REQUEST, login);
-
-  yield takeEvery(LOG_IN_REQUEST, login);
   // takeEvery: 액션을 여러번 동시에 실행해도 전부 실행된다.
   // ex) 버튼을 클릭으로 숫자를 증가시키는 이벤트를 만들때 적합하다.
-  // yield takeEvery(LOG_IN, login)
+  // LOG_IN_REQUEST 액션이 dispatch 되길 기다려서
+  // dispatch될 떄 위에 만든 login 제너레이터함수를 호출합니다.
+  yield takeEvery(LOG_IN_REQUEST, login);
 }
 
 function signUpAPI() {
@@ -73,16 +68,11 @@ function* signUp() {
 }
 
 function* watchSignUp() {
-  // takeLatest: 액션을 여러번 동시에 실행하게 되는 경우 마지막 액션만 실행되게 해준다.
-  // ex) 유저가 로그인을 하려고 로그인 버튼을 여러번 눌렀을때 마지막 액션만 실행된다. 기존 클릭은 무시
-  // LOG_IN 액션이 dispatch 되길 기다려서
-  // dispatch될 떄 위에 만든 login 제너레이터함수를 호출합니다.
-//   yield takeLatest(SiGN_UP_REQUEST, signUp);
-
-  yield takeEvery(SIGN_UP_REQUEST, signUp);
   // takeEvery: 액션을 여러번 동시에 실행해도 전부 실행된다.
   // ex) 버튼을 클릭으로 숫자를 증가시키는 이벤트를 만들때 적합하다.
-  // yield takeEvery(LOG_IN, login)
+  // SIGN_UP_REQUEST 액션이 dispatch 되길 기다려서
+  // dispatch될 떄 위에 만든 signUp 제너레이터함수를 호출합니다.
+  yield takeEvery(SIGN_UP_REQUEST, signUp);
 }
 
 export default function* userSaga() {

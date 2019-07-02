@@ -24,7 +24,7 @@ const ChoWitter = ({ Component, store }) => (
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.19.0/antd.css" />
     </Head>
     <AppLayout>
-      {/* next에서 넣어주는 props(index.js, profile.js, signup.js) */}
+      {/* next에서 _app.js는 props로 컴포넌트(<Component />)를 받는다(index.js, profile.js, signup.js) */}
       <Component />
     </AppLayout>
   </Provider>

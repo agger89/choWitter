@@ -12,6 +12,15 @@ export const initialState = {
   imagePath: [], // 미리보기 이미지 경로
   addPostErrorReason: false, // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
+  postAdded: false, // 포스트 업로드 성공
+};
+
+const dummyPost = {
+  User: {
+    id: 1,
+    nickname: '조니',
+  },
+  content: '나는 더미입니다.',
 };
 
 // 액션의 이름
@@ -65,21 +74,10 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
-export const addPost = {
+export const addPostRequestAction = data => ({
   type: ADD_POST_REQUEST,
-};
-
-// 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
-export const addDummy = {
-  type: ADD_POST_SUCCESS,
-  data: {
-    content: 'hello',
-    UserId: 1,
-    User: {
-      nickname: '조니',
-    },
-  },
-};
+  data,
+});
 
 // setState라고 생각하면됨, action의 결과로 state를 바꿈
 // 상단에 선언한 initialState가 리듀서안에 들어감
@@ -90,19 +88,32 @@ const reducer = (state = initialState, action) => {
         // 스프레드 문법: 새로운 배열,객체를 생성한다
         // 불변성, 예전 state와 지금 state가 달라졌는지
         ...state,
+        isAddingPost: true,
+        addPostErrorReason: '',
+        postAdded: false,
       };
     }
-    // ADD_DUMMY 액션이 발생하면
-    // 불변성의 법칙으로 ...state 기존 state를 일단 불러오고
+    // ADD_POST_SUCCESS 액션이 발생하면
+    // 불변성의 법칙으로 ...state.mainPosts로 기존 state를 일단 불러오고
     // 그다음 제일 상단에 선언한 초기 state의 mainPosts 배열안에
-    // const addDummy안에 data 객체를 배열안에 넣어준다
-    // 그러면 이제 state 안에 mainPosts에 값들이 생긴다
-    // case ADD_DUMMY: {
-    //   return {
-    //     ...state,
-    //     mainPosts: [action.data, ...state.mainPosts],
-    //   };
-    // }
+    // const dummyPost의 데이터들을 배열안에 넣어준다
+    // 그러면 이제 state 안에 mainPosts에 값들이 변경 및 추가 된다
+    case ADD_POST_SUCCESS: {
+      return {
+        ...state,
+        isAddingPost: false,
+        mainPosts: [dummyPost, ...state.mainPosts],
+        postAdded: true,
+      };
+    }
+    case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        isAddingPost: false,
+        addPostErrorReason: action.error,
+        postAdded: false,
+      };
+    }
     // 액션이 아무것도 해당되지 않을때 기본값
     default: {
       return {

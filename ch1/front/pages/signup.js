@@ -19,7 +19,7 @@ const Signup = () => {
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
   // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
-  const onSubmit = useCallback((e) => {
+  const onSubmitForm = useCallback((e) => {
     e.preventDefault();
     // 비밀번호와 비밀번호체크가 일치하지 않으면
     // passwordError를 true로 변경시켜 메시지 출력
@@ -72,7 +72,7 @@ const Signup = () => {
 
   return (
     <>
-      <Form onSubmit={onSubmit} style={{ padding: 10 }}>
+      <Form onSubmit={onSubmitForm} style={{ padding: 10 }}>
         <div>
           <label htmlFor="user-id">아이디</label>
           <br />

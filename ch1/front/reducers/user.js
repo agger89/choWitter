@@ -131,7 +131,7 @@ const reducer = (state = initialState, action) => {
     case SIGN_UP_FAILURE: {
       return {
         ...state,
-        isSigningUp: true,
+        isSigningUp: false,
         signUpErrorReason: action.error,
       };
     }
