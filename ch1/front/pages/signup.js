@@ -3,7 +3,7 @@ import {
   Form, Input, Checkbox, Button,
 } from 'antd';
 import { useDispatch } from 'react-redux';
-import { signUpAction } from '../reducers/user';
+import { signUpRequestAction } from '../reducers/user';
 
 const Signup = () => {
   const [id, setId] = useState('');
@@ -31,7 +31,7 @@ const Signup = () => {
       return setTermError(true);
     }
     // redux에서 동적으로 만들었던 signUpAction 함수에 인자로 아래의 값들을 넣어줌
-    dispatch(signUpAction({
+    dispatch(signUpRequestAction({
       id,
       password,
       nick,

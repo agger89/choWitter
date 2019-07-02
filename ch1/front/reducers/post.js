@@ -85,7 +85,7 @@ export const addDummy = {
 // 상단에 선언한 initialState가 리듀서안에 들어감
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_POST: {
+    case ADD_POST_REQUEST: {
       return {
         // 스프레드 문법: 새로운 배열,객체를 생성한다
         // 불변성, 예전 state와 지금 state가 달라졌는지
@@ -97,12 +97,12 @@ const reducer = (state = initialState, action) => {
     // 그다음 제일 상단에 선언한 초기 state의 mainPosts 배열안에
     // const addDummy안에 data 객체를 배열안에 넣어준다
     // 그러면 이제 state 안에 mainPosts에 값들이 생긴다
-    case ADD_DUMMY: {
-      return {
-        ...state,
-        mainPosts: [action.data, ...state.mainPosts],
-      };
-    }
+    // case ADD_DUMMY: {
+    //   return {
+    //     ...state,
+    //     mainPosts: [action.data, ...state.mainPosts],
+    //   };
+    // }
     // 액션이 아무것도 해당되지 않을때 기본값
     default: {
       return {

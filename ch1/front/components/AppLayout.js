@@ -22,6 +22,7 @@ import UserProfile from './UserProfile';
 // };
 
 const AppLayout = ({ children }) => {
+  // useSelector: useState라고 생각하면 됨
   const { isLoggedIn } = useSelector(state => state.user);
   return (
     <div>

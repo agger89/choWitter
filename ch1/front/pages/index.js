@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 // action 함수를 불러옴
-import { loginAction, logoutAction } from '../reducers/user';
+import { loginRequestAction, logoutRequestAction } from '../reducers/user';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -27,22 +27,22 @@ const Home = () => {
   // 이 컴포넌트가 첫번쨰 렌더링 될때
   // 아래의 dispatch도 같이 렌더링 된다.
   // useDispatch: setState라고 생각하면 된다
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // state안에 들어있는 isLoggedIn, user 를 구조분해로 정의해서 사용
   // useSelector: useState라고 생각하면 됨
-  const { user, isLoggedIn } = useSelector(state => state.user);
+  const { me, isLoggedIn } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
-  useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
-    dispatch(loginAction);
-    dispatch(logoutAction);
-  }, []);
+  // useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
+  //   dispatch(loginRequestAction);
+  //   dispatch(logoutRequestAction);
+  // }, []);
   return (
     <div>
-      {user ? (
+      {me ? (
         <div>
           로그인 했습니다:
           {' '}
-          { user.nickname }
+          { me.nickname }
         </div>
       ) : <div>로그아웃 했습니다.</div>}
       {isLoggedIn && <PostForm />}

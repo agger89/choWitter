@@ -4,7 +4,7 @@ import { Card, Avatar, Button } from 'antd';
 // useDispatch: dispatch를 사용하기 위함
 import { useSelector, useDispatch } from 'react-redux';
 // action 함수를 불러옴
-import { logoutAction } from '../reducers/user';
+import { logoutRequestAction } from '../reducers/user';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -18,14 +18,15 @@ import { logoutAction } from '../reducers/user';
 // };
 
 const UserProfile = () => {
-  const { user } = useSelector(state => state.user);
+  // useSelector: useState라고 생각하면 됨
+  const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
   // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
   const onLogout = useCallback(() => {
-    dispatch(logoutAction);
+    dispatch(logoutRequestAction);
   }, []);
 
   return (
@@ -34,23 +35,23 @@ const UserProfile = () => {
         <div key="twit">
           짹짹
           <br />
-          {user.Post.length}
+          {me.Post.length}
         </div>,
         <div key="following">
           팔로잉
           <br />
-          {user.Followings.length}
+          {me.Followings.length}
         </div>,
         <div key="follower">
           팔로워
           <br />
-          {user.Followers.length}
+          {me.Followers.length}
         </div>,
       ]}
     >
       <Card.Meta
-        avatar={<Avatar>{user.nickname[0]}</Avatar>}
-        title={user.nickname}
+        avatar={<Avatar>{me.nickname[0]}</Avatar>}
+        title={me.nickname}
       />
       <Button onClick={onLogout}>로그아웃</Button>
     </Card>

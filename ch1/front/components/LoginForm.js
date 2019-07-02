@@ -2,13 +2,15 @@ import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Input, Button, Form } from 'antd';
 // useDispatch: dispatch를 사용하기 위함
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // action 함수를 불러옴
-import { loginAction } from '../reducers/user';
+import { loginRequestAction } from '../reducers/user';
 
 const LoginForm = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  // useSelector: useState라고 생각하면 됨
+  const { isLoggingIn  } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
@@ -17,7 +19,10 @@ const LoginForm = () => {
   const onSubmitForm = useCallback((e) => {
     e.preventDefault();
     // 이벤트가 실행되면 reducer에 있는 loginAction 액션이 실행됨
-    dispatch(loginAction);
+    dispatch(loginRequestAction({
+      id,
+      password,
+    }));
   }, [id, password]);
 
   // 보통 form 이벤트들은 redux state로 처리하지 않고
@@ -45,7 +50,7 @@ const LoginForm = () => {
         <Input name="user-password" value={password} onChange={onChangePassword} type="password" required />
       </div>
       <div>
-        <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
+        <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
       </div>
     </Form>

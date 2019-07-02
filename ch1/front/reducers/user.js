@@ -58,21 +58,21 @@ export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 // 아래 reducer에 action에 넣을 데이터가 동적인 경우에는
 // action을 함수로 만들어서 인자로 데이터를 받는다.
-export const signUpAction = data => ({
+export const signUpRequestAction = data => ({
   type: SIGN_UP_REQUEST,
   data,
 });
 
-export const signUpSuccess = {
-  type: SIGN_UP_SUCCESS
-}
+// export const signUpSuccess = {
+//   type: SIGN_UP_SUCCESS
+// }
 
-export const loginAction = data => ({
+export const loginRequestAction = data => ({
   type: LOG_IN_REQUEST,
   data,
 });
 
-export const logoutAction = {
+export const logoutRequestAction = {
   type: LOG_OUT_REQUEST,
 };
 
@@ -85,21 +85,24 @@ const reducer = (state = initialState, action) => {
         // 스프레드 문법: 새로운 배열,객체를 생성한다
         // 불변성, 예전 state와 지금 state가 달라졌는지
         ...state,
-        isLoading: true,
+        isLoggingIn: true,
+        logInErrorReason: '',
       };
     }
     case LOG_IN_SUCCESS: {
       return {
         ...state,
+        isLoggingIn: false,
         isLoggedIn: true,
         me: dummyUser,
-        isLoading: false,
       };
     }
     case LOG_IN_FAILURE: {
       return {
         ...state,
+        isLoggingIn: false,
         isLoggedIn: false,
+        logInErrorReason: action.error,
         me: null,
       };
     }

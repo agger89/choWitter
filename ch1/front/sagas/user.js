@@ -2,7 +2,7 @@
 // -> watchLogin에서는 takeLatest 또는 takeEvery 결정하고 -> 실제로 동작할 함수는 위에서 만들어주고 그걸 넣어준다
 
 import {
-  all, fork, takeLatest, takeEvery, call, put,
+  all, fork, takeLatest, takeEvery, call, put, delay,
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
@@ -17,9 +17,10 @@ function loginAPI() {
 function* login() {
   try {
     // yield: 중단점 역할
+    yield delay(2000);
     // call: 함수를 동기적으로 호출
     // 서버에 요청해서 서버에서 로그인이 성공하면 다음줄 실행 (call로 하는 이유 동기적 실행)
-    yield call(loginAPI);
+    // yield call(loginAPI);
     // put: dispatch와 동일
     yield put({
       type: LOG_IN_SUCCESS,
@@ -75,7 +76,7 @@ function* watchSignUp() {
   // dispatch될 떄 위에 만든 login 제너레이터함수를 호출합니다.
 //   yield takeLatest(SiGN_UP_REQUEST, signUp);
 
-  yield takeEvery(SiGN_UP_REQUEST, signUp);
+  yield takeEvery(SIGN_UP_REQUEST, signUp);
   // takeEvery: 액션을 여러번 동시에 실행해도 전부 실행된다.
   // ex) 버튼을 클릭으로 숫자를 증가시키는 이벤트를 만들때 적합하다.
   // yield takeEvery(LOG_IN, login)
