@@ -6,7 +6,8 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
-  LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE
+  LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE,
+  SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
 } from '../reducers/user';
 
 function loginAPI() {

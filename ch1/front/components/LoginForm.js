@@ -4,7 +4,7 @@ import { Input, Button, Form } from 'antd';
 // useDispatch: dispatch를 사용하기 위함
 import { useDispatch, useSelector } from 'react-redux';
 // action 함수를 불러옴
-import { loginRequestAction } from '../reducers/user';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 const LoginForm = () => {
   const [id, setId] = useState('');
@@ -20,10 +20,12 @@ const LoginForm = () => {
     // SPA에서 form은 무조건 e.preventDefault 붙여줘야 한다. 새 페이지로 넘어감
     e.preventDefault();
     // 이벤트가 실행되면 reducer에 있는 loginAction 액션이 실행됨
-    dispatch(loginRequestAction({
-      id,
-      password,
-    }));
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: {
+        id, password,
+      },
+    });
   }, [id, password]);
 
   // 보통 form 이벤트들은 redux state로 처리하지 않고

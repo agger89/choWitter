@@ -59,23 +59,20 @@ export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 // 아래 reducer에 action에 넣을 데이터가 동적인 경우에는
 // action을 함수로 만들어서 인자로 데이터를 받는다.
-export const signUpRequestAction = data => ({
-  type: SIGN_UP_REQUEST,
-  data,
-});
+// view단에서 type으로 바로 dispatch해서 주석처리 ( 액션이 많아서 복잡성 때문에 )
+// export const signUpRequestAction = data => ({
+//   type: SIGN_UP_REQUEST,
+//   data,
+// });
 
-// export const signUpSuccess = {
-//   type: SIGN_UP_SUCCESS
-// }
+// export const loginRequestAction = data => ({
+//   type: LOG_IN_REQUEST,
+//   data,
+// });
 
-export const loginRequestAction = data => ({
-  type: LOG_IN_REQUEST,
-  data,
-});
-
-export const logoutRequestAction = {
-  type: LOG_OUT_REQUEST,
-};
+// export const logoutRequestAction = {
+//   type: LOG_OUT_REQUEST,
+// };
 
 // setState라고 생각하면됨, action의 결과로 state를 바꿈
 // 상단에 선언한 initialState가 리듀서안에 들어감

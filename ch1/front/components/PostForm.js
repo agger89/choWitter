@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useSelector, useDispatch } from 'react-redux';
-import { addPostRequestAction } from '../reducers/post';
+import { ADD_POST_REQUEST } from '../reducers/post';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -25,6 +25,7 @@ const PostForm = () => {
   const [text, setText] = useState('');
   const { imagePath, isAddingPost, postAdded } = useSelector(state => state.post);
 
+  // 포스트가 업로드 되면 텍스트 입력창 초기화 작업
   // useEffct:
   // componentDidMount, componentDidUpdate, componentWillUnmount
   // 를 하나로 합쳐놓은것
@@ -35,9 +36,12 @@ const PostForm = () => {
   const onSubmitForm = useCallback((e) => {
     // SPA에서 form은 무조건 e.preventDefault 붙여줘야 한다. 새 페이지로 넘어감
     e.preventDefault();
-    dispatch(addPostRequestAction({
-      text,
-    }));
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: {
+        text,
+      },
+    });
   }, []);
 
   const onChangeText = useCallback((e) => {

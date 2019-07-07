@@ -4,7 +4,7 @@ import { Card, Avatar, Button } from 'antd';
 // useDispatch: dispatch를 사용하기 위함
 import { useSelector, useDispatch } from 'react-redux';
 // action 함수를 불러옴
-import { logoutRequestAction } from '../reducers/user';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -26,7 +26,9 @@ const UserProfile = () => {
   // 해당 이벤트만 리렌더링 되게 하기 위해
   // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
   const onLogout = useCallback(() => {
-    dispatch(logoutRequestAction);
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    });
   }, []);
 
   return (
