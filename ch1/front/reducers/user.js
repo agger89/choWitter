@@ -3,6 +3,7 @@ const dummyUser = {
   Post: [],
   Followings: [],
   Followers: [],
+  id: 1,
 };
 
 // 초기 state값, store안에 들어감

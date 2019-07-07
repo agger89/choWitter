@@ -25,10 +25,12 @@ const PostForm = () => {
   const [text, setText] = useState('');
   const { imagePath, isAddingPost, postAdded } = useSelector(state => state.post);
 
-  // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
+  // useEffct:
+  // componentDidMount, componentDidUpdate, componentWillUnmount
+  // 를 하나로 합쳐놓은것
   useEffect(() => {
     setText('');
-  }, [postAdded === true]);
+  }, [postAdded === true]); // 포스트가 업로드가 성공하면 setText(''), 배열에 값이 있으면 componentDidUpdate
 
   const onSubmitForm = useCallback((e) => {
     // SPA에서 form은 무조건 e.preventDefault 붙여줘야 한다. 새 페이지로 넘어감

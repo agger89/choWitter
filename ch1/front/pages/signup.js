@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Form, Input, Checkbox, Button,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
 import { signUpRequestAction } from '../reducers/user';
 
 const Signup = () => {
@@ -14,7 +15,17 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState(false); // 비번 다름 에러
   const [termError, setTermError] = useState(false); // 약관동의 안하면 에러
   const dispatch = useDispatch();
-  const { isSigningUp } = useSelector(state => state.user);
+  const { isSigningUp, me } = useSelector(state => state.user);
+
+  // useEffct:
+  // componentDidMount, componentDidUpdate, componentWillUnmount
+  // 를 하나로 합쳐놓은것
+  useEffect(() => {
+    if (me) {
+      alert('로그인 했으니 메인 페이지로 이동합니다.');
+      Router.push('/');
+    }
+  }, [me && me.id]); // me.id 값이 있으면 Router.push('/'), 배열에 값이 있으면 componentDidUpdate
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
