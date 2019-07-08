@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
-import { signUpRequestAction } from '../reducers/user';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const Signup = () => {
   const [id, setId] = useState('');
@@ -43,11 +43,14 @@ const Signup = () => {
       return setTermError(true);
     }
     // redux에서 동적으로 만들었던 signUpAction 함수에 인자로 아래의 값들을 넣어줌
-    dispatch(signUpRequestAction({
-      id,
-      password,
-      nick,
-    }));
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: {
+        id,
+        password,
+        nick,
+      },
+    });
     // 객체 스타일로 콘솔찍는 방법
     console.log({
       id, nick, password, passwordCheck, term,

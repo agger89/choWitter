@@ -44,6 +44,9 @@ function* addComment(action) {
       type: ADD_COMMENT_SUCCESS,
       // 댓글이 submit 될떄 ADD_COMMENT_REQUEST가 dispatch되면서 넘겨준 data를
       // ADD_COMMENT_SUCCESS에게 마찬가지로 action.data로 넘겨준다
+      // 여기서 데이터를 넘겨주는 이유:
+      // 댓글 요청시에 포스트 id가 있으면 잘못된 로직
+      // 댓글 성공시에 포스트 id가 있어야 하기때문에
       data: {
         postId: action.data.postId,
       },
@@ -66,6 +69,7 @@ function* watchAddComment() {
 
 export default function* postSaga() {
   yield all([
+    // fork: 함수를 비동기적으로 호출
     fork(watchAddPost),
     fork(watchAddComment),
   ]);

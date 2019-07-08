@@ -49,3 +49,15 @@
 # redux-saga
     - redux는 비동기 동작이 가능하지 않기때문에 서버와 요청 응답을 비동기로 처리해야 할때 필요하다
     - ex) redux-saga에서 LOG_IN 액션이 실행되는지 대기 -> redux에서 LOG_IN 액션실행 -> redux-saga에서 비동기 동작 실행 서버에서 로그인이 성공인지 실패인지
+
+# Login Cycle
+    - LoginForm.js에 onSubmitForm 함수 실행 -> LOG_IN_REQUEST가 dispatch 됨 -> const reducer에  switch문에 LOG_IN_REQUEST가 걸리면서 리턴, 동시에 user saga에서 watchLogin 함수안에 LOG_IN_REQUEST가 실행되면서 login 함수가 실행 -> try catch 문에서 LOG_IN_SUCCESS가 걸리면서 다시 const reducer에 switch문에 LOG_IN_SUCCESS가 리턴  
+
+# SignUp Cycle
+    - signup.js에 onSubmitForm 함수 실행 -> SIGN_UP_REQUEST가 dispatch 됨 -> const reducer에  switch문에 SIGN_UP_REQUEST가 걸리면서 리턴, 동시에 user saga에서 watchSignUp 함수안에 SIGN_UP_REQUEST가 실행되면서 signUp 함수가 실행 -> try catch 문에서 SIGN_UP_SUCCESS가 걸리면서 다시 const reducer에 switch문에 SIGN_UP_SUCCESS가 리턴
+
+# Article Write Cycle
+    - PostForm.js에 onSubmitForm 함수 실행 -> ADD_POST_REQUEST가 dispatch 됨 -> const reducer에  switch문에 ADD_POST_REQUEST가 걸리면서 리턴, 동시에 post saga에서 watchAddPost 함수안에 ADD_POST_REQUEST가 실행되면서 addPost 함수가 실행 -> try catch 문에서 ADD_POST_SUCCESS가 걸리면서 다시 const reducer에 switch문에 ADD_POST_SUCCESS가 리턴
+
+# Comment Write Cycle
+    - PostCard.js에 onSubmitComment 함수 실행 -> ADD_COMMENT_REQUEST가 dispatch 됨 -> const reducer에 switch문에 ADD_COMMENT_REQUEST가 걸리면서 리턴, 동시에 post saga에서 watchAddComment 함수안에 ADD_COMMENT_REQUEST가 실행되면서 addComment 함수가 실행 -> try catch 문에서 ADD_POST_SUCCESS가 걸리면서 ADD_COMMENT_REQUEST가 dispatch 될때 넘어온 post.id를 다시 const reducer에 switch문에 ADD_COMMENT_SUCCESS으로 넘겨준다 -> findIndex 함수로 댓글을 등록한 post.id 찾고 리턴
