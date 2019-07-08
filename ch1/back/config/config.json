@@ -1,26 +1,23 @@
 {
   "development": {
     "username": "root",
-    "password": "hansol123",
-    "database": "react-chowitter",
+    "password": "111111",
+    "database": "agger89",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "hansol123",
-    "database": "react-chowitter",
+    "password": "111111",
+    "database": "agger89",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "hansol123",
-    "database": "react-chowitter",
+    "password": "111111",
+    "database": "agger89",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   }
 }
