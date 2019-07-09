@@ -6,7 +6,7 @@
 
 # next의 구조
     - 기본적으로 next안에 내장되어있는 page들 _document, _app, _error
-    - _document.js: html, heade, body 담당
+    - _document.js: html, header, body 담당
     - _app.js: root 담당
     - _error.js:
     - pages 폴더: 실제 컴포넌트 담당

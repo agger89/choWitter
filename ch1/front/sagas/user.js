@@ -42,19 +42,26 @@ function* watchLogin() {
   yield takeEvery(LOG_IN_REQUEST, login);
 }
 
-function signUpAPI() {
+function signUpAPI(signUpData) {
   // 서버에 요청을 보내는 부분
-  return axios.post('/signup');
+  // 다른 서버이기 때문에 http://localhost:3065 붙여준다
+  // post:
+  // 첫번째 인자는 주소, 두번째 인자는 데이터
+  return axios.post('http://localhost:3065/api/user/', signUpData);
 }
 
-function* signUp() {
+function* signUp(action) {
   try {
     // yield: 중단점 역할
-    // call: 함수를 동기적으로 호출
     // 서버에 요청해서 서버에서 로그인이 성공하면 다음줄 실행 (call로 하는 이유 동기적 실행)
-    // yield call(signUpAPI);
-    yield delay(2000);
-    throw new Error('에러에러에러');
+    // call:
+    // 함수를 동기적으로 호출
+    // 첫번째는 함수,
+    // 두번째는 인자
+    // (signup.js 에서 SIGN_UP_REQUEST가 dispatch 될때 넘어온 데이터 제일 상단 signUp(action) 에서 받아온다)
+    // (위에 signUpAPI(signUpData) 함수에 인자로 전달할수 있다)
+    yield call(signUpAPI, action.data);
+    // yield delay(2000);
     // put: dispatch와 동일
     yield put({
       type: SIGN_UP_SUCCESS,

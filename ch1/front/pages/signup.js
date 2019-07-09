@@ -46,9 +46,9 @@ const Signup = () => {
     dispatch({
       type: SIGN_UP_REQUEST,
       data: {
-        id,
+        userId: id,
         password,
-        nick,
+        nickname: nick,
       },
     });
     // 객체 스타일로 콘솔찍는 방법
@@ -56,7 +56,7 @@ const Signup = () => {
       id, nick, password, passwordCheck, term,
     });
     // useCallback을 사용하려면 아래 배열에 지금 함수에서 사용하는 state값을 넣어야된다
-  }, [password, passwordCheck, term]);
+  }, [id, nick, password, passwordCheck, term]);
 
   // 보통 form 이벤트들은 redux state로 처리하지 않고
   // 그냥 react state로 처리한다
