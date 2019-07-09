@@ -23,7 +23,8 @@ const LoginForm = () => {
     dispatch({
       type: LOG_IN_REQUEST,
       data: {
-        id, password,
+        userId: id,
+        password,
       },
     });
   }, [id, password]);

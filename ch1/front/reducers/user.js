@@ -92,7 +92,9 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggingIn: false,
         isLoggedIn: true,
-        me: dummyUser,
+        // 백엔드에서 넘어와 saga에서 넘겨준 data
+        me: action.data,
+        isLoading: false,
       };
     }
     case LOG_IN_FAILURE: {

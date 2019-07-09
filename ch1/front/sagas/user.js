@@ -10,21 +10,27 @@ import {
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
 } from '../reducers/user';
 
-function loginAPI() {
+// 공통된 api url 따로 분리
+// axios.defaults.baseURL: 기본적으로 아래의 api 주소에 들어감
+axios.defaults.baseURL = 'http://localhost:3065/api';
+
+function loginAPI(loginData) {
   // 서버에 요청을 보내는 부분
-  return axios.post('/login');
+  return axios.post('/user/login', loginData);
 }
 
-function* login() {
+function* login(action) {
   try {
     // yield: 중단점 역할
-    yield delay(2000);
+    // yield delay(2000);
     // call: 함수를 동기적으로 호출
     // 서버에 요청해서 서버에서 로그인이 성공하면 다음줄 실행 (call로 하는 이유 동기적 실행)
-    // yield call(loginAPI);
     // put: dispatch와 동일
+    const result = yield call(loginAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
+      // 백엔드에서 응답 온 정보
+      data: result.data,
     });
   } catch (e) { // loginAPI 실패
     console.error(e);
@@ -47,7 +53,7 @@ function signUpAPI(signUpData) {
   // 다른 서버이기 때문에 http://localhost:3065 붙여준다
   // post:
   // 첫번째 인자는 주소, 두번째 인자는 데이터
-  return axios.post('http://localhost:3065/api/user/', signUpData);
+  return axios.post('/user/', signUpData);
 }
 
 function* signUp(action) {

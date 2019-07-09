@@ -4,7 +4,9 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
+const passport = require('passport');
 
+const passportConfig = require('./passport');
 const db = require('./models');
 const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
@@ -13,6 +15,7 @@ const postsAPIRouter = require('./routes/posts');
 dotenv.config();
 const app = express();
 db.sequelize.sync();
+passportConfig();
 
 // 요청에 대한 로그 남기기
 app.use(morgan('dev'));
@@ -33,6 +36,8 @@ app.use(expressSession({
   },
   name: 'rnbck',
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // API: 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
 app.use('/api/user', userAPIRouter);
