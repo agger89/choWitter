@@ -16,7 +16,10 @@ axios.defaults.baseURL = 'http://localhost:3065/api';
 
 function loginAPI(loginData) {
   // 서버에 요청을 보내는 부분
-  return axios.post('/user/login', loginData);
+  return axios.post('/user/login', loginData, {
+    // 서로 다른 도메인간 쿠키값 읽어오기
+    withCredentials: true,
+  });
 }
 
 function* login(action) {
