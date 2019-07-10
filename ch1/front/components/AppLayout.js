@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link'; // 라우팅
 import PropTypes from 'prop-types';
 import
@@ -6,9 +6,10 @@ import
   Menu, Input, Row, Col,
 } from 'antd';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -23,7 +24,17 @@ import UserProfile from './UserProfile';
 
 const AppLayout = ({ children }) => {
   // useSelector: useState라고 생각하면 됨
-  const { isLoggedIn } = useSelector(state => state.user);
+  const { me } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  // 페이지가 첫 로드 될떄 유저 정보를 불러온다
+  // 로그인 쿠키가 남아있는 전제조건하에
+  useEffect(() => {
+    if (!me) {
+      dispatch({
+        type: LOAD_USER_REQUEST,
+      });
+    }
+  }, []);
   return (
     <div>
       <Menu mode="horizontal">
@@ -36,7 +47,7 @@ const AppLayout = ({ children }) => {
       <Row gutter={10}>
         {/* 가로 전체 24 */}
         <Col xs={24} md={6}>
-          {isLoggedIn
+          {me
             ? <UserProfile />
             : <LoginForm />
           }

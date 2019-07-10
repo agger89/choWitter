@@ -10,7 +10,6 @@ const dummyUser = {
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 // 모든 상태값을 가지고 있는 중앙통제실
 export const initialState = {
-  isLoggedIn: false, // 로그인 여부
   isLoggingIn: false, // 로그인 시도중
   logInErrorReason: '', // 로그인 실패 사유
   isLoggingOut: false, // 로그아웃 시도중
@@ -91,7 +90,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggingIn: false,
-        isLoggedIn: true,
         // 백엔드에서 넘어와 saga에서 넘겨준 data
         me: action.data,
         isLoading: false,
@@ -101,7 +99,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggingIn: false,
-        isLoggedIn: false,
         logInErrorReason: action.error,
         me: null,
       };
@@ -109,7 +106,13 @@ const reducer = (state = initialState, action) => {
     case LOG_OUT_REQUEST: {
       return {
         ...state,
-        isLoggedIn: false,
+        isLoggingOut: true,
+      };
+    }
+    case LOG_OUT_SUCCESS: {
+      return {
+        ...state,
+        isLoggingOut: false,
         me: null,
       };
     }
@@ -133,6 +136,24 @@ const reducer = (state = initialState, action) => {
         ...state,
         isSigningUp: false,
         signUpErrorReason: action.error,
+      };
+    }
+    // 사용자 정보 가져오는 액션 구역
+    // 쿠키가 있을시 새로고침해도 다시 로그인 상태로 남아있게
+    case LOAD_USER_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case LOAD_USER_SUCCESS: {
+      return {
+        ...state,
+        me: action.data,
+      };
+    }
+    case LOAD_USER_FAILURE: {
+      return {
+        ...state,
       };
     }
     // 액션이 아무것도 해당되지 않을때 기본값

@@ -30,7 +30,7 @@ const Home = () => {
   // const dispatch = useDispatch();
   // state안에 들어있는 isLoggedIn, user 를 구조분해로 정의해서 사용
   // useSelector: useState라고 생각하면 됨
-  const { me, isLoggedIn } = useSelector(state => state.user);
+  const { me } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
   // useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
   //   dispatch(loginRequestAction);
@@ -45,7 +45,7 @@ const Home = () => {
           { me.nickname }
         </div>
       ) : <div>로그아웃 했습니다.</div>}
-      {isLoggedIn && <PostForm />}
+      {me && <PostForm />}
       {mainPosts.map(c => (
         <PostCard key={c} post={c} />
       ))}

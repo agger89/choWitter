@@ -37,7 +37,7 @@ const UserProfile = () => {
         // <div key="twit">
         //   짹짹
         //   <br />
-        //   {me.Post.length}
+        //   {me.Posts.length}
         // </div>,
         // <div key="following">
         //   팔로잉
