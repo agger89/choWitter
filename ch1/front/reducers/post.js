@@ -127,7 +127,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isAddingPost: false,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [action.data, ...state.mainPosts],
         postAdded: true,
       };
     }
@@ -172,6 +172,24 @@ const reducer = (state = initialState, action) => {
         isAddingComment: false,
         addCommentErrorReason: action.error,
         commentAdded: false,
+      };
+    }
+    // 페이지가 로드 될때 포스트 불러오기
+    case LOAD_MAIN_POSTS_REQUEST: {
+      return {
+        ...state,
+        mainPosts: [],
+      };
+    }
+    case LOAD_MAIN_POSTS_SUCCESS: {
+      return {
+        ...state,
+        mainPosts: action.data,
+      };
+    }
+    case LOAD_MAIN_POSTS_FAILURE: {
+      return {
+        ...state,
       };
     }
     // 액션이 아무것도 해당되지 않을때 기본값

@@ -1,20 +1,29 @@
 import {
-  all, fork, delay, put, takeLatest,
+  all, fork, delay, put, takeLatest, call,
 } from 'redux-saga/effects';
+import axios from 'axios';
 import {
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
+  LOAD_MAIN_POSTS_REQUEST, LOAD_MAIN_POSTS_SUCCESS, LOAD_MAIN_POSTS_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
 } from '../reducers/post';
 
-function addPostAPI() {
-
+function addPostAPI(postData) {
+  return axios.post('/post', postData, {
+    // 로그인 한 사람만 글을 작성할수 있게 하기 위해서 쿠키인증
+    withCredentials: true,
+  });
 }
 
-function* addPost() {
+function* addPost(action) {
   try {
-    yield delay(2000);
+    // 새로운 포스트 등록된거 받는
+    // 서버의 응답은 result
+    // action은 ADD_POST_REQUEST가 dispatch될때 보내준 action.data
+    const result = yield call(addPostAPI, action.data);
     yield put({
       type: ADD_POST_SUCCESS,
+      data: result.data,
     });
   } catch (e) {
     yield put({
@@ -30,6 +39,32 @@ function* watchAddPost() {
   // ADD_POST_REQUEST 액션이 dispatch 되길 기다려서
   // dispatch될 떄 위에 만든 addPost 제너레이터함수를 호출합니다.
   yield takeLatest(ADD_POST_REQUEST, addPost);
+}
+
+function loadMainPostsAPI() {
+  // 게시물은 로그인 안한 유저도 볼수 있기 때문에
+  // withCredentials 넣지 않아도 된다
+  return axios.get('/posts');
+}
+
+function* loadMainPosts() {
+  try {
+    // 서버의 응답은 result
+    const result = yield call(loadMainPostsAPI);
+    yield put({
+      type: LOAD_MAIN_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOAD_MAIN_POSTS_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchloadMainPosts() {
+  yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
 }
 
 function addCommentAPI() {
@@ -70,6 +105,7 @@ function* watchAddComment() {
 export default function* postSaga() {
   yield all([
     // fork: 함수를 비동기적으로 호출
+    fork(watchloadMainPosts),
     fork(watchAddPost),
     fork(watchAddComment),
   ]);

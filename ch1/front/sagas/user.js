@@ -2,7 +2,7 @@
 // -> watchLogin에서는 takeLatest 또는 takeEvery 결정하고 -> 실제로 동작할 함수는 위에서 만들어주고 그걸 넣어준다
 
 import {
-  all, fork, takeLatest, takeEvery, call, put, delay,
+  all, fork, takeEvery, call, put,
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
@@ -11,10 +11,6 @@ import {
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
   LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE,
 } from '../reducers/user';
-
-// 공통된 api url 따로 분리
-// axios.defaults.baseURL: 기본적으로 아래의 api 주소에 들어감
-axios.defaults.baseURL = 'http://localhost:3065/api';
 
 function logInAPI(logInData) {
   // 서버에 요청을 보내는 부분
@@ -34,6 +30,8 @@ function* logIn(action) {
     // 두번째는 인자
     // (LOG_IN_REQUEST가 dispatch 될때 넘어온 데이터 제일 상단 logIn(action) 에서 받아온다)
     // (위에 logInAPI(logInData) 함수에 인자로 전달할수 있다)
+    // 서버의 응답은 result
+    // action은 LOG_IN_REQUEST가 dispatch될때 보내준 action.data
     const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
@@ -94,6 +92,7 @@ function signUpAPI(signUpData) {
 
 function* signUp(action) {
   try {
+    // action은 SIGN_UP_REQUEST가 dispatch될때 보내준 action.data
     yield call(signUpAPI, action.data);
     yield put({
       type: SIGN_UP_SUCCESS,
@@ -116,12 +115,15 @@ function* watchSignUp() {
 function loadUserAPI() {
   // 사용자 정보 가져올때는 get
   return axios.get('/user/', {
+    // 서로 다른 도메인간 쿠키값 읽어오기
     withCredentials: true,
   });
 }
 
 function* loadUser() {
   try {
+    // result에 데이터 담기
+    // 서버의 응답은 result
     const result = yield call(loadUserAPI);
     yield put({
       type: LOAD_USER_SUCCESS,

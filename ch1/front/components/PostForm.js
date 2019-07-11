@@ -36,13 +36,19 @@ const PostForm = () => {
   const onSubmitForm = useCallback((e) => {
     // SPA에서 form은 무조건 e.preventDefault 붙여줘야 한다. 새 페이지로 넘어감
     e.preventDefault();
+    // 게시글 내용 작성 안하거나, 스페이스바 띄어쓰기만 작성하는것 방지
+    if (!text || !text.trim()) {
+      return alert('게시글을 작성하세요.');
+      // 조건에 걸려서 return 시켜서 아래의 코드로 안넘어가게
+    }
     dispatch({
       type: ADD_POST_REQUEST,
+      // 폼 내용 백엔드로 보내기
       data: {
-        text,
+        content: text.trim(),
       },
     });
-  }, []);
+  }, [text]);
 
   const onChangeText = useCallback((e) => {
     setText(e.target.value);
