@@ -2,20 +2,27 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Avatar } from 'antd';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 import PostCard from '../components/PostCard';
 
+// 프로필 이미지 클릭시 오는 페이지
 const User = ({ id }) => {
-  console.log(id);
   const dispatch = useDispatch();
-  const { mainPosts } = useSelector(state => state.post);
   const { userInfo } = useSelector(state => state.user);
+  const { mainPosts } = useSelector(state => state.post);
   useEffect(() => {
+    // 남의 정보 가져오는
+    dispatch({
+      type: LOAD_USER_REQUEST,
+      data: id,
+    });
+    // 남의 포스트 가져오는
     dispatch({
       type: LOAD_USER_POSTS_REQUEST,
       data: id,
     });
-  }, [id]);
+  }, []);
   return (
     <div>
       {userInfo
@@ -25,17 +32,17 @@ const User = ({ id }) => {
               <div key="twit">
                 짹짹
                 <br />
-                {userInfo.Posts.length}
+                {userInfo.Posts}
               </div>,
               <div key="following">
                 팔로잉
                 <br />
-                {userInfo.Followings.length}
+                {userInfo.Followings}
               </div>,
               <div key="follower">
                 팔로워
                 <br />
-                {userInfo.Followers.length}
+                {userInfo.Followers}
               </div>,
             ]}
           >
@@ -58,9 +65,10 @@ User.propTypes = {
   id: PropTypes.number.isRequired,
 };
 
+// 부모 컴포넌트 app.js에
+// ChoWitter.getInitialProps에서 받아온 props를 사용 context
 User.getInitialProps = async (context) => {
-  console.log('hashtag getInitialProps', context.query.tag);
-  // 서버에서 데이터 보내서 getInitialProps거쳐서 User에 props로 전달
+  // 위에 props 사용가능
   return { id: parseInt(context.query.id, 10) };
 };
 

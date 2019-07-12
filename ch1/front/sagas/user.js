@@ -112,22 +112,25 @@ function* watchSignUp() {
 
 // 사용자 정보 가져오는 액션 구역
 // 쿠키가 있을시 새로고침해도 다시 로그인 상태로 남아있게
-function loadUserAPI() {
+function loadUserAPI(userId) {
   // 사용자 정보 가져올때는 get
-  return axios.get('/user/', {
+  // userId가 있으면 남의 정보 없으면 내정보 가져오기
+  return axios.get(userId ? `/user/${userId}` : '/user/', {
     // 서로 다른 도메인간 쿠키값 읽어오기
     withCredentials: true,
   });
 }
 
-function* loadUser() {
+function* loadUser(action) {
   try {
     // result에 데이터 담기
     // 서버의 응답은 result
-    const result = yield call(loadUserAPI);
+    const result = yield call(loadUserAPI, action.data);
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,
+      // userId(action.data)가 남의 정보니까 없으면 내정보 불러오기
+      me: !action.data,
     });
   } catch (e) {
     console.error(e);

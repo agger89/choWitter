@@ -38,12 +38,14 @@ const Home = () => {
       type: LOAD_MAIN_POSTS_REQUEST,
     });
   }, []);
+
   return (
     <div>
       {me && <PostForm />}
-      {mainPosts.map(c => (
+      {console.log(mainPosts)}
+      {/* {mainPosts.map(c => (
         <PostCard key={c} post={c} />
-      ))}
+      ))} */}
     </div>
   );
 };

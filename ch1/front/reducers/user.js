@@ -146,9 +146,18 @@ const reducer = (state = initialState, action) => {
       };
     }
     case LOAD_USER_SUCCESS: {
+      // action.me 데이터가 있으면
+      // me state에 action.data 넣고
+      // 없으면 userInfo state에 action.data 넣기
+      if (action.me) {
+        return {
+          ...state,
+          me: action.data,
+        };
+      }
       return {
         ...state,
-        me: action.data,
+        userInfo: action.data,
       };
     }
     case LOAD_USER_FAILURE: {

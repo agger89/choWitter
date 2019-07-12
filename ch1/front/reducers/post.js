@@ -156,7 +156,7 @@ const reducer = (state = initialState, action) => {
       // 위에서 찾은 index에 해당하는 포스트
       const post = state.mainPosts[postIndex];
       // 해당 포스트에 기존 댓글 불러오고(불변성), 추가 댓글 넣어줌
-      const Comments = [...post.Comments, dummyComment];
+      const Comments = [...post.Comments, action.data.comment];
       // 기존의 포스트들 불러오고(불변성)
       const mainPosts = [...state.mainPosts];
       // 해당 포스트에 기존 데이터들 불러오고, 댓글 추가
@@ -177,19 +177,27 @@ const reducer = (state = initialState, action) => {
       };
     }
     // 페이지가 로드 될때 포스트 불러오기
-    case LOAD_MAIN_POSTS_REQUEST: {
+    // 세개의 액션이 같은 동작을 처리하면
+    // 아래와 같이 세개를 같이 사용할 수 있다.
+    case LOAD_MAIN_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
+    case LOAD_USER_POSTS_REQUEST: {
       return {
         ...state,
         mainPosts: [],
       };
     }
-    case LOAD_MAIN_POSTS_SUCCESS: {
+    case LOAD_MAIN_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS:
+    case LOAD_USER_POSTS_SUCCESS: {
       return {
         ...state,
         mainPosts: action.data,
       };
     }
-    case LOAD_MAIN_POSTS_FAILURE: {
+    case LOAD_MAIN_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
+    case LOAD_USER_POSTS_FAILURE: {
       return {
         ...state,
       };

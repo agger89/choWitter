@@ -14,7 +14,7 @@ import reducer from '../reducers';
 import rootSaga from '../sagas';
 
 
-const ChoWitter = ({ Component, store }) => (
+const ChoWitter = ({ Component, store, pageProps }) => (
   // Provider가 부모 컴포넌트이고 store를 가지고 있기 때문에
   // 자식 컴포넌트들은 store에 있는 state를 받을수 있다
   // store: state, action, reducer가 합쳐진것
@@ -25,7 +25,8 @@ const ChoWitter = ({ Component, store }) => (
     </Head>
     <AppLayout>
       {/* next에서 _app.js는 props로 컴포넌트(<Component />)를 받는다(index.js, profile.js, signup.js) */}
-      <Component />
+      {/* ...pageProps: 아래의 getInitialProps 에서 받아온 props 객체, 자식 컴포넌트들에게 props로 전달 */}
+      <Component {...pageProps} />
     </AppLayout>
   </Provider>
 );
@@ -36,20 +37,27 @@ const ChoWitter = ({ Component, store }) => (
 ChoWitter.propTypes = {
   Component: PropTypes.elementType.isRequired, // elementType: 컴포넌트식의 props
   store: PropTypes.object.isRequired,
+  pageProps: PropTypes.object.isRequired,
 };
 
 // getInitialProps:
 // next가 추가해준 라이프사이클
 // 제일 먼저 실행된다.
-// 서버쪽의 데이터를 먼저 가져와서 프론트에 뿌려주는 역할 (SSR)
+// 서버쪽의 데이터를 getInitialProps로 먼저 가져와서 프론트에 렌더링(SSR)
 // 서버, 프론트 동시 실행
-// next에서 context를 내려준다
+// next가 getInitialProps를 실행 시킬때 context를 같이 넣어준다
 ChoWitter.getInitialProps = async (context) => {
-  console.log(context);
-  const { ctx } = context;
+  // next가 가지고 있는 ctx라는것이 getInitialProps 여기에 인자로 전달됨
+  // ctx는 query 라는 객체를 가지고 있음 ex:) query: { tag: '테스트' }
+  // 그러면 Component에서 props로 사용할수 있는데
+  // 여기서 Component란 pages 폴더안에 있는 모든 파일들을 말한다
+  // 단 해당 컴포넌트에서 props로 사용하려면
+  // 해당컴포넌트이름.getInitialProps = async (context) => { context.query.tag }
+  // 이렇게 가져와야 한다
+  const { ctx, Component } = context;
   let pageProps = {};
-  if (context.Component.getInitialProps) {
-    pageProps = await context.Component.getInitialProps(ctx);
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
   }
   return { pageProps };
 };

@@ -6,7 +6,6 @@ import PostCard from '../components/PostCard';
 
 // 해시태그 클릭시 오는 페이지
 const Hashtag = ({ tag }) => {
-  console.log(tag);
   const dispatch = useDispatch();
   const { mainPosts } = useSelector(state => state.post);
   useEffect(() => {
@@ -15,7 +14,7 @@ const Hashtag = ({ tag }) => {
       type: LOAD_HASHTAG_POSTS_REQUEST,
       data: tag,
     });
-  }, [tag]);
+  }, []);
   return (
     <div>
       {mainPosts.map(c => (
@@ -29,9 +28,10 @@ Hashtag.propTypes = {
   tag: PropTypes.string.isRequired,
 };
 
+// 부모 컴포넌트 app.js에
+// ChoWitter.getInitialProps에서 받아온 props를 사용 context
 Hashtag.getInitialProps = async (context) => {
-  console.log('hashtag getInitialProps', context.query.tag);
-  // 서버에서 데이터 보내서 getInitialProps거쳐서 Hashtag에 props로 전달
+  // 위에 props 사용가능
   return { tag: context.query.tag };
 };
 

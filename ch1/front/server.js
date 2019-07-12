@@ -5,6 +5,9 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
 
+// 이 페이지는 동적인 결과 렌더링을 위해 만들어짐
+// express가 next를 돌리는 구조
+
 // 개발 모드
 const dev = process.env.NODE_ENV !== 'production';
 // 배포 모드
@@ -31,9 +34,19 @@ app.prepare().then(() => {
     },
   }));
 
-  server.get('/hashtag/:tag', (req, res) => app.render(req, res, '/hashtag', { tag: req.params.tag }));
+  // 해시태그 클릭시 페이지 렌더링 시켜주는 로직, hashtag.js
+  // /hashtag/:tag: 해시태그의 텍스트 이름의 경로( ex:) hashtag/좋아요 )
+  server.get('/hashtag/:tag', (req, res) => {
+    // { tag: req.params.tag }: 프론트에서 캐치 할수 있게
+    app.render(req, res, '/hashtag', { tag: req.params.tag });
+  });
 
-  server.get('/user/:id', (req, res) => app.render(req, res, '/user', { id: req.params.id }));
+  // 프로필 이미지 클릭시 페이지 렌더링 시켜주는 로직, user.js
+  // /user/:id: 프로필 이미지의 유저아이디의 경로( ex:) user/1 )
+  server.get('/user/:id', (req, res) => {
+    // { id: req.params.id }: 프론트에서 캐치 할수 있게
+    app.render(req, res, '/user', { id: req.params.id });
+  });
 
   server.get('*', (req, res) => handle(req, res));
 

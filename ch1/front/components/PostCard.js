@@ -62,7 +62,16 @@ const PostCard = ({ post }) => {
         extra={<Button>팔로우</Button>}
       >
         <Card.Meta
-          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+          // href={{ pathname: '/user', query: { id: post.User.id } }}:
+          // 새로고침 없이 프론트 페이지로 이동시키기 그 이유는
+          // query: 주소뒤에 붙는 파라미터라고 생각하면 됨
+          // as: 주소창에 서버주소처럼 보여주겠다는 의미 ex:) /user/1
+          // /user, /hashtag는 express에서 불러오게 만들었기 때문에
+          avatar={(
+            <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+              <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+            </Link>
+          )}
           title={post.User.nickname}
           description={(
             <div>
@@ -71,7 +80,7 @@ const PostCard = ({ post }) => {
                 /* 해시태그면 링크 태그로 변환 */
                 if (v.match(/#[^\s]*/)) {
                   return (
-                    <Link href="/hashtag" key={v}><a>{v}</a></Link>
+                    <Link href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }} as={`/hashtag/${v.slice(1)}`} key={v}><a>{v}</a></Link>
                   );
                 }
                 /* 일반 문자면 그냥 리턴 */
@@ -97,7 +106,11 @@ const PostCard = ({ post }) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={(
+                    <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                      <a><Avatar>{item.User.nickname[0]}</Avatar></a>
+                    </Link>
+                  )}
                   content={item.content}
                 />
               </li>
