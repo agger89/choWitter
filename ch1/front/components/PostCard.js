@@ -3,6 +3,7 @@ import
 {
   Button, Card, Icon, Avatar, Input, Form, List, Comment,
 } from 'antd';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
@@ -63,7 +64,21 @@ const PostCard = ({ post }) => {
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
-          description={post.content}
+          description={(
+            <div>
+              {/* 해시태그를 넣고 문자열을 배열로 쪼갬 */}
+              {post.content.split(/(#[^\s]+)/g).map((v) => {
+                /* 해시태그면 링크 태그로 변환 */
+                if (v.match(/#[^\s]*/)) {
+                  return (
+                    <Link href="/hashtag" key={v}><a>{v}</a></Link>
+                  );
+                }
+                /* 일반 문자면 그냥 리턴 */
+                return v;
+              })}
+            </div>
+          )}
         />
       </Card>
       {commentFormOpened && (
