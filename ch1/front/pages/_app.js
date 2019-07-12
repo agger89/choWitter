@@ -38,9 +38,24 @@ ChoWitter.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
+// getInitialProps:
+// next가 추가해준 라이프사이클
+// 제일 먼저 실행된다.
+// 서버쪽의 데이터를 먼저 가져와서 프론트에 뿌려주는 역할 (SSR)
+// 서버, 프론트 동시 실행
+// next에서 context를 내려준다
+ChoWitter.getInitialProps = async (context) => {
+  console.log(context);
+  const { ctx } = context;
+  let pageProps = {};
+  if (context.Component.getInitialProps) {
+    pageProps = await context.Component.getInitialProps(ctx);
+  }
+  return { pageProps };
+};
+
 // react를 redux에 연결
 // 아래 코드의 틀은 거의 항상 들어가니까 외우는 느낌으로
-
 const configureStore = (initialState, options) => {
   const sagaMiddleware = createSagaMiddleware();
   // middleware는 액션과 스토어 사이에서 동작한다.

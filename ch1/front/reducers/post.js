@@ -1,16 +1,17 @@
 // 초기 state값, store안에 들어감
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
 export const initialState = {
-  mainPosts: [{
-    id: 1,
-    User: {
-      id: 1,
-      nickname: '조니',
-    },
-    content: '첫번째 게시글',
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q',
-    Comments: [],
-  }], // 화면에 보일 포스트들
+  // 데이터 생겨서 주석
+  // mainPosts: [{
+  //   id: 1,
+  //   User: {
+  //     id: 1,
+  //     nickname: '조니',
+  //   },
+  //   content: '첫번째 게시글',
+  //   img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q',
+  //   Comments: [],
+  // }], // 화면에 보일 포스트들
   imagePath: [], // 미리보기 이미지 경로
   addPostErrorReason: false, // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
@@ -20,25 +21,26 @@ export const initialState = {
   addCommentErrorReason: '', // 댓글 업로드 실패 사유
 };
 
-const dummyPost = {
-  id: 2,
-  User: {
-    id: 1,
-    nickname: '조니',
-  },
-  content: '나는 더미입니다.',
-  Comments: [],
-};
+// 데이터 생겨서 주석
+// const dummyPost = {
+//   id: 2,
+//   User: {
+//     id: 1,
+//     nickname: '조니',
+//   },
+//   content: '나는 더미입니다.',
+//   Comments: [],
+// };
 
-const dummyComment = {
-  id: 1,
-  User: {
-    id: 1,
-    nickname: '조니',
-  },
-  createAt: new Date(),
-  content: '더미 댓글입니다.',
-};
+// const dummyComment = {
+//   id: 1,
+//   User: {
+//     id: 1,
+//     nickname: '조니',
+//   },
+//   createAt: new Date(),
+//   content: '더미 댓글입니다.',
+// };
 
 // 액션의 이름
 // 메인 포스트 로딩 액션
