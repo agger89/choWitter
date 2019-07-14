@@ -38,17 +38,19 @@ app.prepare().then(() => {
   // /hashtag/:tag: 해시태그의 텍스트 이름의 경로( ex:) hashtag/좋아요 )
   server.get('/hashtag/:tag', (req, res) => {
     // { tag: req.params.tag }: 프론트에서 캐치 할수 있게
-    app.render(req, res, '/hashtag', { tag: req.params.tag });
+    return app.render(req, res, '/hashtag', { tag: req.params.tag });
   });
 
   // 프로필 이미지 클릭시 페이지 렌더링 시켜주는 로직, user.js
   // /user/:id: 프로필 이미지의 유저아이디의 경로( ex:) user/1 )
   server.get('/user/:id', (req, res) => {
     // { id: req.params.id }: 프론트에서 캐치 할수 있게
-    app.render(req, res, '/user', { id: req.params.id });
+    return app.render(req, res, '/user', { id: req.params.id });
   });
 
-  server.get('*', (req, res) => handle(req, res));
+  server.get('*', (req, res) => {
+    return handle(req, res);
+  });
 
   server.listen(3060, () => {
     console.log('next+express running on port 3060');

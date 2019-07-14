@@ -43,9 +43,9 @@ const Home = () => {
     <div>
       {me && <PostForm />}
       {console.log(mainPosts)}
-      {/* {mainPosts.map(c => (
+      {mainPosts.map(c => (
         <PostCard key={c} post={c} />
-      ))} */}
+      ))}
     </div>
   );
 };

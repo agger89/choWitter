@@ -12,6 +12,7 @@ export const initialState = {
   //   img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xyT3SoXf5ojhRUHVUKafAo6z2QrnDvIpCn-ubRXskLozK1Mt_Q',
   //   Comments: [],
   // }], // 화면에 보일 포스트들
+  mainPosts: [], // 화면에 보일 포스트들
   imagePath: [], // 미리보기 이미지 경로
   addPostErrorReason: false, // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
