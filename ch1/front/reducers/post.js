@@ -127,6 +127,14 @@ const reducer = (state = initialState, action) => {
         ...state,
       };
     }
+    case REMOVE_IMAGE: {
+      return {
+        ...state,
+        // dispatch 되서 넘어온 index값만 빼고 다시 뿌려준다
+        // 그러므로 이미지 한개 삭제 기능
+        imagePaths: state.imagePaths.filter((v, i) => i !== action.index),
+      };
+    }
     case ADD_POST_REQUEST: {
       return {
         // 스프레드 문법: 새로운 배열,객체를 생성한다

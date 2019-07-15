@@ -1,10 +1,10 @@
-const dummyUser = {
-  nickname: '조니',
-  Post: [],
-  Followings: [],
-  Followers: [],
-  id: 1,
-};
+// const dummyUser = {
+//   nickname: '조니',
+//   Post: [],
+//   Followings: [],
+//   Followers: [],
+//   id: 1,
+// };
 
 // 초기 state값, store안에 들어감
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬

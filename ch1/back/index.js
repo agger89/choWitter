@@ -20,6 +20,7 @@ passportConfig();
 
 // 요청에 대한 로그 남기기
 app.use(morgan('dev'));
+app.use('/', express.static('uploads'));
 // json 데이터 형식 처리
 app.use(express.json());
 // form 데이터 형식 처리

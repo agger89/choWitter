@@ -1,8 +1,26 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
+
 const db = require('../models');
 // 로그인 체크 중복 코드 불러오기
 const { isLoggedIn } = require('./middleware');
+
 const router = express.Router();
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+      const basename = path.basename(file.originalname, ext); // 조니.png, ext===.png, basename===조니
+      done(null, basename + new Date().valueOf() + ext);
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+});
 
 // isLoggedIn: 로그인 체크 유무 미들웨어
 router.post('/', isLoggedIn, async (req, res, next) => { // POST /api/post
@@ -36,8 +54,9 @@ router.post('/', isLoggedIn, async (req, res, next) => { // POST /api/post
     }
   });
 
-router.post('/images', (req, res) => {
-
+router.post('/images', upload.array('image'), (req, res) => {
+  console.log(req.files);
+  res.json(req.files.map(v => v.filename));
 });
 
 router.get('/:id/comments', async (req, res, next) => {
