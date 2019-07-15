@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../models');
 const { isLoggedIn } = require('./middleware');
+
 const router = express.Router();
 
 router.get('/', isLoggedIn, (req, res) => { // /api/user/
@@ -146,11 +147,6 @@ router.get('/:id/posts', async (req, res, next) => {
         attributes: ['id', 'nickname'],
       }, {
         model: db.Image,
-      }, {
-        model: db.User,
-        through: 'Like',
-        as: 'Likers',
-        attributes: ['id'],
       }],
     });
     res.json(posts);

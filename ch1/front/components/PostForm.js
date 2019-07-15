@@ -42,14 +42,23 @@ const PostForm = () => {
       return alert('게시글을 작성하세요.');
       // 조건에 걸려서 return 시켜서 아래의 코드로 안넘어가게
     }
+    const formData = new FormData();
+    imagePaths.forEach((i) => {
+      formData.append('image', i);
+    });
+    formData.append('content', text);
     dispatch({
       type: ADD_POST_REQUEST,
       // 폼 내용 백엔드로 보내기
-      data: {
-        content: text.trim(),
-      },
+      // new FormData() 사용전
+      // data: {
+      //   content: text.trim(),
+      // },
+      // new FormData() 사용후
+      // 위에 new FormData()를 활용해 이미지와 게시글을 같이 업르드
+      data: formData,
     });
-  }, [text]);
+  }, [text, imagePaths]);
 
   const onChangeText = useCallback((e) => {
     setText(e.target.value);
