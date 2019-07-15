@@ -1,9 +1,11 @@
 const express = require('express');
 const db = require('../models');
-
+// 로그인 체크 중복 코드 불러오기
+const { isLoggedIn } = require('./middleware');
 const router = express.Router();
 
-router.post('/', async (req, res, next) => { // POST /api/post
+// isLoggedIn: 로그인 체크 유무 미들웨어
+router.post('/', isLoggedIn, async (req, res, next) => { // POST /api/post
     try {
       // 정규표현식으로 # 문자 찾기
       const hashtags = req.body.content.match(/#[^\s]+/g);
@@ -61,11 +63,8 @@ router.get('/:id/comments', async (req, res, next) => {
   }
 });
 
-router.post('/:id/comment', async (req, res, next) => { // POST /api/post/1000000/comment
+router.post('/:id/comment', isLoggedIn, async (req, res, next) => { // POST /api/post/1000000/comment
   try {
-    if (!req.user) {
-      return res.status(401).send('로그인이 필요합니다.');
-    }
     const post = await db.Post.findOne({ where: { id: req.params.id } });
     if (!post) {
       return res.status(404).send('포스트가 존재하지 않습니다.');
