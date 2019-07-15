@@ -21,7 +21,6 @@ const UserProfile = () => {
   // useSelector: useState라고 생각하면 됨
   const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
-
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
   // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
@@ -34,21 +33,21 @@ const UserProfile = () => {
   return (
     <Card
       actions={[
-        // <div key="twit">
-        //   짹짹
-        //   <br />
-        //   {me.Posts.length}
-        // </div>,
-        // <div key="following">
-        //   팔로잉
-        //   <br />
-        //   {me.Followings.length}
-        // </div>,
-        // <div key="follower">
-        //   팔로워
-        //   <br />
-        //   {me.Followers.length}
-        // </div>,
+        <div key="twit">
+          짹짹
+          <br />
+          {me.Posts.length}
+        </div>,
+        <div key="following">
+          팔로잉
+          <br />
+          {me.Followings.length}
+        </div>,
+        <div key="follower">
+          팔로워
+          <br />
+          {me.Followers.length}
+        </div>,
       ]}
     >
       <Card.Meta

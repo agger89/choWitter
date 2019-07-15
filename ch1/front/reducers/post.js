@@ -13,7 +13,7 @@ export const initialState = {
   //   Comments: [],
   // }], // 화면에 보일 포스트들
   mainPosts: [], // 화면에 보일 포스트들
-  imagePath: [], // 미리보기 이미지 경로
+  imagePaths: [], // 미리보기 이미지 경로
   addPostErrorReason: false, // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
   postAdded: false, // 포스트 업로드 성공
@@ -111,6 +111,22 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 // 상단에 선언한 initialState가 리듀서안에 들어감
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case UPLOAD_IMAGES_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case UPLOAD_IMAGES_SUCCESS: {
+      return {
+        ...state,
+        imagePaths: [...state.imagePaths, ...action.data],
+      };
+    }
+    case UPLOAD_IMAGES_FAILURE: {
+      return {
+        ...state,
+      };
+    }
     case ADD_POST_REQUEST: {
       return {
         // 스프레드 문법: 새로운 배열,객체를 생성한다

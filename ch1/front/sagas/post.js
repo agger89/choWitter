@@ -1,5 +1,5 @@
 import {
-  all, fork, delay, put, takeLatest, call,
+  all, fork, put, takeLatest, call,
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
@@ -9,6 +9,7 @@ import {
   LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_FAILURE,
   LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
   LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE,
+  UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
 } from '../reducers/post';
 
 function addPostAPI(postData) {
@@ -187,6 +188,33 @@ function* watchLoadComments() {
   yield takeLatest(LOAD_COMMENTS_REQUEST, loadComments);
 }
 
+function uploadImagesAPI(formData) {
+  return axios.post('/post/images', formData, {
+    withCredentials: true,
+  });
+}
+
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data);
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      // 서버에 저장된 이미지 주소
+      data: result.data,
+    });
+  } catch (e) {
+    // console.error(e);
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
+}
+
 export default function* postSaga() {
   yield all([
     // fork: 함수를 비동기적으로 호출
@@ -196,5 +224,6 @@ export default function* postSaga() {
     fork(watchLoadComments),
     fork(watchLoadHashtagPosts),
     fork(watchLoadUserPosts),
+    fork(watchUploadImages),
   ]);
 }

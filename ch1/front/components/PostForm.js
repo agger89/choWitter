@@ -1,8 +1,8 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, Input, Button } from 'antd';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useSelector, useDispatch } from 'react-redux';
-import { ADD_POST_REQUEST } from '../reducers/post';
+import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다
@@ -24,6 +24,7 @@ const PostForm = () => {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const { imagePath, isAddingPost, postAdded } = useSelector(state => state.post);
+  const imageInput = useRef();
 
   // 포스트가 업로드 되면 텍스트 입력창 초기화 작업
   // useEffct:
@@ -54,6 +55,27 @@ const PostForm = () => {
     setText(e.target.value);
   }, []);
 
+  const onChangeImages = useCallback((e) => {
+    console.log(e.target.files);
+    // FormData()객체안에 각각의 이미지들을 넣어준다
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      // 'image': key (서버에서 알수있게)
+      // f: value
+      imageFormData.append('image', f);
+    });
+    dispatch({
+      type: UPLOAD_IMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
+
+  // 버튼이 클릭되면 <input type="file">이 클릭되는 효과가 나서
+  // 이미지 업로드 할 수 있는 input 창이 열리도록
+  const onClickImageUpload = useCallback(() => {
+    imageInput.current.click();
+  }, [imageInput.current]);
+
   return (
   // 파일을 업로드 할때는 encType="multipart/form-data" 써야한다.
   // 안그러면 파일의 경로만 전송되고 내용이 전송되지 않는다.
@@ -61,8 +83,8 @@ const PostForm = () => {
       <Input.TextArea maxLength={148} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText}/>
       <div>
         {/* 다중 파일 업로드 할때 multiple, 업로드 데이터를 숨길떄 hidden */}
-        <input type="file" multiple hidden />
-        <Button>이미지 업로드</Button>
+        <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
+        <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         <Button type="primary" style={{ float: 'right' }} htmlType="submit" loading={isAddingPost}>짹짹</Button>
       </div>
       <div>
