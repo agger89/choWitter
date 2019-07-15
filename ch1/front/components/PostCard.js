@@ -6,7 +6,7 @@ import
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { ADD_COMMENT_REQUEST } from '../reducers/post';
+import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from '../reducers/post';
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -18,6 +18,13 @@ const PostCard = ({ post }) => {
   const onToggleComment = useCallback(() => {
     // 이전 state 값과 다르게 현재값을 넣어줌
     setCommentFormOpened(prev => !prev);
+    // 댓글창이 닫혀있을떄 댓글 불러오기
+    if (!commentFormOpened) {
+      dispatch({
+        type: LOAD_COMMENTS_REQUEST,
+        data: post.id,
+      });
+    }
   }, []);
 
   const onSubmitComment = useCallback((e) => {
@@ -30,11 +37,12 @@ const PostCard = ({ post }) => {
       type: ADD_COMMENT_REQUEST,
       data: {
         postId: post.id,
+        content: commentText,
       },
     });
     // useCallback은 기억력이 좋아서 위에 if (!me) 요기서 me를 최초 state 값인 null로 기억하기 떄문에
     // 아래처럼 [me && me.id] 새로 null이 아닌값을 넣어줘야 한다.
-  }, [me && me.id]);
+  }, [me && me.id, commentText]);
 
   // 댓글이 등록 되면 텍스트 입력창 초기화 작업
   // useEffct:
@@ -75,9 +83,9 @@ const PostCard = ({ post }) => {
           title={post.User.nickname}
           description={(
             <div>
-              {/* 해시태그를 넣고 문자열을 배열로 쪼갬 */}
+              {/* 등록된 글을 배열로 쪼갬 */}
               {post.content.split(/(#[^\s]+)/g).map((v) => {
-                /* 해시태그면 링크 태그로 변환 */
+                /* 등록된 글이 해시태그면 링크 태그로 변환 */
                 if (v.match(/#[^\s]*/)) {
                   return (
                     <Link href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }} as={`/hashtag/${v.slice(1)}`} key={v}><a>{v}</a></Link>

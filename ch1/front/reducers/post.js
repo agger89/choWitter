@@ -177,6 +177,17 @@ const reducer = (state = initialState, action) => {
         commentAdded: false,
       };
     }
+    case LOAD_COMMENTS_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      const Comments = action.data.comments;
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Comments };
+      return {
+        ...state,
+        mainPosts,
+      };
+    }
     // 페이지가 로드 될때 포스트 불러오기
     // 세개의 액션이 같은 동작을 처리하면
     // 아래와 같이 세개를 같이 사용할 수 있다.
