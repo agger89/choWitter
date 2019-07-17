@@ -11,6 +11,7 @@ import {
   UNLIKE_POST_REQUEST, LIKE_POST_REQUEST,
   RETWEET_REQUEST,
 } from '../reducers/post';
+import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from '../reducers/user';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 
@@ -87,6 +88,7 @@ const PostCard = ({ post }) => {
     }
   }, [me && me.id, post && post.id, liked]);
 
+  // 리트윗
   const onRetweet = useCallback(() => {
     if (!me) {
       return alert('로그인이 필요합니다.');
@@ -96,6 +98,21 @@ const PostCard = ({ post }) => {
       data: post.id,
     });
   }, [me && me.id, post && post.id]);
+
+  // 아래 onClick함수 괄호안에 값이 있으면 고차함수 사용 userId => () => {}
+  const onFollow = useCallback(userId => () => {
+    dispatch({
+      type: FOLLOW_USER_REQUEST,
+      data: userId,
+    });
+  }, []);
+
+  const onUnfollow = useCallback(userId => () => {
+    dispatch({
+      type: UNFOLLOW_USER_REQUEST,
+      data: userId,
+    });
+  }, []);
 
   return (
     <div>
@@ -115,7 +132,15 @@ const PostCard = ({ post }) => {
           <Icon type="ellipsis" key="ellipsis" />,
         ]}
         title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
-        extra={<Button>팔로우</Button>}
+        extra={
+          // 로그인 안했을때 || 내 게시글일때
+          !me || post.User.id === me.id
+            ? null
+            // 해당 게시글의 작성자가 내 팔로우 목록에 있으면
+            : me.Followings && me.Followings.find(v => v.id === post.User.id)
+              ? <Button onClick={onUnfollow(post.User.id)}>언팔로우</Button>
+              : <Button onClick={onFollow(post.User.id)}>팔로우</Button>
+        }
       >
         {post.RetweetId && post.Retweet
           ? (
