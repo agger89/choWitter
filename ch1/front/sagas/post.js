@@ -12,6 +12,7 @@ import {
   UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
+  RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE,
 } from '../reducers/post';
 
 function addPostAPI(postData) {
@@ -279,6 +280,37 @@ function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
 
+// 리트윗
+function retweetAPI(postId) {
+  return axios.post(`/post/${postId}/retweet`, {}, {
+    withCredentials: true,
+  });
+}
+
+function* retweet(action) {
+  try {
+    const result = yield call(retweetAPI, action.data);
+    yield put({
+      type: RETWEET_SUCCESS,
+      // 서버에 저장된 리트윗한 데이터
+      data: result.data,
+    });
+  } catch (e) {
+    // console.error(e);
+    // console.dir(e);
+    yield put({
+      type: RETWEET_FAILURE,
+      error: e,
+    });
+    // 자신의 글 리트윗 불가능 알림창 (백엔드에서 처리되어있음)
+    alert(e.response && e.response.data);
+  }
+}
+
+function* watchRetweet() {
+  yield takeLatest(RETWEET_REQUEST, retweet);
+}
+
 export default function* postSaga() {
   yield all([
     // fork: 함수를 비동기적으로 호출
@@ -291,5 +323,6 @@ export default function* postSaga() {
     fork(watchUploadImages),
     fork(watchLikePost),
     fork(watchUnlikePost),
+    fork(watchRetweet),
   ]);
 }

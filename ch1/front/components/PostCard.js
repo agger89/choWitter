@@ -7,9 +7,12 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST,
+  ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST,
+  UNLIKE_POST_REQUEST, LIKE_POST_REQUEST,
+  RETWEET_REQUEST,
 } from '../reducers/post';
 import PostImages from './PostImages';
+import PostCardContent from './PostCardContent';
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -84,13 +87,23 @@ const PostCard = ({ post }) => {
     }
   }, [me && me.id, post && post.id, liked]);
 
+  const onRetweet = useCallback(() => {
+    if (!me) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: RETWEET_REQUEST,
+      data: post.id,
+    });
+  }, [me && me.id, post && post.id]);
+
   return (
     <div>
       <Card
         key={+post.createdAt}
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        cover={post.Images && post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <Icon type="retweet" key="retweet" />,
+          <Icon type="retweet" key="retweet" onClick={onRetweet} />,
           <Icon
             type="heart"
             key="heart"
@@ -101,36 +114,43 @@ const PostCard = ({ post }) => {
           <Icon type="message" key="message" onClick={onToggleComment} />,
           <Icon type="ellipsis" key="ellipsis" />,
         ]}
+        title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
         extra={<Button>팔로우</Button>}
       >
-        <Card.Meta
-          // href={{ pathname: '/user', query: { id: post.User.id } }}:
-          // 새로고침 없이 프론트 페이지로 이동시키기 그 이유는
-          // query: 주소뒤에 붙는 파라미터라고 생각하면 됨
-          // as: 주소창에 서버주소처럼 보여주겠다는 의미 ex:) /user/1
-          // /user, /hashtag는 express에서 불러오게 만들었기 때문에
-          avatar={(
-            <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
-              <a><Avatar>{post.User.nickname[0]}</Avatar></a>
-            </Link>
-          )}
-          title={post.User.nickname}
-          description={(
-            <div>
-              {/* 등록된 글을 배열로 쪼갬 */}
-              {post.content.split(/(#[^\s]+)/g).map((v) => {
-                /* 등록된 글이 해시태그면 링크 태그로 변환 */
-                if (v.match(/#[^\s]*/)) {
-                  return (
-                    <Link href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }} as={`/hashtag/${v.slice(1)}`} key={v}><a>{v}</a></Link>
-                  );
-                }
-                /* 일반 문자면 그냥 리턴 */
-                return v;
-              })}
-            </div>
-          )}
-        />
+        {post.RetweetId && post.Retweet
+          ? (
+            // 리트윗 포스트
+            <Card
+              cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
+            >
+              <Card.Meta
+                // href={{ pathname: '/user', query: { id: post.User.id } }}:
+                // 새로고침 없이 프론트 페이지로 이동시키기 그 이유는
+                // query: 주소뒤에 붙는 파라미터라고 생각하면 됨
+                // as: 주소창에 서버주소처럼 보여주겠다는 의미 ex:) /user/1
+                // /user, /hashtag는 express에서 불러오게 만들었기 때문에
+                avatar={(
+                  <Link href={{ pathname: '/user', query: { id: post.Retweet.User.id } }} as={`/user/${post.Retweet.User.id}`}>
+                    <a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
+                title={post.Retweet.User.nickname}
+                description={<PostCardContent postData={post.Retweet.content} />}
+              />
+            </Card>
+          )
+          : (
+            <Card.Meta
+              avatar={(
+                <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+                  <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                </Link>
+              )}
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          )
+        }
       </Card>
       {commentFormOpened && (
         <>

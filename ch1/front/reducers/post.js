@@ -284,6 +284,23 @@ const reducer = (state = initialState, action) => {
         ...state,
       };
     }
+    case RETWEET_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case RETWEET_SUCCESS: {
+      return {
+        ...state,
+        // 리트윗한 게시글을 기존 게시글들에 넣어주기
+        mainPosts: [action.data, ...state.mainPosts],
+      };
+    }
+    case RETWEET_FAILURE: {
+      return {
+        ...state,
+      };
+    }
     // 액션이 아무것도 해당되지 않을때 기본값
     default: {
       return {
