@@ -12,8 +12,8 @@ import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 const Profile = () => {
   const dispatch = useDispatch();
   const { me, followingList, followerList } = useSelector(state => state.user);
-  const { mainPosts } = useSelector(state => state.post);
-  console.log(followingList, followerList);
+  const { mainPosts, isEditingNickname } = useSelector(state => state.post);
+
   useEffect(() => {
     // 로그인 했을떄
     if (me) {
