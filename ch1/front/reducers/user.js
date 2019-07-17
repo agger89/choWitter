@@ -39,10 +39,14 @@ export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
-// 팔로우 목록 불러오는 액션
-export const LOAD_FOLLOW_REQUEST = 'LOAD_FOLLOW_REQUEST';
-export const LOAD_FOLLOW_SUCCESS = 'LOAD_FOLLOW_SUCCESS';
-export const LOAD_FOLLOW_FAILURE = 'LOAD_FOLLOW_FAILURE';
+// 내가 팔로우 한 유저 목록 불러오는 액션
+export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
+export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
+export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
+// 팔로잉 중인 유저 목록 불러오는 액션
+export const LOAD_FOLLOWINGS_REQUEST = 'LOAD_FOLLOWINGS_REQUEST';
+export const LOAD_FOLLOWINGS_SUCCESS = 'LOAD_FOLLOWINGS_SUCCESS';
+export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
 // 팔로우하는 액션
 export const FOLLOW_USER_REQUEST = 'FOLLOW_USER_REQUEST';
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
@@ -51,6 +55,10 @@ export const FOLLOW_USER_FAILURE = 'FOLLOW_USER_FAILURE';
 export const UNFOLLOW_USER_REQUEST = 'UNFOLLOW_USER_REQUEST';
 export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
 export const UNFOLLOW_USER_FAILURE = 'UNFOLLOW_USER_FAILURE';
+// 팔로워 삭제 액션
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 
@@ -196,8 +204,9 @@ const reducer = (state = initialState, action) => {
         // 내 정보안에 내가 팔로잉중인 유저 목록에 내가 방금 팔로잉한 유저 빼기
         me: {
           ...state.me,
-          Followings: [...state.me.Followings].filter(v => v.id !== action.data),
+          Followings: state.me.Followings.filter(v => v.id !== action.data),
         },
+        followingList: state.followingList.filter(v => v.id !== action.data),
       };
     }
     case UNFOLLOW_USER_FAILURE: {
@@ -213,6 +222,60 @@ const reducer = (state = initialState, action) => {
           ...state.me,
           Posts: [{ id: action.data }, ...state.me.Posts],
         },
+      };
+    }
+    case LOAD_FOLLOWERS_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case LOAD_FOLLOWERS_SUCCESS: {
+      return {
+        ...state,
+        // 팔로워 리스트 불러오기
+        followerList: action.data,
+      };
+    }
+    case LOAD_FOLLOWERS_FAILURE: {
+      return {
+        ...state,
+      };
+    }
+    case LOAD_FOLLOWINGS_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case LOAD_FOLLOWINGS_SUCCESS: {
+      return {
+        ...state,
+        // 팔로잉 리스트 불러오기
+        followingList: action.data,
+      };
+    }
+    case LOAD_FOLLOWINGS_FAILURE: {
+      return {
+        ...state,
+      };
+    }
+    case REMOVE_FOLLOWER_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case REMOVE_FOLLOWER_SUCCESS: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Followers: state.me.Followers.filter(v => v.id !== action.data),
+        },
+        followerList: state.followerList.filter(v => v.id !== action.data),
+      };
+    }
+    case REMOVE_FOLLOWER_FAILURE: {
+      return {
+        ...state,
       };
     }
     // 액션이 아무것도 해당되지 않을때 기본값
