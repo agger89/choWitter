@@ -176,6 +176,7 @@ const reducer = (state = initialState, action) => {
       };
     }
     case ADD_COMMENT_SUCCESS: {
+      // 바뀔 객체만 새로 만들어주는 작업 (불변성)
       // 액션이 일어난 포스트의 index 번호 찾고
       // action.data.postId: saga에서 받은 값
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
@@ -235,6 +236,50 @@ const reducer = (state = initialState, action) => {
     case LOAD_MAIN_POSTS_FAILURE:
     case LOAD_HASHTAG_POSTS_FAILURE:
     case LOAD_USER_POSTS_FAILURE: {
+      return {
+        ...state,
+      };
+    }
+    case LIKE_POST_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case LIKE_POST_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      // 좋아요 누른 사람 목록에 내 아이디 추가
+      const Likers = [{ id: action.data.userId }, ...post.Likers];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Likers };
+      return {
+        ...state,
+        mainPosts,
+      };
+    }
+    case LIKE_POST_FAILURE: {
+      return {
+        ...state,
+      };
+    }
+    case UNLIKE_POST_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case UNLIKE_POST_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      // 좋아요 누른 사람 목록에서 내 아이디만 빼준다
+      const Likers = post.Likers.filter(v => v.id !== action.data.userId);
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Likers };
+      return {
+        ...state,
+        mainPosts,
+      };
+    }
+    case UNLIKE_POST_FAILURE: {
       return {
         ...state,
       };

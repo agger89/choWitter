@@ -6,7 +6,9 @@ import
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from '../reducers/post';
+import {
+  ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST,
+} from '../reducers/post';
 import PostImages from './PostImages';
 
 const PostCard = ({ post }) => {
@@ -15,6 +17,11 @@ const PostCard = ({ post }) => {
   const { me } = useSelector(state => state.user);
   const { commentAdded, isAddingComment } = useSelector(state => state.post);
   const dispatch = useDispatch();
+
+  // 로그인한 유저 &&
+  // 좋아요가 선택되어있는 게시글 &&
+  // 그 게시글에 유저 아이디와 내 아이디가 같으면
+  const liked = me && post.Likers && post.Likers.find(v => v.id === me.id);
 
   const onToggleComment = useCallback(() => {
     // 이전 state 값과 다르게 현재값을 넣어줌
@@ -57,6 +64,26 @@ const PostCard = ({ post }) => {
     setCommentText(e.target.value);
   }, []);
 
+  // 좋아요 토글
+  const onToggleLike = useCallback(() => {
+    if (!me) {
+      return alert('로그인이 필요합니다.');
+    }
+    // 이미 좋아요 눌렀으면
+    if (liked) {
+      dispatch({
+        type: UNLIKE_POST_REQUEST,
+        data: post.id,
+      });
+      // 좋아요 안눌렀으면
+    } else {
+      dispatch({
+        type: LIKE_POST_REQUEST,
+        data: post.id,
+      });
+    }
+  }, [me && me.id, post && post.id, liked]);
+
   return (
     <div>
       <Card
@@ -64,7 +91,13 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <Icon type="retweet" key="retweet" />,
-          <Icon type="heart" key="heart" />,
+          <Icon
+            type="heart"
+            key="heart"
+            theme={liked ? 'twoTone' : 'outlined'}
+            twoToneColor="#eb2f96"
+            onClick={onToggleLike}
+          />,
           <Icon type="message" key="message" onClick={onToggleComment} />,
           <Icon type="ellipsis" key="ellipsis" />,
         ]}

@@ -42,7 +42,6 @@ const Home = () => {
   return (
     <div>
       {me && <PostForm />}
-      {console.log(mainPosts)}
       {mainPosts.map(c => (
         <PostCard key={c} post={c} />
       ))}
