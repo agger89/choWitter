@@ -14,6 +14,7 @@ import {
   UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
   RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE,
 } from '../reducers/post';
+import { ADD_POST_TO_ME } from '../reducers/user';
 
 function addPostAPI(postData) {
   return axios.post('/post', postData, {
@@ -28,9 +29,17 @@ function* addPost(action) {
     // 서버의 응답은 result
     // action은 ADD_POST_REQUEST가 dispatch될때 보내준 action.data
     const result = yield call(addPostAPI, action.data);
+    // post reducer
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
+    });
+    // user reducer
+    // 게시글이 작성될때
+    // 좌측 프로필 게시글 갯수 증가
+    yield put({
+      type: ADD_POST_TO_ME,
+      data: result.data.id,
     });
   } catch (e) {
     yield put({

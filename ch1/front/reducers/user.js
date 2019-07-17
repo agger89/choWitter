@@ -205,6 +205,16 @@ const reducer = (state = initialState, action) => {
         ...state,
       };
     }
+    // 게시글 등록시 게시글 갯수 증가
+    case ADD_POST_TO_ME: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: [{ id: action.data }, ...state.me.Posts],
+        },
+      };
+    }
     // 액션이 아무것도 해당되지 않을때 기본값
     default: {
       return {
