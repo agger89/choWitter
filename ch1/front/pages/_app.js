@@ -5,6 +5,8 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 // 리액트를 리덕스와 연결
 import withRedux from 'next-redux-wrapper';
+// SSR을 하기위해
+import withReduxSaga from 'next-redux-saga';
 // Provider: 리덕스 state를 컴포넌트들에게 제공해준다.
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -83,10 +85,12 @@ const configureStore = (initialState, options) => {
       !options.isServer && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     );
   const store = createStore(reducer, initialState, enhancer);
+  // store.sagaTask: SSR을 하기위함
   // rootSaga를 sagaMiddleware와 연결
-  sagaMiddleware.run(rootSaga);
+  store.sagaTask = sagaMiddleware.run(rootSaga);
   // store가 ChoWitter에 props로 들어감
   return store;
 };
 
-export default withRedux(configureStore)(ChoWitter);
+// SSR을 하기위해 withReduxSaga로 ChoWitter를 감싸준다
+export default withRedux(configureStore)(withReduxSaga(ChoWitter));

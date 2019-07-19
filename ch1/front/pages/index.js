@@ -30,14 +30,15 @@ const Home = () => {
   // useSelector: useState라고 생각하면 됨
   const { me } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
-  // useDispatch: setState라고 생각하면 된다
-  const dispatch = useDispatch();
 
-  useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
-    dispatch({
-      type: LOAD_MAIN_POSTS_REQUEST,
-    });
-  }, []);
+  // SSR을 하기위해 아래 코드들 주석처리
+  // useDispatch: setState라고 생각하면 된다
+  // const dispatch = useDispatch();
+  // useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
+  //   dispatch({
+  //     type: LOAD_MAIN_POSTS_REQUEST,
+  //   });
+  // }, []);
 
   return (
     <div>
@@ -47,6 +48,18 @@ const Home = () => {
       ))}
     </div>
   );
+};
+
+// 부모 컴포넌트 app.js에
+// ChoWitter.getInitialProps에서 받아온 props를 사용 context
+Home.getInitialProps = async (context) => {
+  // console.log(Object.keys(context));
+  // 기존에 useEffect에서 dispatch 했던 액션을
+  // SSR을 하기위해서 context.store에서 dispatch 해준다
+  // 새로고침시 잠깐 빈페이지 나오는거 방지
+  context.store.dispatch({
+    type: LOAD_MAIN_POSTS_REQUEST,
+  });
 };
 
 export default Home;

@@ -27,6 +27,9 @@ const NicknameEditForm = () => {
       style={{ marginBottom: '20px', border: '1px solid #d9d9d9', padding: '20px' }}
       onSubmit={onEditNickname}
     >
+      {/* editedName || (me && me.nickname) */}
+      {/* editedName이 있으면 그것을 사용, 없으면 me.nickname을 사용 */}
+      {/* 단 me가 undefined가 아니여야 me.nickname 사용 할 수 있다 */}
       <Input addonBefore="닉네임" value={editedName || (me && me.nickname)} onChange={onChangeNickname} />
       <Button type="primary" htmlType="submit" loading={isEditingNickname}>수정</Button>
     </Form>
