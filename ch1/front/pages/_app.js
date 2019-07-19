@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 // SSR을 하기위해
 import withReduxSaga from 'next-redux-saga';
+import axios from 'axios';
 // Provider: 리덕스 state를 컴포넌트들에게 제공해준다.
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -14,7 +15,7 @@ import createSagaMiddleware from 'redux-saga';
 import AppLayout from '../components/AppLayout';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
-
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const ChoWitter = ({ Component, store, pageProps }) => (
   // Provider가 부모 컴포넌트이고 store를 가지고 있기 때문에
@@ -59,6 +60,28 @@ ChoWitter.getInitialProps = async (context) => {
   // 해당컴포넌트이름.getInitialProps = async (context) => { context.query.tag }
   // 이렇게 가져와야 한다
   const { ctx, Component } = context;
+  // context.store에서 state들을 불러옴
+  const state = ctx.store.getState();
+  // 클라이언트 환경에서는 브라우저가 쿠키를 넣어주지만
+  // 서버일때는 직접 넣어야된다.
+  // 서버일떄만 쿠키를 가져온다
+  const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+  // 서버일떄만 && 쿠키가 있을떄만 실행
+  if (ctx.isServer && cookie) {
+    // axios.defaults: 각기 다른 모든 axios 요청에 cookie가 적용된다
+    axios.defaults.headers.Cookie = cookie;
+    // 토큰도 보내줄수 있음
+    // axios.defaults.headers.Authorization = token;
+  }
+  // 페이지가 첫 로드 될떄 내정보가 없으면 유저 정보를 불러온다
+  // 로그인 쿠키가 남아있는 전제조건하에
+  if (!state.user.me) {
+    // SSR을 하기위해서 context.store에서 dispatch 해준다
+    // 새로고침시 잠깐 빈페이지 나오는거 방지
+    ctx.store.dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+  }
   let pageProps = {};
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);

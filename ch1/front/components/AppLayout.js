@@ -25,16 +25,19 @@ import { LOAD_USER_REQUEST } from '../reducers/user';
 const AppLayout = ({ children }) => {
   // useSelector: useState라고 생각하면 됨
   const { me } = useSelector(state => state.user);
-  const dispatch = useDispatch();
-  // 페이지가 첫 로드 될떄 유저 정보를 불러온다
-  // 로그인 쿠키가 남아있는 전제조건하에
-  useEffect(() => {
-    if (!me) {
-      dispatch({
-        type: LOAD_USER_REQUEST,
-      });
-    }
-  }, []);
+
+  // SSR을 하기위해 아래 코드들 주석처리
+  // _app.js에서 dispatch로 코드 이동
+  // const dispatch = useDispatch();
+  // // 페이지가 첫 로드 될떄 유저 정보를 불러온다
+  // // 로그인 쿠키가 남아있는 전제조건하에
+  // useEffect(() => {
+  //   if (!me) {
+  //     dispatch({
+  //       type: LOAD_USER_REQUEST,
+  //     });
+  //   }
+  // }, []);
   return (
     <div>
       <Menu mode="horizontal">

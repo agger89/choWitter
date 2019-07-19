@@ -123,6 +123,9 @@ function loadUserAPI(userId) {
   // userId가 있으면 남의 정보 없으면 내정보 가져오기
   return axios.get(userId ? `/user/${userId}` : '/user/', {
     // 서로 다른 도메인간 쿠키값 읽어오기
+    // SSR적용후엔 쿠키값을 여기서 읽어 올 수 없다 그 이유는
+    // 브라우저(클라이언트)에서 서버로 보내주는 쿠키 값이기 때문에
+    // 그래서 _app.js에서 getInitialProps 안에서 보내줘야한다
     withCredentials: true,
   });
 }
