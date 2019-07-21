@@ -13,27 +13,27 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { me, followingList, followerList } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
-
-  useEffect(() => {
-    // 로그인 했을떄
-    if (me) {
-      // 팔로워 목록
-      dispatch({
-        type: LOAD_FOLLOWERS_REQUEST,
-        data: me.id,
-      });
-      // 팔로잉 목록
-      dispatch({
-        type: LOAD_FOLLOWINGS_REQUEST,
-        data: me.id,
-      });
-      // 내 게시글들
-      dispatch({
-        type: LOAD_USER_POSTS_REQUEST,
-        data: me.id,
-      });
-    }
-  }, [me && me.id]);
+  // SSR 적용위해 아래 getInitialProps로 코드이동
+  // useEffect(() => {
+  //   // 로그인 했을떄
+  //   if (me) {
+  //     // 팔로워 목록
+  //     dispatch({
+  //       type: LOAD_FOLLOWERS_REQUEST,
+  //       data: me.id,
+  //     });
+  //     // 팔로잉 목록
+  //     dispatch({
+  //       type: LOAD_FOLLOWINGS_REQUEST,
+  //       data: me.id,
+  //     });
+  //     // 내 게시글들
+  //     dispatch({
+  //       type: LOAD_USER_POSTS_REQUEST,
+  //       data: me.id,
+  //     });
+  //   }
+  // }, [me && me.id]);
 
   // 언팔로우
   const onUnfollow = useCallback(userId => () => {
@@ -93,6 +93,37 @@ const Profile = () => {
       </div>
     </div>
   );
+};
+
+Profile.getInitialProps = async (context) => {
+  // store에 있는 state 가져옴
+  const state = context.store.getState();
+  // 프로필에서 SSR을 할떄 주의해야 할점이
+  // dispatch 순서가
+  // LOAD_USER_REQUEST가 먼저 실행되고 아래의 코드들이 실행 되는데
+  // 아직 LOAD_USER_SUCCESS가 실행이 안되어서 me가 없기때문에 에러가난다
+  // 그래서 saga에서 데이터 통신할때
+  // axios.get(`/user/${userId || 0}/followers`, {})
+  // userId || 0 이렇게 코드를 작성해주고
+  // 서버에서는 0 이여도 데이터를 뿌려줄수 있게 셋팅해놓는다
+  // UserId: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0
+
+  // 팔로워 목록
+  context.store.dispatch({
+    type: LOAD_FOLLOWERS_REQUEST,
+    data: state.user.me && state.user.me.id,
+  });
+  // 팔로잉 목록
+  context.store.dispatch({
+    type: LOAD_FOLLOWINGS_REQUEST,
+    data: state.user.me && state.user.me.id,
+  });
+  // 내 게시글들
+  context.store.dispatch({
+    type: LOAD_USER_POSTS_REQUEST,
+    data: state.user.me && state.user.me.id,
+  });
+  // 여기서 LOAD_USER_SUCCESS 되서 me가 생김
 };
 
 export default Profile;
