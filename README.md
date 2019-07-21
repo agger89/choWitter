@@ -61,3 +61,6 @@
 
 # Comment Write Cycle
     - PostCard.js에 onSubmitComment 함수 실행 -> ADD_COMMENT_REQUEST가 dispatch 됨 -> const reducer에 switch문에 ADD_COMMENT_REQUEST가 걸리면서 리턴, 동시에 post saga에서 watchAddComment 함수안에 ADD_COMMENT_REQUEST가 실행되면서 addComment 함수가 실행 -> try catch 문에서 ADD_POST_SUCCESS가 걸리면서 ADD_COMMENT_REQUEST가 dispatch 될때 넘어온 post.id를 다시 const reducer에 switch문에 ADD_COMMENT_SUCCESS으로 넘겨준다 -> findIndex 함수로 댓글을 등록한 post.id 찾고 리턴
+
+# getInitialProps Cycle
+    - 

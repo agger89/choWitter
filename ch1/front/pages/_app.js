@@ -95,7 +95,11 @@ const configureStore = (initialState, options) => {
   const sagaMiddleware = createSagaMiddleware();
   // middleware는 액션과 스토어 사이에서 동작한다.
   // sagas/middleware.js 에 있는 sagaMiddleware를 리덕스와 연결
-  const middlewares = [sagaMiddleware];
+  const middlewares = [sagaMiddleware, (store) => (next) => (action) => {
+    // 리덕스 사가 에러 찾는 방식 (커스텀 미들웨어)
+    console.log(action);
+    next(action);
+  }];
   // enhancer의 뜻: 향상시키다
   // compose: middleware들끼리 합성 시켜줌
   // 아래 compose안에 들어있는 모든것을 합성해서 store에 넣어줌

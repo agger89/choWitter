@@ -84,7 +84,8 @@ function* watchloadMainPosts() {
 }
 
 function loadHashtagPostsAPI(tag) {
-  return axios.get(`/hashtag/${tag}`);
+  // encodeURIComponent: 한글과 특수문자 인코딩
+  return axios.get(`/hashtag/${encodeURIComponent(tag)}`);
 }
 
 function* loadHashtagPosts(action) {

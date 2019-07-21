@@ -8,21 +8,22 @@ import PostCard from '../components/PostCard';
 
 // 프로필 이미지 클릭시 오는 페이지
 const User = ({ id }) => {
-  const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
-  useEffect(() => {
-    // 남의 정보 가져오는
-    dispatch({
-      type: LOAD_USER_REQUEST,
-      data: id,
-    });
-    // 남의 포스트 가져오는
-    dispatch({
-      type: LOAD_USER_POSTS_REQUEST,
-      data: id,
-    });
-  }, []);
+  // SSR 적용위해 아래 getInitialProps로 코드이동
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   // 남의 정보 가져오는
+  //   dispatch({
+  //     type: LOAD_USER_REQUEST,
+  //     data: id,
+  //   });
+  //   // 남의 포스트 가져오는
+  //   dispatch({
+  //     type: LOAD_USER_POSTS_REQUEST,
+  //     data: id,
+  //   });
+  // }, []);
   return (
     <div>
       {userInfo
@@ -68,8 +69,18 @@ User.propTypes = {
 // 부모 컴포넌트 app.js에
 // ChoWitter.getInitialProps에서 받아온 props를 사용 context
 User.getInitialProps = async (context) => {
+  // 문자열 정수로 변환
+  const id = parseInt(context.query.id, 10);
+  context.store.dispatch({
+    type: LOAD_USER_REQUEST,
+    data: id,
+  });
+  context.store.dispatch({
+    type: LOAD_USER_POSTS_REQUEST,
+    data: id,
+  });
   // 위에 props 사용가능
-  return { id: parseInt(context.query.id, 10) };
+  return { id };
 };
 
 export default User;
