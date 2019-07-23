@@ -98,7 +98,7 @@ const configureStore = (initialState, options) => {
   // sagas/middleware.js 에 있는 sagaMiddleware를 리덕스와 연결
   const middlewares = [sagaMiddleware, (store) => (next) => (action) => {
     // 리덕스 사가 에러 찾는 방식 (커스텀 미들웨어)
-    console.log(action);
+    // console.log(action);
     next(action);
   }];
   // enhancer의 뜻: 향상시키다

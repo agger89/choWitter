@@ -1,5 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
-import { List, Card, Icon, Button } from 'antd';
+import {
+ List, Card, Icon, Button 
+} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import NicknameEditForm from '../components/NicknameEditForm';
 import PostCard from '../components/PostCard';
@@ -11,7 +13,9 @@ import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { me, followingList, followerList } = useSelector(state => state.user);
+  const {
+    me, followingList, followerList, hasMoreFollower, hasMoreFollowing,
+  } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
   // SSR 적용위해 아래 getInitialProps로 코드이동
   // useEffect(() => {
@@ -79,7 +83,8 @@ const Profile = () => {
         grid={{ gutter: 4, xs: 2, md: 3 }}
         size="small"
         header={<div>팔로잉 목록</div>}
-        loadMore={<Button style={{ width: '100%' }} onClick={loadMoreFollowings}>더 보기</Button>}
+        // 더보기 유무
+        loadMore={hasMoreFollowing && <Button style={{ width: '100%' }} onClick={loadMoreFollowings}>더 보기</Button>}
         bordered
         dataSource={followingList}
         renderItem={item => (
@@ -96,7 +101,8 @@ const Profile = () => {
         grid={{ gutter: 4, xs: 2, md: 3 }}
         size="small"
         header={<div>팔로워 목록</div>}
-        loadMore={<Button style={{ width: '100%' }} onClick={loadMoreFollowers}>더 보기</Button>}
+        // 더보기 유무
+        loadMore={hasMoreFollower && <Button style={{ width: '100%' }} onClick={loadMoreFollowers}>더 보기</Button>}
         bordered
         dataSource={followerList}
         renderItem={item => (

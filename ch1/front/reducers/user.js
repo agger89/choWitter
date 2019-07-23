@@ -22,6 +22,8 @@ export const initialState = {
   userInfo: null, // 남의 정보
   isEditingNickname: false, // 닉네임 변경 중
   editNicknameErrorReason: '', // 닉네임 변경 실패 이유
+  hasMoreFollower: false, // 더보기 버튼 유무 팔로워
+  hasMoreFollowing: false, // 더보기 버튼 유무 팔로잉
 };
 
 // 액션의 이름
@@ -243,8 +245,12 @@ const reducer = (state = initialState, action) => {
       };
     }
     case LOAD_FOLLOWERS_REQUEST: {
+      // console.log(action.offset, "offset");
       return {
         ...state,
+        // 처음 프로필화면이 로드 될때 offset 값은 0 그래서 거짓으로 가서 true
+        // 이유는 삼항연산자는 값이 0이나 undefined면 거짓으로 간다
+        hasMoreFollower: action.offset ? state.hasMoreFollower : true,
       };
     }
     case LOAD_FOLLOWERS_SUCCESS: {
@@ -253,6 +259,8 @@ const reducer = (state = initialState, action) => {
         // 팔로워 리스트 불러오기
         // concat: 기존 배열을 변경하지 않고 추가된 배열과 함꺠 불러온다
         followerList: state.followerList.concat(action.data),
+        // 불러온 팔로워가 3명이면 true
+        hasMoreFollower: action.data.length === 3,
       };
     }
     case LOAD_FOLLOWERS_FAILURE: {
@@ -263,6 +271,9 @@ const reducer = (state = initialState, action) => {
     case LOAD_FOLLOWINGS_REQUEST: {
       return {
         ...state,
+        // 처음 프로필화면이 로드 될때 offset 값은 0 그래서 거짓으로 가서 true
+        // 이유는 삼항연산자는 값이 0이나 undefined면 거짓으로 간다
+        hasMoreFollowing: action.offset ? state.hasMoreFollowing : true,
       };
     }
     case LOAD_FOLLOWINGS_SUCCESS: {
@@ -271,6 +282,8 @@ const reducer = (state = initialState, action) => {
         // 팔로잉 리스트 불러오기
         // concat: 기존 배열을 변경하지 않고 추가된 배열과 함꺠 불러온다
         followingList: state.followingList.concat(action.data),
+        // 불러온 팔로워가 3명이면 true
+        hasMoreFollowing: action.data.length === 3,
       };
     }
     case LOAD_FOLLOWINGS_FAILURE: {
