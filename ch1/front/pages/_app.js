@@ -46,6 +46,7 @@ ChoWitter.propTypes = {
 };
 
 // getInitialProps:
+// pages 폴더 안에 page들에게만 사용한다
 // next가 추가해준 라이프사이클
 // 제일 먼저 실행된다.
 // 서버쪽의 데이터를 getInitialProps로 먼저 가져와서 프론트에 렌더링(SSR)

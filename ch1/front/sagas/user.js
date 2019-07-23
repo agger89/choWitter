@@ -208,6 +208,7 @@ function* watchUnfollow() {
 
 // 팔로우
 function loadFollowersAPI(userId) {
+  // userId || 0: SSR 적용위해 0도 요청가능
   return axios.get(`/user/${userId || 0}/followers`, {
     withCredentials: true,
   });
@@ -235,6 +236,7 @@ function* watchLoadFollowers() {
 
 // 팔로잉
 function loadFollowingsAPI(userId) {
+  // userId || 0: SSR 적용위해 0도 요청가능
   return axios.get(`/user/${userId || 0}/followings`, {
     withCredentials: true,
   });

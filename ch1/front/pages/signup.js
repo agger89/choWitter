@@ -84,6 +84,11 @@ const Signup = () => {
     setTerm(e.target.checked);
   }, []);
 
+  // me 데이터가 있으면 빈 객체값(null)을 리턴해줌
+  if (me) {
+    return null;
+  }
+
   return (
     <>
       <Form onSubmit={onSubmitForm} style={{ padding: 10 }}>

@@ -301,6 +301,24 @@ const reducer = (state = initialState, action) => {
         ...state,
       };
     }
+    case REMOVE_POST_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case REMOVE_POST_SUCCESS: {
+      return {
+        ...state,
+        // 불변성 적용: 넘어온 action.data와 id값이 맞지 않는 포스트들은 전부 리턴
+        // 그렇게되면 한개의 포스트만 지워지게 됨
+        mainPosts: state.mainPosts.filter(v => v.id !== action.data),
+      };
+    }
+    case REMOVE_POST_FAILURE: {
+      return {
+        ...state,
+      };
+    }
     // 액션이 아무것도 해당되지 않을때 기본값
     default: {
       return {

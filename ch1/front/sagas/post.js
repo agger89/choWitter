@@ -13,6 +13,7 @@ import {
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
   RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE,
+  REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_OF_ME,
 } from '../reducers/post';
 import { ADD_POST_TO_ME } from '../reducers/user';
 
@@ -109,6 +110,7 @@ function* watchLoadHashtagPosts() {
 }
 
 function loadUserPostsAPI(id) {
+  // id || 0: SSR 적용위해 0도 요청가능
   return axios.get(`/user/${id || 0}/posts`);
 }
 
@@ -321,6 +323,40 @@ function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet);
 }
 
+// 포스트 삭제
+function removePostAPI(postId) {
+  return axios.delete(`/post/${postId}`, {
+    withCredentials: true,
+  });
+}
+
+function* removePost(action) {
+  try {
+    const result = yield call(removePostAPI, action.data);
+    yield put({
+      type: REMOVE_POST_SUCCESS,
+      data: result.data,
+    });
+    // user reducer
+    // 게시글이 삭제될때
+    // 좌측 프로필 게시글 갯수 감소
+    yield put({
+      type: REMOVE_POST_OF_ME,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: REMOVE_POST_FAILURE,
+      error: e,
+    });
+    alert(e.response && e.response.data);
+  }
+}
+
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost);
+}
+
 export default function* postSaga() {
   yield all([
     // fork: 함수를 비동기적으로 호출
@@ -334,5 +370,6 @@ export default function* postSaga() {
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchRetweet),
+    fork(watchRemovePost),
   ]);
 }

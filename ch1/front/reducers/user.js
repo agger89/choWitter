@@ -65,8 +65,10 @@ export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 export const EDIT_NICKNAME_REQUEST = 'EDIT_NICKNAME_REQUEST';
 export const EDIT_NICKNAME_SUCCESS = 'EDIT_NICKNAME_SUCCESS';
 export const EDIT_NICKNAME_FAILURE = 'EDIT_NICKNAME_FAILURE';
-
+// 내 포스트 갯수 증가 액션
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+// 내 포스트 갯수 감소 액션
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
@@ -227,6 +229,16 @@ const reducer = (state = initialState, action) => {
         me: {
           ...state.me,
           Posts: [{ id: action.data }, ...state.me.Posts],
+        },
+      };
+    }
+    // 게시글 삭제시 게시글 갯수 감소
+    case REMOVE_POST_OF_ME: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: state.me.Posts.filter(v => v.id !== action.data),
         },
       };
     }
