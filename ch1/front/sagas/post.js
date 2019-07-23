@@ -1,5 +1,5 @@
 import {
-  all, fork, put, takeLatest, call,
+  all, fork, put, takeLatest, call, throttle,
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
@@ -58,16 +58,19 @@ function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
 
-function loadMainPostsAPI() {
+// 새로 로딩 할떄는 lastId = 0을 보내주고
+// 로딩 후 한번 불러오고 나면 action.lastId을 보내준다
+function loadMainPostsAPI(lastId = 0, limit = 10) {
   // 게시물은 로그인 안한 유저도 볼수 있기 때문에
   // withCredentials 넣지 않아도 된다
-  return axios.get('/posts');
+  // 마지막 게시물의 id와 limit값을 백엔드로 넘겨준다
+  return axios.get(`/posts?lastId=${lastId}&limit=${limit}`);
 }
 
-function* loadMainPosts() {
+function* loadMainPosts(action) {
   try {
     // 서버의 응답은 result
-    const result = yield call(loadMainPostsAPI);
+    const result = yield call(loadMainPostsAPI, action.lastId);
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,
       data: result.data,
@@ -81,18 +84,19 @@ function* loadMainPosts() {
 }
 
 function* watchloadMainPosts() {
-  yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
+  // throttle: 해당 초에 한번씩만 호출
+  yield throttle(2000, LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
 }
 
-function loadHashtagPostsAPI(tag) {
+function loadHashtagPostsAPI(tag, lastId = 0) {
   // encodeURIComponent: 한글과 특수문자 인코딩
-  return axios.get(`/hashtag/${encodeURIComponent(tag)}`);
+  return axios.get(`/hashtag/${encodeURIComponent(tag)}?lastId=${lastId}&limit=10`);
 }
 
 function* loadHashtagPosts(action) {
   try {
     // 서버의 응답은 result
-    const result = yield call(loadHashtagPostsAPI, action.data);
+    const result = yield call(loadHashtagPostsAPI, action.data, action.lastId);
     yield put({
       type: LOAD_HASHTAG_POSTS_SUCCESS,
       data: result.data,

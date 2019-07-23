@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 // useDispatch: dispatch를 사용하기 위함
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,17 +28,45 @@ const Home = () => {
   // 아래의 dispatch도 같이 렌더링 된다.
   // state안에 들어있는 user 를 구조분해로 정의해서 사용
   // useSelector: useState라고 생각하면 됨
+
   const { me } = useSelector(state => state.user);
-  const { mainPosts } = useSelector(state => state.post);
+  const { mainPosts, hasMorePost } = useSelector(state => state.post);
+  const dispatch = useDispatch();
 
   // SSR을 하기위해 아래 코드들 주석처리
   // useDispatch: setState라고 생각하면 된다
-  // const dispatch = useDispatch();
   // useEffect(() => { // useEffct: 컴포넌트가 마운트 되었을때 실행되는 함수
   //   dispatch({
   //     type: LOAD_MAIN_POSTS_REQUEST,
   //   });
   // }, []);
+
+  const onScroll = useCallback(() => {
+    // window.scrollY: 스크롤 내린 거리
+    // document.documentElement.clientHeight: 현재 화면 높이
+    // document.documentElement.scrollHeight: 전체 화면 길이
+    // 스크롤이 제일 아래로 가기전 300px 전에 dispatch
+    if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+      // hasMorePost:
+      // reducer에서 가공한 게시물 더보여주기 활성화 스크롤
+      // 더불러올게 있을때만 dispatch
+      if (hasMorePost) {
+        dispatch({
+          type: LOAD_MAIN_POSTS_REQUEST,
+          // 마지막 게시글의 id
+          lastId: mainPosts[mainPosts.length - 1].id,
+        });
+      }
+    }
+  }, [hasMorePost, mainPosts.length]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+    // onScroll 함수안에서 state를 사용하기떄문에 아래에 넣어준다
+  }, [mainPosts.length]);
 
   return (
     <div>

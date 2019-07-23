@@ -20,6 +20,7 @@ export const initialState = {
   isAddingComment: false, // 댓글 업로드 중
   commentAdded: false, // 댓글 업로드 성공
   addCommentErrorReason: '', // 댓글 업로드 실패 사유
+  hasMorePost: false, // 더불러오기 스크롤 활성화 유무
 };
 
 // 데이터 생겨서 주석
@@ -222,7 +223,12 @@ const reducer = (state = initialState, action) => {
     case LOAD_USER_POSTS_REQUEST: {
       return {
         ...state,
-        mainPosts: [],
+        // 새로 로딩 될떄는 기존 게시글을 없애서 [] 아래 SUCCESS에서 새로 만들고
+        // lastId가 있는 경우(더불러오기)는 이미 기존 게시글이 있는 상태이고
+        // 다음 게시글을 불러오는 거니까 기존 포스트 유지
+        mainPosts: action.lastId === 0 ? [] : state.mainPosts,
+        // 처음 불러오는 거면 lastId가 0이니까 거짓 그래서 스크롤 활성화(true)
+        hasMorePost: action.lastId ? state.hasMorePost : true,
       };
     }
     case LOAD_MAIN_POSTS_SUCCESS:
@@ -230,7 +236,10 @@ const reducer = (state = initialState, action) => {
     case LOAD_USER_POSTS_SUCCESS: {
       return {
         ...state,
-        mainPosts: action.data,
+        // concat: 기존 배열을 변경하지 않고 추가된 배열과 함꺠 불러온다
+        mainPosts: state.mainPosts.concat(action.data),
+        // 불러온 게시글이 10개면 스크롤 활성화(true)
+        hasMorePost: action.data.length === 10,
       };
     }
     case LOAD_MAIN_POSTS_FAILURE:
