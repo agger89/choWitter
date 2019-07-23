@@ -251,7 +251,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         // 팔로워 리스트 불러오기
-        followerList: action.data,
+        // concat: 기존 배열을 변경하지 않고 추가된 배열과 함꺠 불러온다
+        followerList: state.followerList.concat(action.data),
       };
     }
     case LOAD_FOLLOWERS_FAILURE: {
@@ -268,7 +269,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         // 팔로잉 리스트 불러오기
-        followingList: action.data,
+        // concat: 기존 배열을 변경하지 않고 추가된 배열과 함꺠 불러온다
+        followingList: state.followingList.concat(action.data),
       };
     }
     case LOAD_FOLLOWINGS_FAILURE: {

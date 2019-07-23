@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { List, Card, Icon } from 'antd';
+import { List, Card, Icon, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import NicknameEditForm from '../components/NicknameEditForm';
 import PostCard from '../components/PostCard';
@@ -51,6 +51,26 @@ const Profile = () => {
     });
   }, []);
 
+  // 더보기 버튼 클릭시 팔로잉 리스트 더 보여줌
+  const loadMoreFollowings = useCallback(() => {
+    dispatch({
+      type: LOAD_FOLLOWINGS_REQUEST,
+      // 현재 리스트 갯수를 action의 데이터로 보내줌
+      // ex:)
+      // 처음엔 offset이 0이므로 3명을 불러옴 그다음
+      // 현재 리스트에 3명이 있으면 offset이 3이되면서 그다음 4~6까지 세명을 불러옴
+      offset: followingList.length,
+    });
+  }, [followingList.length]);
+
+  // 더보기 버튼 클릭시 팔로워 리스트 더 보여줌
+  const loadMoreFollowers = useCallback(() => {
+    dispatch({
+      type: LOAD_FOLLOWERS_REQUEST,
+      offset: followerList.length,
+    });
+  }, [followerList.length]);
+
   return (
     <div>
       <NicknameEditForm />
@@ -59,6 +79,7 @@ const Profile = () => {
         grid={{ gutter: 4, xs: 2, md: 3 }}
         size="small"
         header={<div>팔로잉 목록</div>}
+        loadMore={<Button style={{ width: '100%' }} onClick={loadMoreFollowings}>더 보기</Button>}
         bordered
         dataSource={followingList}
         renderItem={item => (
@@ -75,6 +96,7 @@ const Profile = () => {
         grid={{ gutter: 4, xs: 2, md: 3 }}
         size="small"
         header={<div>팔로워 목록</div>}
+        loadMore={<Button style={{ width: '100%' }} onClick={loadMoreFollowers}>더 보기</Button>}
         bordered
         dataSource={followerList}
         renderItem={item => (

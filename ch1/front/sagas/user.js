@@ -207,16 +207,23 @@ function* watchUnfollow() {
 }
 
 // 팔로우
-function loadFollowersAPI(userId) {
+function loadFollowersAPI(userId, offset = 0, limit = 3) {
   // userId || 0: SSR 적용위해 0도 요청가능
-  return axios.get(`/user/${userId || 0}/followers`, {
+  // ?offset=${offset}&limit=${limit}:
+  // 서버로 offset이랑 limit을 보냄
+  // offset: 기존 limit으로 불러온 3개를 건너뛰는 부분
+  // limit: 최대 불러올 갯수
+  // offset=${offset} key=value
+  return axios.get(`/user/${userId || 0}/followers?offset=${offset}&limit=${limit}`, {
     withCredentials: true,
   });
 }
 
 function* loadFollowers(action) {
   try {
-    const result = yield call(loadFollowersAPI, action.data);
+    // action.offset :
+    // LOAD_FOLLOWERS_REQUEST가 dispatch될떄 넘어온 followerList의 length
+    const result = yield call(loadFollowersAPI, action.data, action.offset);
     yield put({
       type: LOAD_FOLLOWERS_SUCCESS,
       data: result.data,
@@ -235,16 +242,18 @@ function* watchLoadFollowers() {
 }
 
 // 팔로잉
-function loadFollowingsAPI(userId) {
+function loadFollowingsAPI(userId, offset = 0, limit = 3) {
   // userId || 0: SSR 적용위해 0도 요청가능
-  return axios.get(`/user/${userId || 0}/followings`, {
+  return axios.get(`/user/${userId || 0}/followings?offset=${offset}&limit=${limit}`, {
     withCredentials: true,
   });
 }
 
 function* loadFollowings(action) {
   try {
-    const result = yield call(loadFollowingsAPI, action.data);
+    // action.offset :
+    // LOAD_FOLLOWINGS_REQUEST가 dispatch될떄 넘어온 followingList의 length
+    const result = yield call(loadFollowingsAPI, action.data, action.offset);
     yield put({
       type: LOAD_FOLLOWINGS_SUCCESS,
       data: result.data,
