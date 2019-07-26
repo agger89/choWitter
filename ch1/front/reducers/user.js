@@ -326,7 +326,7 @@ const reducer = (state = initialState, action) => {
         // immer code
         draft.followerList = !action.offset ? [] : draft.followerList;
         draft.hasMoreFollower = action.offset ? draft.hasMoreFollower : true; // 처음 데이터를 가져올 때는 더보기 버튼을 보여주는 걸로
-        break
+        break;
         // console.log(action.offset, "offset");
         // return {
         //   ...state,

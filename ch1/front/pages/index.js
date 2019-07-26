@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 // useDispatch: dispatch를 사용하기 위함
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,6 +32,8 @@ const Home = () => {
   const { me } = useSelector(state => state.user);
   const { mainPosts, hasMorePost } = useSelector(state => state.post);
   const dispatch = useDispatch();
+  // 빈배열 생성
+  const countRef = useRef([]);
 
   // SSR을 하기위해 아래 코드들 주석처리
   // useDispatch: setState라고 생각하면 된다
@@ -40,7 +42,6 @@ const Home = () => {
   //     type: LOAD_MAIN_POSTS_REQUEST,
   //   });
   // }, []);
-
   const onScroll = useCallback(() => {
     // window.scrollY: 스크롤 내린 거리
     // document.documentElement.clientHeight: 현재 화면 높이
@@ -51,11 +52,18 @@ const Home = () => {
       // reducer에서 가공한 게시물 더보여주기 활성화 스크롤
       // 더불러올게 있을때만 dispatch
       if (hasMorePost) {
-        dispatch({
-          type: LOAD_MAIN_POSTS_REQUEST,
-          // 마지막 게시글의 id
-          lastId: mainPosts[mainPosts.length - 1].id,
-        });
+        const lastId = mainPosts[mainPosts.length - 1].id;
+        // 프론트 단에서 리덕스 액션 여러번 호출되는것 막기
+        // 변수 countRef의 배열에 중복된 lastId가 없으면 dispatch
+        if (!countRef.current.includes(lastId)) {
+          dispatch({
+            type: LOAD_MAIN_POSTS_REQUEST,
+            // 마지막 게시글의 id
+            lastId,
+          });
+          // 변수 countRef의 배열에 lastId를 넣어준다
+          countRef.current.push(lastId);
+        }
       }
     }
   }, [hasMorePost, mainPosts.length]);
