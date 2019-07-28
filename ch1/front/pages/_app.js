@@ -123,7 +123,11 @@ ChoWitter.getInitialProps = async (context) => {
   }
   let pageProps = {};
   if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
+    // Failed prop type: The prop `pageProps` is marked as required in `ChoWitter`, but its value is `undefined`
+    // pageProps는 isRequired로 propTypes을 체크 했기때문에
+    // 항상 값이 있어야 한다
+    // 그래서 코드 추가 후 에러 해결: Component.getInitialProps(ctx) || {}
+    pageProps = await Component.getInitialProps(ctx) || {};
   }
   return { pageProps };
 };

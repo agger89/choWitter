@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Card, Avatar, Button } from 'antd';
+import Link from 'next/link';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 // useDispatch: dispatch를 사용하기 위함
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,23 +33,23 @@ const UserProfile = () => {
 
   return (
     <Card
-      // actions={[
-      //   <div key="twit">
-      //     짹짹
-      //     <br />
-      //     {me.Posts.length}
-      //   </div>,
-      //   <div key="following">
-      //     팔로잉
-      //     <br />
-      //     {me.Followings.length}
-      //   </div>,
-      //   <div key="follower">
-      //     팔로워
-      //     <br />
-      //     {me.Followers.length}
-      //   </div>,
-      // ]}
+      actions={[
+        // <Link href="/profile" key="twit">
+        //   <a>
+        //     <div>짹짹<br />{me.Posts.length}</div>
+        //   </a>
+        // </Link>,
+        // <Link href="/profile" key="following">
+        //   <a>
+        //     <div>팔로잉<br />{me.Followings.length}</div>
+        //   </a>
+        // </Link>,
+        // <Link href="/profile" key="follower">
+        //   <a>
+        //     <div>팔로워<br />{me.Followers.length}</div>
+        //   </a>
+        // </Link>,
+      ]}
     >
       <Card.Meta
         avatar={<Avatar>{me.nickname[0]}</Avatar>}
