@@ -2,8 +2,8 @@ import React, { useEffect, useCallback, useRef } from 'react';
 // useDispatch: dispatch를 사용하기 위함
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useDispatch, useSelector } from 'react-redux';
-import PostForm from '../components/PostForm';
-import PostCard from '../components/PostCard';
+import PostForm from '../containers/PostForm';
+import PostCard from '../containers/PostCard';
 // action 불러옴
 import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
 

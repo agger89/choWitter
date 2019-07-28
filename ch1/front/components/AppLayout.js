@@ -8,9 +8,9 @@ import
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
-import LoginForm from './LoginForm';
-import UserProfile from './UserProfile';
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import LoginForm from '../containers/LoginForm';
+import UserProfile from '../containers/UserProfile';
+// import { LOAD_USER_REQUEST } from '../reducers/user';
 
 // 백엔드에 데이터가 아직 없기때문에
 // 가짜 데이터를 만들어준다

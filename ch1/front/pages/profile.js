@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback } from 'react';
 import {
- List, Card, Icon, Button 
+  List, Card, Icon, Button,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import NicknameEditForm from '../components/NicknameEditForm';
-import PostCard from '../components/PostCard';
+import NicknameEditForm from '../containers/NicknameEditForm';
+import PostCard from '../containers/PostCard';
 import {
   LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, UNFOLLOW_USER_REQUEST,
   REMOVE_FOLLOWER_REQUEST,
