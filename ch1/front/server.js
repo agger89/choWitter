@@ -34,6 +34,13 @@ app.prepare().then(() => {
     },
   }));
 
+  // 주소창에 게시글 아이디 입력시 페이지 렌더링 시켜주는 로직, post.js
+  // /post/:id: 포스트 아이디의 경로( ex:) post/1 )
+  server.get('/post/:id', (req, res) => {
+    // { id: req.params.id }: 프론트에서 캐치 할수 있게
+    return app.render(req, res, '/post', { id: req.params.id });
+  });
+
   // 해시태그 클릭시 페이지 렌더링 시켜주는 로직, hashtag.js
   // /hashtag/:tag: 해시태그의 텍스트 이름의 경로( ex:) hashtag/좋아요 )
   server.get('/hashtag/:tag', (req, res) => {

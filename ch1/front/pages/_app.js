@@ -8,6 +8,8 @@ import withRedux from 'next-redux-wrapper';
 // SSR을 하기위해
 import withReduxSaga from 'next-redux-saga';
 import axios from 'axios';
+import Helmet from 'react-helmet';
+import { Container } from 'next/app';
 // Provider: 리덕스 state를 컴포넌트들에게 제공해준다.
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -18,22 +20,58 @@ import rootSaga from '../sagas';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const ChoWitter = ({ Component, store, pageProps }) => (
-  // Provider가 부모 컴포넌트이고 store를 가지고 있기 때문에
-  // 자식 컴포넌트들은 store에 있는 state를 받을수 있다
-  // store: state, action, reducer가 합쳐진것
-  <Provider store={store}>
-    <Head>
-      <title>choWitter</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.19.0/antd.css" />
-      <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
-    </Head>
-    <AppLayout>
-      {/* next에서 _app.js는 props로 컴포넌트(<Component />)를 받는다(index.js, profile.js, signup.js) */}
-      {/* ...pageProps: 아래의 getInitialProps 에서 받아온 props 객체, 자식 컴포넌트들에게 props로 전달 */}
-      <Component {...pageProps} />
-    </AppLayout>
-  </Provider>
+  // Helmet SSR 적용시 추가
+  <Container>
+    {/* Provider가 부모 컴포넌트이고 store를 가지고 있기 때문에
+      자식 컴포넌트들은 store에 있는 state를 받을수 있다
+      store: state, action, reducer가 합쳐진것 */}
+    <Provider store={store}>
+      {/* head 태그에 들어갈 것들 */}
+      <Helmet
+        title="ChoWitter"
+        htmlAttributes={{ lang: 'ko' }}
+        meta={[{
+          charset: 'UTF-8',
+        }, {
+          name: 'viewport',
+          content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+        }, {
+          'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
+        }, {
+          name: 'description', content: 'ChoWitter',
+        }, {
+          name: 'og:title', content: 'ChoWitter',
+        }, {
+          name: 'og:description', content: 'ChoWitter SNS',
+        }, {
+          property: 'og:type', content: 'website',
+        }, {
+          property: 'og:image', content: '',
+        }]}
+        link={[{
+          rel: 'shortcut icon', href: '/favicon.ico',
+        }, {
+          rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css',
+        }, {
+          rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css',
+        }, {
+          rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css',
+        }]}
+      />
+      {/* 위에 helmet 으로 대체되서 주석 */}
+      {/* <Head>
+        <title>choWitter</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.19.0/antd.css" />
+        <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+      </Head> */}
+      <AppLayout>
+        {/* next에서 _app.js는 props로 컴포넌트(<Component />)를 받는다(index.js, profile.js, signup.js) */}
+        {/* ...pageProps: 아래의 getInitialProps 에서 받아온 props 객체, 자식 컴포넌트들에게 props로 전달 */}
+        <Component {...pageProps} />
+      </AppLayout>
+    </Provider>
+  </Container>
 );
 
 // 부모로부터 내려온 props를 검증

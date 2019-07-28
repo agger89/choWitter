@@ -24,6 +24,7 @@ export const initialState = {
   commentAdded: false, // 댓글 업로드 성공
   addCommentErrorReason: '', // 댓글 업로드 실패 사유
   hasMorePost: false, // 더불러오기 스크롤 활성화 유무
+  singlePost: null, // 개별 포스트
 };
 
 // 데이터 생겨서 주석
@@ -66,11 +67,10 @@ export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'LOAD_USER_POSTS_FAILURE';
 // 이미지 업로드 취소 액션
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
-
+// 게시글 등록 액션
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
-
 // 좋아요 액션
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
@@ -95,6 +95,10 @@ export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
+// 개별 포스트 로딩 액션
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
@@ -432,6 +436,11 @@ const reducer = (state = initialState, action) => {
         // return {
         //   ...state,
         // };
+      }
+      // 개별 포스트 등록
+      case LOAD_POST_SUCCESS: {
+        draft.singlePost = action.data;
+        break;
       }
       // 액션이 아무것도 해당되지 않을때 기본값
       default: {

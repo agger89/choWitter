@@ -33,6 +33,9 @@ const Home = () => {
   const { mainPosts, hasMorePost } = useSelector(state => state.post);
   const dispatch = useDispatch();
   // 빈배열 생성
+  // useRef로 배열 생성하는 이유는
+  // 렌더링 시마다 배열이 초기화 되는걸 막기위해
+  // 배열에 값이 들어가면 그 이후로는 초기화 되지 않는다.
   const countRef = useRef([]);
 
   // SSR을 하기위해 아래 코드들 주석처리
