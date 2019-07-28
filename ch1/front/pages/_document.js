@@ -8,14 +8,22 @@ import PropTypes from 'prop-types';
 // Main: app.js
 // NextScript: next 서버구동에 필요한 스크립트들을 모아둔것
 import Document, { Main, NextScript } from 'next/document';
+// styled-components SSR
+import { ServerStyleSheet } from 'styled-components';
 
 class MyDocument extends Document {
   static getInitialProps(context) {
+    // styled-components SSR
+    const sheet = new ServerStyleSheet();
     // Document가 App의 상위이기 떄문에 App을 랜더링 해줘야된다
     // 그래야 meta태그가 들어감
-    const page = context.renderPage(App => props => <App {...props} />);
+    // sheet.collectStyles: styled-components SSR
+    const page = context.renderPage(App => props => sheet.collectStyles(<App {...props} />));
+    // styled-components SSR
+    const styleTags = sheet.getStyleElement();
+    // 아래의 return 한 것들은 props로 사용가능
     // Helmet.renderStatic(): SSR적용
-    return { ...page, helmet: Helmet.renderStatic() };
+    return { ...page, helmet: Helmet.renderStatic(), styleTags };
   }
 
   render() {
@@ -30,6 +38,8 @@ class MyDocument extends Document {
     return (
       <html {...htmlAttrs}>
         <head>
+          {/* styled-components */}
+          {this.props.styleTags}
           {/* helmet안에 들어있는 meta태그, script태그, link태그 등등을
              반복분을 통해서 넣어준다 */}
           {Object.values(helmet).map(el => el.toComponent())}
@@ -46,6 +56,7 @@ class MyDocument extends Document {
 // props 타입 체크
 MyDocument.proptypes = {
   helmet: PropTypes.object.isRequired,
+  styleTags: PropTypes.object.isRequired,
 };
 
 export default MyDocument;
