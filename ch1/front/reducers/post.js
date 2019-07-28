@@ -285,15 +285,14 @@ const reducer = (state = initialState, action) => {
       case LOAD_HASHTAG_POSTS_REQUEST:
       case LOAD_USER_POSTS_REQUEST: {
         // immer code
-        draft.mainPosts = action.lastId === 0 ? [] : draft.mainPosts;
+        draft.mainPosts = !action.lastId ? [] : draft.mainPosts;
         draft.hasMorePost = action.lastId ? draft.hasMorePost : true;
         break;
         // return {
         //   ...state,
-        //   // 새로 로딩 될떄는 기존 게시글을 없애서 [] 아래 SUCCESS에서 새로 만들고
-        //   // lastId가 있는 경우(더불러오기)는 이미 기존 게시글이 있는 상태이고
-        //   // 다음 게시글을 불러오는 거니까 기존 포스트 유지
-        //   mainPosts: action.lastId === 0 ? [] : state.mainPosts,
+        //   // 새로 로딩 될떄는 기존 게시글을 없앤후 [] 아래 SUCCESS에서 새로 만들고
+        //   // lastId없으면 새 배열
+        //   mainPosts: !action.lastId ? [] : state.mainPosts,
         //   // 처음 불러오는 거면 lastId가 0이니까 거짓 그래서 스크롤 활성화(true)
         //   hasMorePost: action.lastId ? state.hasMorePost : true,
         // };

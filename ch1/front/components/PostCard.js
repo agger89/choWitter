@@ -173,8 +173,6 @@ const PostCard = ({ post }) => {
               cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
             >
               <Card.Meta
-                // href={{ pathname: '/user', query: { id: post.User.id } }}:
-                // 새로고침 없이 프론트 페이지로 이동시키기 그 이유는
                 // query: 주소뒤에 붙는 파라미터라고 생각하면 됨
                 // as: 주소창에 서버주소처럼 보여주겠다는 의미 ex:) /user/1
                 // /user, /hashtag는 express에서 불러오게 만들었기 때문에
