@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "next build",
-    "start": "next start"
+    "build": "cross-env ANALYZE=true next build",
+    "prestart": "npm run build",
+    "start": "cross-env NODE_ENV=production PORT=80 pm2 start server.js"
   },
   "repository": {
     "type": "git",
@@ -19,13 +20,17 @@
   },
   "homepage": "https://github.com/agger89/choWitter#readme",
   "dependencies": {
+    "@zeit/next-bundle-analyzer": "^0.1.2",
     "antd": "^3.19.5",
     "axios": "^0.19.0",
+    "compression-webpack-plugin": "^3.0.0",
     "cookie-parser": "^1.4.4",
+    "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "immer": "^3.1.3",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "next": "^8.1.0",
     "next-redux-saga": "^4.0.2",
@@ -38,7 +43,8 @@
     "react-slick": "^0.24.0",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.3",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "webpack-ant-icon-loader": "^1.0.8"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",
