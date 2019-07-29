@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
+const path = require('path');
 
 // 이 페이지는 동적인 결과 렌더링을 위해 만들어짐
 // express가 next를 돌리는 구조
@@ -21,6 +22,8 @@ app.prepare().then(() => {
   const server = express();
 
   server.use(morgan('dev'));
+  // favicon 불러오기
+  server.use('/', express.static(path.join(__dirname, 'public')));
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   server.use(cookieParser(process.env.COOKIE_SECRET));
