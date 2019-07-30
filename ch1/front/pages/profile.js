@@ -1,10 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
-import {
-  List, Card, Icon, Button,
-} from 'antd';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NicknameEditForm from '../containers/NicknameEditForm';
 import PostCard from '../containers/PostCard';
+import FollowList from '../components/FollowList';
 import {
   LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, UNFOLLOW_USER_REQUEST,
   REMOVE_FOLLOWER_REQUEST,
@@ -14,7 +12,7 @@ import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 const Profile = () => {
   const dispatch = useDispatch();
   const {
-    me, followingList, followerList, hasMoreFollower, hasMoreFollowing,
+    followingList, followerList, hasMoreFollower, hasMoreFollowing,
   } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
   // SSR 적용위해 아래 getInitialProps로 코드이동
@@ -78,41 +76,19 @@ const Profile = () => {
   return (
     <div>
       <NicknameEditForm />
-      <List
-        style={{ marginBottom: '20px' }}
-        grid={{ gutter: 4, xs: 2, md: 3 }}
-        size="small"
-        header={<div>팔로잉 목록</div>}
-        // 더보기 유무
-        loadMore={hasMoreFollowing && <Button style={{ width: '100%' }} onClick={loadMoreFollowings}>더 보기</Button>}
-        bordered
-        dataSource={followingList}
-        renderItem={item => (
-          <List.Item style={{ marginTop: '20px' }}>
-            {/* 배열안에 jsx 문법을 사용할때는 key를 꼭 적어야한다 */}
-            <Card actions={[<Icon key="stop" type="stop" onClick={onUnfollow(item.id)} />]}>
-              <Card.Meta description={item.nickname} />
-            </Card>
-          </List.Item>
-        )}
+      <FollowList
+        header="팔로잉 목록"
+        hasMore={hasMoreFollowing}
+        data={followingList}
+        onClickMore={loadMoreFollowings}
+        onClickStop={onUnfollow}
       />
-      <List
-        style={{ marginBottom: '20px' }}
-        grid={{ gutter: 4, xs: 2, md: 3 }}
-        size="small"
-        header={<div>팔로워 목록</div>}
-        // 더보기 유무
-        loadMore={hasMoreFollower && <Button style={{ width: '100%' }} onClick={loadMoreFollowers}>더 보기</Button>}
-        bordered
-        dataSource={followerList}
-        renderItem={item => (
-          <List.Item style={{ marginTop: '20px' }}>
-            {/* 배열안에 jsx 문법을 사용할때는 key를 꼭 적어야한다 */}
-            <Card actions={[<Icon key="stop" type="stop" onClick={onRemoveFollower(item.id)} />]}>
-              <Card.Meta description={item.nickname} />
-            </Card>
-          </List.Item>
-        )}
+      <FollowList
+        header="팔로워 목록"
+        hasMore={hasMoreFollower}
+        data={followerList}
+        onClickMore={loadMoreFollowers}
+        onClickStop={onRemoveFollower}
       />
       <div>
         {mainPosts.map(c => (

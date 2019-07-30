@@ -1,8 +1,6 @@
 // 프론트 서버 패키지들 분석
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
+const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 
