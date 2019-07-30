@@ -45,9 +45,12 @@ function* logIn(action) {
       data: result.data,
     });
   } catch (e) { // loginAPI 실패
-    console.error(e);
+    // console.error(e);
+    // 에러 객체 찍어보는
+    // console.dir(e.response.data);
     yield put({ // put: dispatch와 동일
       type: LOG_IN_FAILURE,
+      reason: e.response && e.response.data,
     });
   }
 }

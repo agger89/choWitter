@@ -46,7 +46,7 @@ const ChoWitter = ({ Component, store, pageProps }) => (
         }, {
           property: 'og:type', content: 'website',
         }, {
-          property: 'og:image', content: '',
+          property: 'og:image', content: 'http://localhost:3000/favicon.ico',
         }]}
         link={[{
           rel: 'shortcut icon', href: '/favicon.ico',
@@ -152,7 +152,7 @@ const configureStore = (initialState, options) => {
       // applyMiddleware: 위에 배열안에 들어간 미들웨어들을 적용
       applyMiddleware(...middlewares),
       // redux devtools 확장프로그램을 크롬에 설치하면 윈도우 객체에 window.__REDUX_DEVTOOLS_EXTENSION__() 함수가 생김
-      !options.isServer && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+      !options.isServer && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     );
   const store = createStore(reducer, initialState, enhancer);
   // store.sagaTask: SSR을 하기위함

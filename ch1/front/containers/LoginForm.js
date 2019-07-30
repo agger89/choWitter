@@ -3,14 +3,19 @@ import Link from 'next/link';
 import { Input, Button, Form } from 'antd';
 // useDispatch: dispatch를 사용하기 위함
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 // action 함수를 불러옴
 import { LOG_IN_REQUEST } from '../reducers/user';
+
+const LoginError = styled.div`
+  color: red;
+`;
 
 const LoginForm = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   // useSelector: useState라고 생각하면 됨
-  const { isLoggingIn } = useSelector(state => state.user);
+  const { isLoggingIn, logInErrorReason } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
@@ -53,7 +58,8 @@ const LoginForm = () => {
         <br />
         <Input name="user-password" value={password} onChange={onChangePassword} type="password" required />
       </div>
-      <div>
+      <LoginError>{logInErrorReason}</LoginError>
+      <div style={{ marginTop: '10px' }}>
         <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
       </div>

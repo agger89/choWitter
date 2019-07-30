@@ -129,6 +129,7 @@ const reducer = (state = initialState, action) => {
       case LOG_IN_FAILURE: {
         // immer code
         draft.isLoggingIn = false;
+        // saga에서 넘어온 로그인에러 데이터
         draft.logInErrorReason = action.reason;
         draft.me = null;
         break;
