@@ -12,20 +12,25 @@ import {
   RETWEET_REQUEST,
   REMOVE_POST_REQUEST,
 } from '../reducers/post';
-import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from '../reducers/user';
+
 import PostImages from '../components/PostImages';
 import PostCardContent from '../components/PostCardContent';
 import CommentForm from './CommentForm';
+import FollowButton from './FollowButton';
 
 const PostCard = memo(({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const { me } = useSelector(state => state.user);
+  // const me 에서 const id 로 변경
+  // me 객체를 불러와서 사용할시 me 객체안에 어떤 값이 변경되면
+  // 전체가 리렌더링 되는 문제점이 있다
+  // 그래서 여기선 me.id 가 필요하니까 id만 꺼내서 사용
+  const id = useSelector(state => state.user.me && state.user.me.id);
   const dispatch = useDispatch();
 
   // 로그인한 유저 &&
   // 좋아요가 선택되어있는 게시글 &&
   // 그 게시글에 유저 아이디와 내 아이디가 같으면
-  const liked = me && post.Likers && post.Likers.find(v => v.id === me.id);
+  const liked = id && post.Likers && post.Likers.find(v => v.id === id);
 
   const onToggleComment = useCallback(() => {
     // 이전 state 값과 다르게 현재값을 넣어줌
@@ -41,7 +46,7 @@ const PostCard = memo(({ post }) => {
 
   // 좋아요 토글
   const onToggleLike = useCallback(() => {
-    if (!me) {
+    if (!id) {
       return alert('로그인이 필요합니다.');
     }
     // 이미 좋아요 눌렀으면
@@ -57,33 +62,18 @@ const PostCard = memo(({ post }) => {
         data: post.id,
       });
     }
-  }, [me && me.id, post && post.id, liked]);
+  }, [id, post && post.id, liked]);
 
   // 리트윗
   const onRetweet = useCallback(() => {
-    if (!me) {
+    if (!id) {
       return alert('로그인이 필요합니다.');
     }
     return dispatch({
       type: RETWEET_REQUEST,
       data: post.id,
     });
-  }, [me && me.id, post && post.id]);
-
-  // 아래 onClick함수 괄호안에 값이 있으면 고차함수 사용 userId => () => {}
-  const onFollow = useCallback(userId => () => {
-    dispatch({
-      type: FOLLOW_USER_REQUEST,
-      data: userId,
-    });
-  }, []);
-
-  const onUnfollow = useCallback(userId => () => {
-    dispatch({
-      type: UNFOLLOW_USER_REQUEST,
-      data: userId,
-    });
-  }, []);
+  }, [id, post && post.id]);
 
   const onRemovePost = useCallback(userId => () => {
     dispatch({
@@ -110,7 +100,7 @@ const PostCard = memo(({ post }) => {
             key="ellipsis"
             content={(
               <Button.Group>
-                {me && post.UserId === me.id
+                {id && post.UserId === id
                   ? (
                     <>
                       <Button>수정</Button>
@@ -125,15 +115,7 @@ const PostCard = memo(({ post }) => {
           </Popover>,
         ]}
         title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
-        extra={
-          // 로그인 안했을때 || 내 게시글일때
-          !me || post.User.id === me.id
-            ? null
-            // 해당 게시글의 작성자가 내 팔로우 목록에 있으면
-            : me.Followings && me.Followings.find(v => v.id === post.User.id)
-              ? <Button onClick={onUnfollow(post.User.id)}>언팔로우</Button>
-              : <Button onClick={onFollow(post.User.id)}>팔로우</Button>
-        }
+        extra={<FollowButton post={post} />}
       >
         {post.RetweetId && post.Retweet
           ? (
