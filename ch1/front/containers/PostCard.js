@@ -1,13 +1,13 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import
 {
-  Button, Card, Icon, Avatar, Input, Form, List, Comment, Popover,
+  Button, Card, Icon, Avatar, List, Comment, Popover,
 } from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST,
+  LOAD_COMMENTS_REQUEST,
   UNLIKE_POST_REQUEST, LIKE_POST_REQUEST,
   RETWEET_REQUEST,
   REMOVE_POST_REQUEST,
@@ -15,12 +15,11 @@ import {
 import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from '../reducers/user';
 import PostImages from '../components/PostImages';
 import PostCardContent from '../components/PostCardContent';
+import CommentForm from './CommentForm';
 
-const PostCard = ({ post }) => {
+const PostCard = memo(({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const [commentText, setCommentText] = useState();
   const { me } = useSelector(state => state.user);
-  const { commentAdded, isAddingComment } = useSelector(state => state.post);
   const dispatch = useDispatch();
 
   // 로그인한 유저 &&
@@ -38,35 +37,6 @@ const PostCard = ({ post }) => {
         data: post.id,
       });
     }
-  }, []);
-
-  const onSubmitComment = useCallback((e) => {
-    // form은 무조건 preventDefault 해줘야 새로고침이 안된다.
-    e.preventDefault();
-    if (!me) {
-      return alert('로그인이 필요합니다.');
-    }
-    return dispatch({
-      type: ADD_COMMENT_REQUEST,
-      data: {
-        postId: post.id,
-        content: commentText,
-      },
-    });
-    // useCallback은 기억력이 좋아서 위에 if (!me) 요기서 me를 최초 state 값인 null로 기억하기 떄문에
-    // 아래처럼 [me && me.id] 새로 null이 아닌값을 넣어줘야 한다.
-  }, [me && me.id, commentText]);
-
-  // 댓글이 등록 되면 텍스트 입력창 초기화 작업
-  // useEffct:
-  // componentDidMount, componentDidUpdate, componentWillUnmount
-  // 를 하나로 합쳐놓은것
-  useEffect(() => {
-    setCommentText('');
-  }, [commentAdded === true]); // 댓글이 등록되면 setCommentText(''), 배열에 값이 있으면 componentDidUpdate
-
-  const onChangeCommentText = useCallback((e) => {
-    setCommentText(e.target.value);
   }, []);
 
   // 좋아요 토글
@@ -200,12 +170,7 @@ const PostCard = ({ post }) => {
       </Card>
       {commentFormOpened && (
         <>
-          <Form onSubmit={onSubmitComment}>
-            <Form.Item>
-              <Input.TextArea rows={4} value={commentText} onChange={onChangeCommentText} />
-            </Form.Item>
-            <Button type="primary" htmlType="submit" loading={isAddingComment}>삐약</Button>
-          </Form>
+          <CommentForm post={post} />
           <List
             header={`${post.Comments ? post.Comments.length : 0} 댓글`}
             itemLayout="horizontal"
@@ -228,7 +193,7 @@ const PostCard = ({ post }) => {
       )}
     </div>
   );
-};
+});
 
 PostCard.propTypes = {
   // shape: 객체들을 정의 post.User, post.content ...
