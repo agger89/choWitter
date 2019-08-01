@@ -48,7 +48,7 @@ app.use(passport.session());
 
 app.get('/', (req, res) => {
   res.send('react chowitter 백엔드 정상 동작!');
-})
+});
 
 // API: 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
 app.use('/api/user', userAPIRouter);
