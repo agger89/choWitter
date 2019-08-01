@@ -4,6 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { backUrl } from '../config/config';
 import { LOAD_POST_REQUEST } from '../reducers/post';
 
 const Post = ({ id }) => {
@@ -25,15 +26,15 @@ const Post = ({ id }) => {
         }, {
           property: 'og:description', content: singlePost.content,
         }, {
-          property: 'og:image', content: singlePost.Images[0] && `http://localhost:3065/${singlePost.Images[0].src}`,
+          property: 'og:image', content: singlePost.Images[0] && `http://api.chostar.com/${singlePost.Images[0].src}`,
         }, {
-          property: 'og:url', content: `http://localhost:3060/post/${id}`,
+          property: 'og:url', content: `http://chostar.com/post/${id}`,
         }]}
       />
       <div>{singlePost.content}</div>
       <div>{singlePost.User.nickname}</div>
       <div>
-        {singlePost.Images[0] && <img src={`http://localhost:3065/${singlePost.Images[0].src}`} />}
+        {singlePost.Images[0] && <img src={`${backUrl}/${singlePost.Images[0].src}`} />}
       </div>
     </>
   );

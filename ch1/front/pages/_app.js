@@ -46,7 +46,7 @@ const ChoWitter = ({ Component, store, pageProps }) => (
         }, {
           property: 'og:type', content: 'website',
         }, {
-          property: 'og:image', content: 'http://localhost:3000/favicon.ico',
+          property: 'og:image', content: 'http://chostar.com/favicon.ico',
         }]}
         link={[{
           rel: 'shortcut icon', href: '/favicon.ico',
