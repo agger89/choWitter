@@ -49,11 +49,12 @@ const AppLayout = ({ children }) => {
       <Menu mode="horizontal">
         <Menu.Item key="home"><Link href="/"><a>조위터</a></Link></Menu.Item>
         {/* prefetch: 프로필 페이지 이동할떄 느림방지,
-          next에서 prefetch가 담긴 페이지를 불러올떄 profile 페이지도 같이 불러온다 
-          많이 사용하면 코드 스플리팅의 효과가 없기에,
-          유저들이 자주 이동하는 페이지에만 설정
-          개발환경에서는 동작안하고 빌드환경에서만 동작 */}
+        next에서 prefetch가 담긴 페이지를 불러올떄 profile 페이지도 같이 불러온다
+        많이 사용하면 코드 스플리팅의 효과가 없기에,
+        유저들이 자주 이동하는 페이지에만 설정
+        개발환경에서는 동작안하고 빌드환경에서만 동작 */}
         <Menu.Item key="profile"><Link href="/profile" prefetch><a>프로필</a></Link></Menu.Item>
+        <Menu.Item key="write"><Link href="/write" prefetch><a>게시글 작성</a></Link></Menu.Item>
         <Menu.Item key="mail">
           <Input.Search
             enterButton
@@ -62,24 +63,8 @@ const AppLayout = ({ children }) => {
           />
         </Menu.Item>
       </Menu>
-      <Row gutter={10}>
-        {/* 가로 전체 24 */}
-        <Col xs={24} md={6}>
-          {me
-            ? <UserProfile />
-            : <LoginForm />
-          }
-        </Col>
-        <Col xs={24} md={12}>
-          {/* children: _app.js에 <AppLayout>안에 <Component />를 불러온다 */}
-          {children}
-        </Col>
-        <Col xs={24} md={6}>
-          <Link href="https://portfolio-ed26a.firebaseapp.com/">
-            <a target="_blank">Made By Jonny</a>
-          </Link>
-        </Col>
-      </Row>
+      {/* children: _app.js에 <AppLayout>안에 <Component />를 불러온다 */}
+      {/* {children} */}
     </div>
   );
 };

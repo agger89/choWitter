@@ -175,8 +175,8 @@ const reducer = (state = initialState, action) => {
       }
       case SIGN_UP_SUCCESS: {
         // immer code
-        draft.isSigningUp = false;
         draft.isSignedUp = true;
+        draft.isSigningUp = false;
         break;
         // return {
         //   ...state,

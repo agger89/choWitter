@@ -61,7 +61,10 @@ const LoginForm = () => {
       <LoginError>{logInErrorReason}</LoginError>
       <div style={{ marginTop: '10px' }}>
         <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
-        <Link href="/signup"><a><Button>회원가입</Button></a></Link>
+      </div>
+      <div>
+        <span>계정이 없으신가요?</span>
+        <Link href="/signup"><a>가입하기</a></Link>
       </div>
     </Form>
   );

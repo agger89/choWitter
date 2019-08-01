@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Form, Input, Checkbox, Button,
 } from 'antd';
@@ -57,9 +58,9 @@ const Signup = () => {
       },
     });
     // 객체 스타일로 콘솔찍는 방법
-    console.log({
-      id, nick, password, passwordCheck, term,
-    });
+    // console.log({
+    //   id, nick, password, passwordCheck, term,
+    // });
     // useCallback을 사용하려면 아래 배열에 지금 함수에서 사용하는 state값을 넣어야된다
   }, [id, nick, password, passwordCheck, term]);
 
@@ -126,6 +127,10 @@ const Signup = () => {
         <div style={{ marginTop: 10 }}>
           {/* button type="submit" 대체 */}
           <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
+        </div>
+        <div>
+          <span>계정이 있으신가요?</span>
+          <Link href="/"><a>로그인</a></Link>
         </div>
       </Form>
     </>
