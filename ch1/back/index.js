@@ -5,6 +5,10 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const hpp = require('hpp');
+const helmet = require('helmet');
+const https = require('https');
+const http = require('http');
 
 const passportConfig = require('./passport');
 const db = require('./models');
@@ -13,24 +17,37 @@ const postAPIRouter = require('./routes/post');
 const postsAPIRouter = require('./routes/posts');
 const hashtagAPIRouter = require('./routes/hashtag');
 
+const prod = process.env.NODE_ENV === 'production';
+
 dotenv.config();
 const app = express();
 db.sequelize.sync();
 passportConfig();
 
-// 요청에 대한 로그 남기기
-app.use(morgan('dev'));
+if (prod) {
+  app.use(hpp());
+  app.use(helmet());
+  app.use(morgan('combined'));
+  app.use(cors({
+    origin: 'https://starcho.com',
+    credentials: true,
+  }));
+} else {
+  // 요청에 대한 로그 남기기
+  app.use(morgan('dev'));
+  // CORS 에러 해결 (외부 서버 요청 차단 방지)
+  app.use(cors({
+    // 다른 도메인간 프론트와 쿠키 교환 할수 있게
+    origin: true,
+    credentials: true,
+  }));
+}
+
 app.use('/', express.static('uploads'));
 // json 데이터 형식 처리
 app.use(express.json());
 // form 데이터 형식 처리
 app.use(express.urlencoded({ extended: true }));
-// CORS 에러 해결 (외부 서버 요청 차단 방지)
-app.use(cors({
-  // 다른 도메인간 프론트와 쿠키 교환 할수 있게
-  origin: true,
-  credentials: true,
-}));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
   resave: false, // 매번 세션 강제 저장
@@ -39,6 +56,7 @@ app.use(expressSession({
   cookie: {
     httpOnly: true, // javascript로 접근 못하게
     secure: false, // https를 쓸 때 true
+    domain: prod && '.starcho.com', // 프론트, 백엔드 쿠키 통일
   },
   // 보안을 위해 쿠키 이름 변경
   name: 'rnbck',
@@ -56,6 +74,6 @@ app.use('/api/post', postAPIRouter);
 app.use('/api/posts', postsAPIRouter);
 app.use('/api/hashtag', hashtagAPIRouter)
 
-app.listen(process.env.NODE_ENV === 'production' ? process.env.PORT : 3065, () => {
+app.listen(prod ? process.env.PORT : 3065, () => {
     console.log(`server is running on ${process.env.PORT}`);
 });
