@@ -26,9 +26,9 @@ const Post = ({ id }) => {
         }, {
           property: 'og:description', content: singlePost.content,
         }, {
-          property: 'og:image', content: singlePost.Images[0] && `http://api.chostar.info/${singlePost.Images[0].src}`,
+          property: 'og:image', content: singlePost.Images[0] && `http://api.starcho.com/${singlePost.Images[0].src}`,
         }, {
-          property: 'og:url', content: `http://chostar.info/post/${id}`,
+          property: 'og:url', content: `http://starcho.com/post/${id}`,
         }]}
       />
       <div>{singlePost.content}</div>
