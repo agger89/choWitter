@@ -2,7 +2,6 @@ import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, Input, Button } from 'antd';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useSelector, useDispatch } from 'react-redux';
-import { backUrl } from '../config/config';
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reducers/post';
 
 // 백엔드에 데이터가 아직 없기때문에
@@ -113,7 +112,7 @@ const PostForm = () => {
         {imagePaths.map((v, i) => (
           // 이미지 미리보기
           <div key={v} style={{ display: 'inline-block' }}>
-            <img src={`${backUrl}/${v}`} style={{ width: '200px' }} alt={v} />
+            <img src={v} style={{ width: '200px' }} alt={v} />
             <div>
               <Button onClick={onRemoveImage(i)}>제거</Button>
             </div>
