@@ -29,7 +29,7 @@ if (prod) {
   app.use(helmet());
   app.use(morgan('combined'));
   app.use(cors({
-    origin: 'https://starcho.com',
+    origin: 'http://starcho.com',
     credentials: true,
   }));
 } else {
