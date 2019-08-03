@@ -29,7 +29,7 @@ if (prod) {
   app.use(helmet());
   app.use(morgan('combined'));
   app.use(cors({
-    origin: 'http://starcho.com',
+    origin: 'https://starcho.com',
     credentials: true,
   }));
 } else {
@@ -55,7 +55,7 @@ app.use(expressSession({
   secret: process.env.COOKIE_SECRET, // 쿠키 암호화
   cookie: {
     httpOnly: true, // javascript로 접근 못하게
-    secure: false, // https를 쓸 때 true
+    secure: prod, // https를 쓸 때 true
     domain: prod && '.starcho.com', // 프론트, 백엔드 쿠키 통일
   },
   // 보안을 위해 쿠키 이름 변경
