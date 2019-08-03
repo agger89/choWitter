@@ -2,9 +2,8 @@ import React, { useEffect, useCallback, useRef } from 'react';
 // useDispatch: dispatch를 사용하기 위함
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useDispatch, useSelector } from 'react-redux';
-import AppLayout from '../components/AppLayout';
+import PostForm from '../containers/PostForm';
 import PostCard from '../containers/PostCard';
-import LoginForm from '../containers/LoginForm';
 // action 불러옴
 import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
 
@@ -82,19 +81,12 @@ const Home = () => {
 
   return (
     <div>
-      {!me
-        ? <LoginForm />
-        : (
-          <>
-            <AppLayout />
-            <div>
-              {mainPosts.map(c => (
-                <PostCard key={c.id} post={c} />
-              ))}
-            </div>
-          </>
-        )
-      }
+      {me && <PostForm />}
+      {mainPosts.map((c) => {
+        return (
+          <PostCard key={c.id} post={c} />
+        );
+      })}
     </div>
   );
 };

@@ -128,10 +128,6 @@ const Signup = () => {
           {/* button type="submit" 대체 */}
           <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
         </div>
-        <div>
-          <span>계정이 있으신가요?</span>
-          <Link href="/"><a>로그인</a></Link>
-        </div>
       </Form>
     </>
   );

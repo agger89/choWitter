@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NicknameEditForm from '../containers/NicknameEditForm';
 import PostCard from '../containers/PostCard';
-import UserProfile from '../containers/UserProfile';
 import FollowList from '../components/FollowList';
 import {
   LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, UNFOLLOW_USER_REQUEST,
@@ -76,7 +75,6 @@ const Profile = () => {
 
   return (
     <div>
-      <UserProfile />
       <NicknameEditForm />
       <FollowList
         header="팔로잉 목록"

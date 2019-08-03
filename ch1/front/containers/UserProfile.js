@@ -24,18 +24,10 @@ const UserProfile = () => {
   const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!me) {
-      alert('로그아웃 되었습니다.');
-      Router.push('/');
-    }
-  }, [me && me.id]);
-
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
   // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
   const onLogout = useCallback(() => {
-    window.confirm('로그아웃 하시겠습니까?');
     dispatch({
       type: LOG_OUT_REQUEST,
     });
