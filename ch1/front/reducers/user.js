@@ -206,12 +206,11 @@ const reducer = (state = initialState, action) => {
       }
       case LOAD_USER_SUCCESS: {
         // immer code
-        // if (action.me) {
-        //   draft.me = action.data;
-        //   break;
-        // }
-        draft.me = action.data;
-        draft.userInfo = action.data;
+        if (action.me) {
+          draft.me = action.data;
+          break;
+        }
+        draft.useInfo = action.data;
         break;
         // action.me 데이터가 있으면
         // me state에 action.data 넣고

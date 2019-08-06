@@ -25,6 +25,7 @@ export const initialState = {
   addCommentErrorReason: '', // 댓글 업로드 실패 사유
   hasMorePost: false, // 더불러오기 스크롤 활성화 유무
   singlePost: null, // 개별 포스트
+  resultHash: false,
 };
 
 // 데이터 생겨서 주석
@@ -284,6 +285,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_HASHTAG_POSTS_REQUEST:
       case LOAD_USER_POSTS_REQUEST: {
         // immer code
+        draft.resultHash = false;
         draft.mainPosts = !action.lastId ? [] : draft.mainPosts;
         draft.hasMorePost = action.lastId ? draft.hasMorePost : true;
         break;
@@ -300,6 +302,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_HASHTAG_POSTS_SUCCESS:
       case LOAD_USER_POSTS_SUCCESS: {
         // immer code
+        draft.resultHash = true;
         action.data.forEach((d) => {
           draft.mainPosts.push(d);
         });
@@ -317,6 +320,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_HASHTAG_POSTS_FAILURE:
       case LOAD_USER_POSTS_FAILURE: {
         // immer code
+        draft.resultHash = false;
         break;
         // return {
         //   ...state,

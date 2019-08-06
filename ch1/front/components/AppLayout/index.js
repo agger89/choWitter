@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link'; // 라우팅
 import PropTypes from 'prop-types';
 import
@@ -26,9 +26,22 @@ import { InputSearch, LinkWrap } from './style';
 
 const AppLayout = ({ children }) => {
   // useSelector: useState라고 생각하면 됨
+  const [ searchValue, setSearchValue ] = useState('');
   const { me } = useSelector(state => state.user);
+  const { resultHash } = useSelector(state => state.post);
+
+  // 해시태그 검색 성공시 input value 빈값으로
+  useEffect(() => {
+    setSearchValue('');
+  }, [resultHash === true]);
+
+  const onChangeValue = useCallback((e) => {
+    setSearchValue(e.target.value);
+  });
+
   // 검색 이벤트
   const onSearch = (value) => {
+    // console.log(value);
     // pathname: '/hashtag', query: { tag: value } }: 내부적 주소
     // `/hashtag/${value}`: 눈으로 보이는 주소
     Router.push({ pathname: '/hashtag', query: { tag: value } }, `/hashtag/${value}`);
@@ -59,6 +72,9 @@ const AppLayout = ({ children }) => {
           <InputSearch
             enterButton
             style={{ verticalAlign: 'middle' }}
+            placeholder="해시태그 검색"
+            value={searchValue}
+            onChange={onChangeValue}
             onSearch={onSearch}
           />
         </Menu.Item>
