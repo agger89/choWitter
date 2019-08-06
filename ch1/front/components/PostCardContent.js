@@ -11,7 +11,7 @@ const PostCardContent = ({ postData }) => (
         return (
           <Link
             href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }}
-            as={`/hashtag/${v.slice(1)}`} 
+            as={`/hashtag/${v.slice(1)}`}
             key={v}
           >
             <a>{v}</a>

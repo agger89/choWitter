@@ -21,7 +21,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState(false); // 비번 다름 에러
   const [termError, setTermError] = useState(false); // 약관동의 안하면 에러
   const dispatch = useDispatch();
-  const { isSigningUp, me } = useSelector(state => state.user);
+  const { isSigningUp, isSignedUp, me } = useSelector(state => state.user);
 
   // useEffct:
   // componentDidMount, componentDidUpdate, componentWillUnmount
@@ -31,6 +31,9 @@ const Signup = () => {
       alert('로그인 했으니 메인 페이지로 이동합니다.');
       Router.push('/');
     }
+    // if (isSignedUp) {
+    //   alert('회원가입이 완료 되었습니다.');
+    // }
   }, [me && me.id]); // me.id 값이 있으면 Router.push('/'), 배열에 값이 있으면 componentDidUpdate
 
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에

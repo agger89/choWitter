@@ -200,7 +200,6 @@ const reducer = (state = initialState, action) => {
         // immer code
         draft.isAddingPost = false;
         draft.addPostErrorReason = action.error;
-        draft.postAdded = false;
         break;
         // return {
         //   ...state,
@@ -301,7 +300,9 @@ const reducer = (state = initialState, action) => {
       case LOAD_HASHTAG_POSTS_SUCCESS:
       case LOAD_USER_POSTS_SUCCESS: {
         // immer code
-        draft.mainPosts = draft.mainPosts.concat(action.data);
+        action.data.forEach((d) => {
+          draft.mainPosts.push(d);
+        });
         draft.hasMorePost = action.data.length === 10;
         break;
         // return {

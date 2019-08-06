@@ -15,8 +15,9 @@ import {
 
 import PostImages from '../components/PostImages';
 import PostCardContent from '../components/PostCardContent';
+import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from '../reducers/user';
 import CommentForm from './CommentForm';
-import FollowButton from './FollowButton';
+import FollowButton from '../components/FollowButton';
 
 const PostCard = memo(({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -75,13 +76,28 @@ const PostCard = memo(({ post }) => {
     });
   }, [id, post && post.id]);
 
+  // 아래 onClick함수 괄호안에 값이 있으면 고차함수 사용 userId => () => {}
+  const onFollow = useCallback(userId => () => {
+    dispatch({
+      type: FOLLOW_USER_REQUEST,
+      data: userId,
+    });
+  }, []);
+
+  const onUnfollow = useCallback(userId => () => {
+    dispatch({
+      type: UNFOLLOW_USER_REQUEST,
+      data: userId,
+    });
+  }, []);
+
   const onRemovePost = useCallback(userId => () => {
     dispatch({
       type: REMOVE_POST_REQUEST,
       data: userId,
     });
   }, []);
-
+  
   return (
     <div>
       <Card
@@ -103,7 +119,7 @@ const PostCard = memo(({ post }) => {
                 {id && post.UserId === id
                   ? (
                     <>
-                      <Button>수정</Button>
+                      {/* <Button>수정</Button> */}
                       <Button type="danger" onClick={onRemovePost(post.id)}>삭제</Button>
                     </>
                   )
@@ -115,7 +131,7 @@ const PostCard = memo(({ post }) => {
           </Popover>,
         ]}
         title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
-        extra={<FollowButton post={post} />}
+        extra={<FollowButton post={post} onUnfollow={onUnfollow} onFollow={onFollow} />}
       >
         {post.RetweetId && post.Retweet
           ? (

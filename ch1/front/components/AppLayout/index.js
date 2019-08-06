@@ -8,8 +8,9 @@ import
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
-import LoginForm from '../containers/LoginForm';
-import UserProfile from '../containers/UserProfile';
+import LoginForm from '../../containers/LoginForm';
+import UserProfile from '../../containers/UserProfile';
+import { InputSearch, LinkWrap } from './style';
 // import { LOAD_USER_REQUEST } from '../reducers/user';
 
 // 백엔드에 데이터가 아직 없기때문에
@@ -47,7 +48,7 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Menu mode="horizontal">
-        <Menu.Item key="home"><Link href="/"><a>조위터</a></Link></Menu.Item>
+        <Menu.Item key="home"><Link href="/"><a>홈</a></Link></Menu.Item>
         {/* prefetch: 프로필 페이지 이동할떄 느림방지,
           next에서 prefetch가 담긴 페이지를 불러올떄 profile 페이지도 같이 불러온다
           많이 사용하면 코드 스플리팅의 효과가 없기에,
@@ -55,7 +56,7 @@ const AppLayout = ({ children }) => {
           개발환경에서는 동작안하고 빌드환경에서만 동작 */}
         <Menu.Item key="profile"><Link href="/profile" prefetch><a>프로필</a></Link></Menu.Item>
         <Menu.Item key="mail">
-          <Input.Search
+          <InputSearch
             enterButton
             style={{ verticalAlign: 'middle' }}
             onSearch={onSearch}
@@ -73,7 +74,7 @@ const AppLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <span>choWitter</span>
+          <LinkWrap href="https://portfolio-ed26a.firebaseapp.com/"><a target="_blank">Portfolio</a></LinkWrap>
         </Col>
       </Row>
     </div>

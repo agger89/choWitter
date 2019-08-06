@@ -105,6 +105,10 @@ ChoWitter.getInitialProps = async (context) => {
   // 서버일때는 직접 넣어야된다.
   // 서버일떄만 쿠키를 가져온다
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+  if (ctx.isServer) {
+    // 이전에 로그인한 사용자 쿠키 남아있는것 해결
+    axios.defaults.headers.Cookie = '';
+  }
   // 서버일떄만 && 쿠키가 있을떄만 실행
   if (ctx.isServer && cookie) {
     // axios.defaults: 각기 다른 모든 axios 요청에 cookie가 적용된다
@@ -138,11 +142,12 @@ const configureStore = (initialState, options) => {
   const sagaMiddleware = createSagaMiddleware();
   // middleware는 액션과 스토어 사이에서 동작한다.
   // sagas/middleware.js 에 있는 sagaMiddleware를 리덕스와 연결
-  const middlewares = [sagaMiddleware, (store) => (next) => (action) => {
-    // 리덕스 사가 에러 찾는 방식 (커스텀 미들웨어)
-    // console.log(action);
-    next(action);
-  }];
+  // const middlewares = [sagaMiddleware, (store) => (next) => (action) => {
+  //   // 리덕스 사가 에러 찾는 방식 (커스텀 미들웨어)
+  //   // console.log(action);
+  //   next(action);
+  // }];
+  const middlewares = [sagaMiddleware];
   // enhancer의 뜻: 향상시키다
   // compose: middleware들끼리 합성 시켜줌
   // 아래 compose안에 들어있는 모든것을 합성해서 store에 넣어줌

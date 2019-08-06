@@ -133,7 +133,7 @@ router.get('/:id/followers', isLoggedIn, async (req, res, next) => { // /api/use
   try {
     const user = await db.User.findOne({
       where: { id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0 },
-    });
+    }); // req.params.id가 문자열 '0'
     const followers = await user.getFollowers({
       attributes: ['id', 'nickname'],
       limit: parseInt(req.query.limit, 10),
@@ -189,7 +189,6 @@ router.get('/:id/posts', async (req, res, next) => {
   try {
     const posts = await db.Post.findAll({
       where: {
-        // 프론트에서 넘어온 값이 0 이여도 get
         UserId: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
         RetweetId: null,
       },

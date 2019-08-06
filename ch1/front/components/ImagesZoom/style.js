@@ -1,4 +1,3 @@
-
 import { Icon } from 'antd';
 import styled from 'styled-components';
 
@@ -27,8 +26,20 @@ export const Header = styled.header`
 `;
 
 export const SlickWrapper = styled.div`
+  position: relative;
   height: calc(100% - 44px);
   background: #090909;
+
+  & > div {
+    @media only screen and (min-width: 768px) {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 50%;
+      margin-left: -400px;
+      width: 900px;
+    }
+  }
 `;
 
 export const CloseBtn = styled(Icon)`
@@ -57,11 +68,14 @@ export const Indicator = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
-  padding: 32px;
+  @media only screen and (max-width: 768px) {
+    padding: 32px;  
+  }
   text-align: center;
 
-  $ > img {
-    maring: 0 auto;
+  & > img {
+    width: 100%;
+    margin: 0 auto;
     max-height: 750px;
   }
 `;

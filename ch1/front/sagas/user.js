@@ -106,6 +106,7 @@ function* signUp(action) {
     yield put({
       type: SIGN_UP_SUCCESS,
     });
+    alert('회원가입이 완료되었습니다.');
   } catch (e) {
     console.error(e);
     yield put({

@@ -35,8 +35,8 @@ const ImagesZoom = ({ images, onClose }) => {
             // 한번에 한장만 스크롤하기
             slidesToScroll={1}
           >
-            {images.map(v => (
-              <ImageWrapper>
+            {images.map((v, i) => (
+              <ImageWrapper key={i}>
                 <img src={v.src} />
               </ImageWrapper>
             ))}
