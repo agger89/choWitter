@@ -25,7 +25,8 @@ export const initialState = {
   addCommentErrorReason: '', // 댓글 업로드 실패 사유
   hasMorePost: false, // 더불러오기 스크롤 활성화 유무
   singlePost: null, // 개별 포스트
-  resultHash: false,
+  resultHash: false, // 해시태그 검색 성공, 실패
+  inputFocus: false, // 인풋창 포커스
 };
 
 // 데이터 생겨서 주석
@@ -100,6 +101,9 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
+// 로그인 요청 인풋창 커서
+export const INPUT_FOCUS_TRUE = 'INPUT_FOCUS_TRUE';
+export const INPUT_FOCUS_FALSE = 'INPUT_FOCUS_FALSE';
 
 // 실제 액션
 // 여러곳에서 쓰이기 때문에 export를 해서 모듈로 만듬
@@ -444,6 +448,14 @@ const reducer = (state = initialState, action) => {
       // 개별 포스트 등록
       case LOAD_POST_SUCCESS: {
         draft.singlePost = action.data;
+        break;
+      }
+      case INPUT_FOCUS_TRUE: {
+        draft.inputFocus = true;
+        break;
+      }
+      case INPUT_FOCUS_FALSE: {
+        draft.inputFocus = false;
         break;
       }
       // 액션이 아무것도 해당되지 않을때 기본값

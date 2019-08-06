@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Input, Button, Form } from 'antd';
 // useDispatch: dispatch를 사용하기 위함
@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 // action 함수를 불러옴
 import { LOG_IN_REQUEST } from '../reducers/user';
+import { INPUT_FOCUS_FALSE } from '../reducers/post';
+
 
 const LoginError = styled.div`
   color: red;
@@ -16,8 +18,18 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   // useSelector: useState라고 생각하면 됨
   const { isLoggingIn, logInErrorReason } = useSelector(state => state.user);
+  const { inputFocus } = useSelector(state => state.post);
+  const inputRef = useRef();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    inputRef.current.focus();
+    if (inputFocus) {
+      dispatch({
+        type: INPUT_FOCUS_FALSE,
+      });
+    }
+  }, [inputFocus === true]);
   // 함수 컴포넌트는 state가 바뀔때 마다 전체가 리렌더링 되기 때문에
   // 해당 이벤트만 리렌더링 되게 하기 위해
   // 자식 컴포넌트에 전달하는 함수들은 useCallback으로 감싸준다
@@ -51,7 +63,7 @@ const LoginForm = () => {
       <div>
         <label htmlFor="user-id">아이디</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input name="user-id" ref={inputRef} value={id} onChange={onChangeId} required />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>

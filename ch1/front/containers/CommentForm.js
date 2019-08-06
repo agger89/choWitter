@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Button, Input, Form } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { ADD_COMMENT_REQUEST } from '../reducers/post';
+import { ADD_COMMENT_REQUEST, INPUT_FOCUS_TRUE } from '../reducers/post';
 
 const CommentForm = ({ post }) => {
   const [commentText, setCommentText] = useState();
@@ -14,7 +14,10 @@ const CommentForm = ({ post }) => {
     // form은 무조건 preventDefault 해줘야 새로고침이 안된다.
     e.preventDefault();
     if (!me) {
-      return alert('로그인이 필요합니다.');
+      alert('로그인이 필요합니다.');
+      return dispatch({
+        type: INPUT_FOCUS_TRUE,
+      });
     }
     return dispatch({
       type: ADD_COMMENT_REQUEST,

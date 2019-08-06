@@ -11,6 +11,7 @@ import {
   UNLIKE_POST_REQUEST, LIKE_POST_REQUEST,
   RETWEET_REQUEST,
   REMOVE_POST_REQUEST,
+  INPUT_FOCUS_TRUE,
 } from '../reducers/post';
 
 import PostImages from '../components/PostImages';
@@ -48,7 +49,10 @@ const PostCard = memo(({ post }) => {
   // 좋아요 토글
   const onToggleLike = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      alert('로그인이 필요합니다.');
+      return dispatch({
+        type: INPUT_FOCUS_TRUE,
+      });
     }
     // 이미 좋아요 눌렀으면
     if (liked) {
@@ -68,7 +72,10 @@ const PostCard = memo(({ post }) => {
   // 리트윗
   const onRetweet = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      alert('로그인이 필요합니다.');
+      return dispatch({
+        type: INPUT_FOCUS_TRUE,
+      });
     }
     return dispatch({
       type: RETWEET_REQUEST,
