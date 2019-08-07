@@ -3,6 +3,7 @@ import
 {
   Button, Card, Icon, Avatar, List, Comment, Popover,
 } from 'antd';
+import moment from 'moment';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,6 +20,9 @@ import PostCardContent from '../components/PostCardContent';
 import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from '../reducers/user';
 import CommentForm from './CommentForm';
 import FollowButton from '../components/FollowButton';
+
+// 날짜
+moment.locale('ko');
 
 const PostCard = memo(({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -110,15 +114,16 @@ const PostCard = memo(({ post }) => {
       <Card
         cover={post.Images && post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <Icon type="retweet" key="retweet" onClick={onRetweet} />,
+          <Icon type="retweet" key="retweet" onClick={onRetweet} title="리트윗" />,
           <Icon
             type="heart"
             key="heart"
             theme={liked ? 'twoTone' : 'outlined'}
             twoToneColor="#eb2f96"
             onClick={onToggleLike}
+            title={liked ? '좋아요 취소' : '좋아요'}
           />,
-          <Icon type="message" key="message" onClick={onToggleComment} />,
+          <Icon type="message" key="message" onClick={onToggleComment} title="댓글" />,
           <Popover
             key="ellipsis"
             content={(
@@ -130,7 +135,7 @@ const PostCard = memo(({ post }) => {
                       <Button type="danger" onClick={onRemovePost(post.id)}>삭제</Button>
                     </>
                   )
-                  : <Button>신고</Button>}
+                  : <Button>신고(기능없음)</Button>}
               </Button.Group>
             )}
           >
@@ -146,6 +151,7 @@ const PostCard = memo(({ post }) => {
             <Card
               cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
             >
+              <span style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</span>
               <Card.Meta
                 // query: 주소뒤에 붙는 파라미터라고 생각하면 됨
                 // as: 주소창에 서버주소처럼 보여주겠다는 의미 ex:) /user/1
@@ -161,15 +167,18 @@ const PostCard = memo(({ post }) => {
             </Card>
           )
           : (
-            <Card.Meta
-              avatar={(
-                <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
-                  <a><Avatar>{post.User.nickname[0]}</Avatar></a>
-                </Link>
-              )}
-              title={post.User.nickname}
-              description={<PostCardContent postData={post.content} />}
-            />
+            <>
+              <span style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</span>
+              <Card.Meta
+                avatar={(
+                  <Link href={{ pathname: '/user', query: { id: post.User.id } }} as={`/user/${post.User.id}`}>
+                    <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
+                title={post.User.nickname}
+                description={<PostCardContent postData={post.content} />}
+              />
+            </>
           )
         }
       </Card>

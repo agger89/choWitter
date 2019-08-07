@@ -101,7 +101,7 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
-// 로그인 요청 인풋창 커서
+// 로그인 요청 인풋창 포커스
 export const INPUT_FOCUS_TRUE = 'INPUT_FOCUS_TRUE';
 export const INPUT_FOCUS_FALSE = 'INPUT_FOCUS_FALSE';
 
@@ -450,6 +450,7 @@ const reducer = (state = initialState, action) => {
         draft.singlePost = action.data;
         break;
       }
+      // 인풋 포커스
       case INPUT_FOCUS_TRUE: {
         draft.inputFocus = true;
         break;

@@ -101,12 +101,15 @@ const PostForm = () => {
   // 파일을 업로드 할때는 encType="multipart/form-data" 써야한다.
   // 안그러면 파일의 경로만 전송되고 내용이 전송되지 않는다.
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onSubmit={onSubmitForm}>
-      <Input.TextArea maxLength={148} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText}/>
+      <Input.TextArea maxLength={148} placeholder="게시글을 작성하세요." value={text} onChange={onChangeText} />
       <div>
         {/* 다중 파일 업로드 할때 multiple, 업로드 데이터를 숨길떄 hidden */}
         <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <Button type="primary" style={{ float: 'right' }} htmlType="submit" loading={isAddingPost}>짹짹</Button>
+        <span style={{ marginLeft: '4px', fontSize: '12px' }}>
+          여러장의 이미지(jpg, png) 업로드 가능
+        </span>
+        <Button type="primary" style={{ float: 'right' }} htmlType="submit" loading={isAddingPost}>등록</Button>
       </div>
       <div>
         {imagePaths.map((v, i) => (

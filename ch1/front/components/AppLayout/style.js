@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Input } from 'antd';
 import styled from 'styled-components';
 
@@ -12,6 +13,6 @@ export const InputSearch = styled(Input.Search)`
   }
 `;
 
-export const LinkWrap = styled.div`
+export const LinkWrap = styled(Link)`
   padding: 10px;
 `;

@@ -37,17 +37,17 @@ const UserProfile = () => {
     <Card
       actions={[
         <Link href="/profile" prefetch key="twit">
-          <a>
+          <a title={Router.pathname !== '/profile' && "프로필로 이동"}>
             <div>짹짹<br />{me.Posts.length}</div>
           </a>
         </Link>,
         <Link href="/profile" prefetch key="following">
-          <a>
+          <a title={Router.pathname !== '/profile' && "프로필로 이동"}>
             <div>팔로잉<br />{me.Followings.length}</div>
           </a>
         </Link>,
         <Link href="/profile" prefetch key="follower">
-          <a>
+          <a title={Router.pathname !== '/profile' && "프로필로 이동"}>
             <div>팔로워<br />{me.Followers.length}</div>
           </a>
         </Link>,

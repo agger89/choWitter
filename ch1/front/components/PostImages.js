@@ -19,7 +19,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <img src={images[0].src.replace(/original\//, 'thumb/')} onClick={onZoom} />
+        <img src={images[0].src.replace(/original\//, 'thumb/')} onClick={onZoom} style={{ cursor: 'pointer' }} title="원본 이미지 보기" />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -28,7 +28,7 @@ const PostImages = ({ images }) => {
   if (images.length === 2) {
     return (
       <>
-        <div>
+        <div style={{ cursor: 'pointer' }} title="원본 이미지 보기">
           {/* replace(/original\//, 'thumb/'): lambda로 리사이징된 이미지로 변경*/}
           <img src={images[0].src.replace(/original\//, 'thumb/')} width="50%" onClick={onZoom} />
           <img src={images[0].src.replace(/original\//, 'thumb/')} width="50%" onClick={onZoom} />
@@ -41,7 +41,7 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <img src={images[0].src.replace(/original\//, 'thumb/')} width="50%" onClick={onZoom} />
+        <img src={images[0].src.replace(/original\//, 'thumb/')} width="50%" onClick={onZoom} style={{ cursor: 'pointer' }} title="원본 이미지 보기" />
         <div
           style={{
             display: 'inline-block', width: '50%', textAlign: 'center', verticalAlign: 'middle ', cursor: 'pointer',

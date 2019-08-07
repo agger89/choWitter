@@ -19,7 +19,7 @@ const FollowList = memo(({
     renderItem={item => (
       <List.Item style={{ marginTop: '20px' }}>
         {/* 배열안에 jsx 문법을 사용할때는 key를 꼭 적어야한다 */}
-        <Card actions={[<Icon key="stop" type="stop" onClick={onClickStop(item.id)} />]}>
+        <Card actions={[<Icon key="stop" type="stop" onClick={onClickStop(item.id)} title={header === '팔로잉 목록' ? '언팔로우' : '팔로워삭제'} />]}>
           <Card.Meta description={item.nickname} />
         </Card>
       </List.Item>
