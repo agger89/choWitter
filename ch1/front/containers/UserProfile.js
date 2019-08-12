@@ -4,7 +4,6 @@ import Link from 'next/link';
 // useSelector: 리듀서에 있는 state를 불러오기 위함
 // useDispatch: dispatch를 사용하기 위함
 import { useSelector, useDispatch } from 'react-redux';
-import Router from 'next/router';
 // action 함수를 불러옴
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
@@ -37,17 +36,17 @@ const UserProfile = () => {
     <Card
       actions={[
         <Link href="/profile" prefetch key="twit">
-          <a title={Router.pathname !== '/profile' && "프로필로 이동"}>
+          <a>
             <div>짹짹<br />{me.Posts.length}</div>
           </a>
         </Link>,
         <Link href="/profile" prefetch key="following">
-          <a title={Router.pathname !== '/profile' && "프로필로 이동"}>
+          <a>
             <div>팔로잉<br />{me.Followings.length}</div>
           </a>
         </Link>,
         <Link href="/profile" prefetch key="follower">
-          <a title={Router.pathname !== '/profile' && "프로필로 이동"}>
+          <a>
             <div>팔로워<br />{me.Followers.length}</div>
           </a>
         </Link>,

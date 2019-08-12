@@ -59,7 +59,7 @@ class MyDocument extends Document {
 // props 타입 체크
 MyDocument.proptypes = {
   helmet: PropTypes.object.isRequired,
-  styleTags: PropTypes.object.isRequired,
+  styleTags: PropTypes.array.isRequired,
 };
 
 export default MyDocument;

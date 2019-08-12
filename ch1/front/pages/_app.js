@@ -28,7 +28,7 @@ const ChoWitter = ({ Component, store, pageProps }) => (
     <Provider store={store}>
       {/* head 태그에 들어갈 것들 */}
       <Helmet
-        title="ChoWitter"
+        title="starcho"
         htmlAttributes={{ lang: 'ko' }}
         meta={[{
           charset: 'UTF-8',
@@ -38,11 +38,11 @@ const ChoWitter = ({ Component, store, pageProps }) => (
         }, {
           'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
         }, {
-          name: 'description', content: 'ChoWitter',
+          name: 'description', content: 'starcho',
         }, {
-          name: 'og:title', content: 'ChoWitter',
+          name: 'og:title', content: 'starcho',
         }, {
-          name: 'og:description', content: 'ChoWitter SNS',
+          name: 'og:description', content: 'starcho SNS',
         }, {
           property: 'og:type', content: 'website',
         }, {
@@ -60,7 +60,7 @@ const ChoWitter = ({ Component, store, pageProps }) => (
       />
       {/* 위에 helmet 으로 대체되서 주석 */}
       {/* <Head>
-        <title>choWitter</title>
+        <title>starcho</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.19.0/antd.css" />
         <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
@@ -99,16 +99,15 @@ ChoWitter.getInitialProps = async (context) => {
   // 해당컴포넌트이름.getInitialProps = async (context) => { context.query.tag }
   // 이렇게 가져와야 한다
   const { ctx, Component } = context;
+  let pageProps = {};
   // context.store에서 state들을 불러옴
   const state = ctx.store.getState();
   // 클라이언트 환경에서는 브라우저가 쿠키를 넣어주지만
   // 서버일때는 직접 넣어야된다.
   // 서버일떄만 쿠키를 가져온다
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
-  if (ctx.isServer) {
-    // 이전에 로그인한 사용자 쿠키 남아있는것 해결
-    axios.defaults.headers.Cookie = '';
-  }
+  // 이전에 로그인한 사용자 쿠키 남아있는것 해결
+  axios.defaults.headers.Cookie = '';
   // 서버일떄만 && 쿠키가 있을떄만 실행
   if (ctx.isServer && cookie) {
     // axios.defaults: 각기 다른 모든 axios 요청에 cookie가 적용된다
@@ -125,7 +124,6 @@ ChoWitter.getInitialProps = async (context) => {
       type: LOAD_USER_REQUEST,
     });
   }
-  let pageProps = {};
   if (Component.getInitialProps) {
     // Failed prop type: The prop `pageProps` is marked as required in `ChoWitter`, but its value is `undefined`
     // pageProps는 isRequired로 propTypes을 체크 했기때문에
@@ -151,7 +149,7 @@ const configureStore = (initialState, options) => {
   // enhancer의 뜻: 향상시키다
   // compose: middleware들끼리 합성 시켜줌
   // 아래 compose안에 들어있는 모든것을 합성해서 store에 넣어줌
-  const enhancer = process.env.NODE_ENV === 'prodution' // 개발 환경일떄만 REDUX_DEVTOOLS 사용, 배포시에 사용시 redux state들이 노출되서 보안 위협
+  const enhancer = process.env.NODE_ENV === 'production' // 개발 환경일떄만 REDUX_DEVTOOLS 사용, 배포시에 사용시 redux state들이 노출되서 보안 위협
     ? compose(applyMiddleware(...middlewares))
     : compose(
       // applyMiddleware: 위에 배열안에 들어간 미들웨어들을 적용
