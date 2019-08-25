@@ -291,6 +291,8 @@ const reducer = (state = initialState, action) => {
         // immer code
         draft.resultHash = false;
         draft.mainPosts = !action.lastId ? [] : draft.mainPosts;
+        // lastId가 0이면 draft.hasMorePost
+        // lastId가 0이 아니면 true (스크롤링으로 게시물 더불러오기)
         draft.hasMorePost = action.lastId ? draft.hasMorePost : true;
         break;
         // return {
@@ -298,7 +300,6 @@ const reducer = (state = initialState, action) => {
         //   // 새로 로딩 될떄는 기존 게시글을 없앤후 [] 아래 SUCCESS에서 새로 만들고
         //   // lastId없으면 새 배열
         //   mainPosts: !action.lastId ? [] : state.mainPosts,
-        //   // 처음 불러오는 거면 lastId가 0이니까 거짓 그래서 스크롤 활성화(true)
         //   hasMorePost: action.lastId ? state.hasMorePost : true,
         // };
       }
